@@ -1,0 +1,61 @@
+.pc {
+  display: none;
+}
+.mobile {
+  vertical-align: middle;
+  font-size: 40px;
+}
+
+@media only screen and (min-width: 768px) {
+  .pc {
+    display: inline-block;
+  }
+  .mobile {
+    display: none;
+  }
+}
+
+.layout {
+  min-height: 100vh;
+}
+
+nz-header {
+  width: 100%;
+  position: fixed;
+  z-index: 1;
+  .logo {
+    height: 100%;
+    width: auto;
+    float: left;
+    margin-right: 10px;
+  }
+  [nz-menu] {
+    width: auto;
+    vertical-align: middle;
+  }
+
+  nz-input-group {
+    vertical-align: middle;
+    padding-left: 5vh;
+    width: auto;
+  }
+
+}
+
+#logo {
+  height: 80%;
+  width: auto;
+}
+
+.trigger {
+  color: white;
+  font-size: 24px;
+  vertical-align: middle;
+}
+
+nz-footer {
+  text-align: center;
+}
+
+
+

@@ -1,0 +1,6 @@
+<nz-card nzHoverable>
+  <nz-card-meta [nzAvatar]="avatarTemplate" [nzTitle]="name" [nzDescription]="'Цена: ' + price + 'р'"></nz-card-meta>
+</nz-card>
+<ng-template #avatarTemplate>
+  <nz-avatar [nzSrc]="id | GetImage | async"></nz-avatar>
+</ng-template>

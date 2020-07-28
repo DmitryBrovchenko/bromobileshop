@@ -1,0 +1,131 @@
+<ng-container *ngIf="sourceData$ | async as sourceData; else loadingTmp">
+  <app-sider
+    [data]="sourceData.data.hierarchy"
+    [collapsed]="dataService.siderCollapsed"
+  ></app-sider>
+  <nz-layout>
+    <nz-content>
+      <div class="inner-content">
+        <nz-page-header class="site-page-header" [nzTitle]="sourceData.data.categoryOne"
+                        [nzSubtitle]="'Товаров: ' + sourceData.data.goods.length">
+          <nz-breadcrumb nz-page-header-breadcrumb>
+            <nz-breadcrumb-item><a [routerLink]="['/home']"><i nz-icon nzType="home"></i></a>
+            </nz-breadcrumb-item>
+            <nz-breadcrumb-item>
+              <a [routerLink]="['/catalogue']"><span>Каталог</span></a>
+            </nz-breadcrumb-item>
+            <nz-breadcrumb-item>
+              {{sourceData.data.categoryOne}}
+            </nz-breadcrumb-item>
+          </nz-breadcrumb>
+          <nz-page-header-extra>
+            <a *ngIf="sourceData.data.hierarchy.children[0].name!==''" nz-dropdown [nzDropdownMenu]="menu">
+              Перейти в подкатегорию
+              <i nz-icon nzType="down"></i>
+            </a>
+            <a [routerLink]="['/catalogue']">Назад</a>
+            <nz-dropdown-menu #menu="nzDropdownMenu">
+              <ul nz-menu>
+                <li *ngFor="let child of sourceData.data.hierarchy.children"
+                    nz-menu-item
+                    (click)="router.navigate([dataService.transliterate(child.name)], {relativeTo: route})">{{child.name}}</li>
+              </ul>
+            </nz-dropdown-menu>
+          </nz-page-header-extra>
+        </nz-page-header>
+        <div> Сортировать по:
+          <a (click)="applyParams(
+          sourceData.data.categoryOneSource,
+          'Name',
+          1,
+          sourceData.queryParams.show || 10,
+          sourceData.queryParams.type || 'tile')">Названию</a>
+          <nz-divider nzType="vertical"></nz-divider>
+          <a (click)="applyParams(
+          sourceData.data.categoryOneSource,
+           'Price',
+            1,
+            sourceData.queryParams.show || 10,
+            sourceData.queryParams.type || 'tile')">Стоимости</a>
+          <nz-radio-group style="float: right; z-index: 0">
+            <label nz-radio-button (click)="applyParams(
+          sourceData.data.categoryOneSource,
+          sourceData.queryParams.sort ||'Name',
+          sourceData.queryParams.page || 1,
+          sourceData.queryParams.show || 10,
+          'tile'
+          )"><i nz-icon nzType="appstore" nzTheme="outline"></i></label>
+            <label nz-radio-button (click)="applyParams(
+          sourceData.data.categoryOneSource,
+          sourceData.queryParams.sort ||'Name',
+          sourceData.queryParams.page || 1,
+          sourceData.queryParams.show || 10,
+          'table'
+          )"><i nz-icon nzType="bars" nzTheme="outline"></i></label>
+          </nz-radio-group>
+        </div>
+        <div class="pagination">
+          <nz-pagination
+            [nzTotal]="sourceData.data.goods.length"
+            [nzPageIndex]="sourceData.queryParams['page'] || 1"
+            [nzPageSize]="sourceData.queryParams['show'] || 10"
+            nzShowSizeChanger
+            (nzPageSizeChange)="applyParams(sourceData.data.categoryOneSource,
+              sourceData.queryParams.sort || 'Name',
+             sourceData.queryParams.page || 1,
+              $event,
+              sourceData.queryParams.type || 'tile'
+                )"
+            (nzPageIndexChange)="applyParams(sourceData.data.categoryOneSource,
+              sourceData.queryParams.sort || 'Name',
+             $event,
+              sourceData.queryParams.show || 10,
+              sourceData.queryParams.type || 'tile')"
+            [nzShowTotal]="totalTemplate"></nz-pagination>
+        </div>
+        <div [ngSwitch]="sourceData.queryParams['type']" nz-row [nzGutter]="[16, 24]">
+          <ng-container *ngSwitchCase="'table'">
+            <div *ngFor="let item of sourceData.data.goods | sortData : sourceData.queryParams"
+                 nz-col class="gutter-row" nzSpan="24">
+              <app-card-table [name]="item['Name']" [price]="item['Price']" [id]="item['id']"></app-card-table>
+            </div>
+          </ng-container>
+          <ng-container *ngSwitchDefault>
+            <div *ngFor="let item of sourceData.data.goods | sortData : sourceData.queryParams"
+                 nz-col class="gutter-row"
+                 [nzXs]="24"
+                 [nzSm]="12"
+                 [nzMd]="12"
+                 [nzLg]="8"
+            >
+              <app-card [name]="item['Name']" [price]="item['Price']" [id]="item['id']"></app-card>
+            </div>
+          </ng-container>
+
+        </div>
+        <div class="pagination">
+          <nz-pagination
+            [nzTotal]="sourceData.data.goods.length"
+            [nzPageIndex]="sourceData.queryParams['page'] || 1"
+            [nzPageSize]="sourceData.queryParams['show'] || 10"
+            nzShowSizeChanger
+            (nzPageSizeChange)="applyParams(sourceData.data.categoryOneSource,
+              sourceData.queryParams.sort || 'Name',
+             sourceData.queryParams.page || 1,
+              $event,
+              sourceData.queryParams.type || 'tile'
+                )"
+            (nzPageIndexChange)="applyParams(sourceData.data.categoryOneSource,
+              sourceData.queryParams.sort || 'Name',
+             $event,
+              sourceData.queryParams.show || 10,
+              sourceData.queryParams.type || 'tile')"
+            [nzShowTotal]="totalTemplate"></nz-pagination>
+        </div>
+      </div>
+    </nz-content>
+  </nz-layout>
+  <ng-template #totalTemplate let-total>Всего {{ sourceData.data.goods.length }} товаров</ng-template>
+</ng-container>
+
+<ng-template #loadingTmp> Подождите, идет загрузка</ng-template>

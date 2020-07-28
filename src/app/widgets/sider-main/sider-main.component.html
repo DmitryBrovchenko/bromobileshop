@@ -1,0 +1,24 @@
+<nz-layout>
+  <nz-sider
+    nzWidth="250px"
+    nzTheme="light"
+    nzCollapsible
+    [nzTrigger]="null"
+    [nzCollapsed]="collapsed"
+    [nzCollapsedWidth]="0"
+  >
+    <ul nz-menu nzTheme="light" nzMode="inline">
+      <ng-container *ngFor = "let category of data" [ngSwitch]="category.children[0].name">
+        <li *ngSwitchCase="''" nz-menu-item>
+          <a [routerLink]="['/catalogue',dataService.transliterate(category.name)]">{{category.name}}</a>
+        </li>
+        <li *ngSwitchDefault nz-submenu [nzTitle]="category.name">
+          <ul>
+            <li *ngFor="let subcategory of category.children" nz-menu-item>
+              <a [routerLink]="['/catalogue', dataService.transliterate(category.name), dataService.transliterate(subcategory.name)]">{{subcategory.name}}</a></li>
+          </ul>
+        </li>
+      </ng-container>
+    </ul>
+  </nz-sider>
+</nz-layout>

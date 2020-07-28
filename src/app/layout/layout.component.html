@@ -1,0 +1,48 @@
+<nz-layout class="layout">
+  <nz-header>
+    <div class="logo">
+      <a [routerLink]="['/home']">
+        <img id="logo" src="../../assets/logo.png" alt="BROMobile">
+      </a>
+      <i class="trigger" nz-icon
+        [nzType]="dataService.siderCollapsed ? 'menu-unfold' : 'menu-fold'"
+        (click)="dataService.siderCollapsed = !dataService.siderCollapsed">
+      </i>
+    </div>
+    <ul nz-menu nzTheme="dark" nzMode="horizontal" class="pc">
+      <li nz-menu-item nzMatchRouter>
+        <a [routerLink]="['/home']">Главная</a>
+      </li>
+      <li nz-submenu nzTitle="Каталог">
+        <ul *ngIf="!isLoading">
+          <li *ngFor="let category of data" nz-menu-item>
+            <a [routerLink]="['/catalogue', dataService.transliterate(category.name)]"
+            >{{category.name}}</a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+    <nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton" class="pc">
+      <input type="text" nz-input placeholder="Поиск по каталогу"/>
+    </nz-input-group>
+    <ng-template #suffixIconButton>
+      <button nz-button nzType="primary" nzSearch>
+        <i nz-icon nzType="search"></i>
+      </button>
+    </ng-template>
+    <ul nz-menu nzTheme="dark" nzMode="horizontal" class="mobile">
+      <li nz-submenu nzIcon="menu">
+        <ul>
+          <li nz-menu-item nzMatchRouter>
+            <a [routerLink]="['/catalogue']">Каталог</a>
+          </li>
+          <li nz-menu-item nzMatchRouter>
+            <a [routerLink]="['/search']">Поиск</a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </nz-header>
+  <router-outlet></router-outlet>
+  <nz-footer>Ant Design ©2020 Powered By Angular</nz-footer>
+</nz-layout>

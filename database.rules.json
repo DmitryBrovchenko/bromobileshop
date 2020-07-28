@@ -1,7 +1,21 @@
 {
-  /* Visit https://firebase.google.com/docs/database/security to learn more about security rules. */
   "rules": {
-    ".read": false,
-    ".write": false
+    "Catalogue": {
+      ".indexOn": ["Category 1"],
+      ".write": false
+    },
+    "Dictionary": {
+      ".indexOn": ["name"],
+      ".write": false
+    },
+    "Structure": {
+      ".indexOn": ["name"],
+      ".write": false
+    },
+    "Images": {
+      ".indexOn": ["id"],
+      ".write": false
+    },
+    ".read": true
   }
 }

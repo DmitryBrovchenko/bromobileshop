@@ -1,0 +1,11 @@
+<ng-container *ngIf="newList$ | async as newList else loadingTmp">
+  <input type=text style="display: block" [(ngModel)]="search"/>
+  <div class='card' *ngFor="let elem of newList | filter:search">
+    <a [routerLink]="['/product', elem.id]">
+      <strong>(ID {{elem.id}}) </strong>
+      {{elem.content}}
+    </a>
+  </div>
+</ng-container>
+
+<ng-template #loadingTmp>loading...</ng-template>

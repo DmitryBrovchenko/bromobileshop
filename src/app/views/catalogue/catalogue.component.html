@@ -1,0 +1,23 @@
+ <nz-content>
+    <div class="inner-content">
+      <ng-container *ngIf="!isLoading; else loadingTmp">
+        <h1>Каталог</h1>
+        <h2>Пожалуйста, выберите категорию товаров из списка:</h2>
+        <div nz-row [nzGutter]="[16, 24]">
+          <div *ngFor="let category of data" nz-col class="gutter-row"
+               [nzXs]="24"
+               [nzSm]="12"
+          >
+            <div class='card' appStyles="#eee">
+              <a [routerLink]="[dataService.transliterate(category.name)]">
+                {{category.name}}
+              </a>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+ </nz-content>
+
+
+<ng-template #loadingTmp>Loading...</ng-template>
