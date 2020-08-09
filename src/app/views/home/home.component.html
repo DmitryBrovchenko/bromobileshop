@@ -6,8 +6,8 @@
   <nz-content>
     <div class="inner-content">
       <button class="btn" (click)="goToCatalogue()">Перейти в каталог</button>
-        <button class="btn" (click)="adminService.createDictionary()">Создать словарь (админ)</button>
-        <button class="btn" (click)="adminService.createHierarchy()">Создать иерархию (админ)</button>
+        <button *ngIf="auth.auth.currentUser && (auth.auth.currentUser.email === 'wk_dima@mail.ru')" class="btn" (click)="adminService.createDictionary()">Создать словарь (админ)</button>
+        <button *ngIf="auth.auth.currentUser && (auth.auth.currentUser.email === 'wk_dima@mail.ru')" class="btn" (click)="adminService.createHierarchy()">Создать иерархию (админ)</button>
     </div>
   </nz-content>
 </nz-layout>

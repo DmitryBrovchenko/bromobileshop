@@ -15,7 +15,8 @@ import {ErrorPageModule} from './views/error-page';
 import {SearchModule} from './views/search/search.module';
 import {NZ_I18N, NZ_ICONS, NzIconModule, ru_RU} from 'ng-zorro-antd';
 import { IconDefinition } from '@ant-design/icons-angular';
-import { MenuOutline, MenuFoldOutline, MenuUnfoldOutline, HomeOutline, AppstoreOutline} from '@ant-design/icons-angular/icons';
+import {LockOutline, MenuOutline, MenuFoldOutline, MenuUnfoldOutline, HomeOutline, AppstoreOutline, UserOutline
+} from '@ant-design/icons-angular/icons';
 import {HomeModule} from './views/home/home.module';
 import {CategoryOneModule} from './views/category-one';
 import ru from '@angular/common/locales/ru';
@@ -24,10 +25,11 @@ import {CategoryTwoModule} from './views/category-two';
 import {CategoryThreeModule} from './views/category-three';
 import {CategoryFourModule} from './views/category-four';
 import {AngularFireStorageModule} from '@angular/fire/storage';
+import {AngularFireAuthModule} from '@angular/fire/auth';
 
 registerLocaleData(ru);
 
-const icons: IconDefinition[] = [MenuOutline, MenuFoldOutline, MenuUnfoldOutline, HomeOutline, AppstoreOutline];
+const icons: IconDefinition[] = [LockOutline, MenuOutline, MenuFoldOutline, MenuUnfoldOutline, HomeOutline, AppstoreOutline, UserOutline];
 
 @NgModule({
   declarations: [
@@ -39,6 +41,7 @@ const icons: IconDefinition[] = [MenuOutline, MenuFoldOutline, MenuUnfoldOutline
     AngularFireModule.initializeApp(environment.firebaseConfig),
     AngularFireStorageModule,
     AngularFireDatabaseModule,
+    AngularFireAuthModule,
     AppRoutingModule,
     HttpClientModule,
     BrowserAnimationsModule,

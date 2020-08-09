@@ -2,20 +2,23 @@
   "rules": {
     "Catalogue": {
       ".indexOn": ["Category 1"],
-      ".write": false
+      ".read": "auth != null",
+      ".write": "auth != null"
     },
     "Dictionary": {
       ".indexOn": ["name"],
-      ".write": false
+      ".read": "auth != null",
+      ".write": "auth != null"
     },
     "Structure": {
       ".indexOn": ["name"],
-      ".write": false
+      ".read": "auth != null",
+      ".write": "auth != null"
     },
     "Images": {
       ".indexOn": ["id"],
-      ".write": false
-    },
-    ".read": true
+      ".read": "auth != null",
+      ".write": "auth != null"
+    }
   }
 }

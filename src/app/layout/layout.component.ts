@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import {AuthService} from '../services/auth.service';
-import {AngularFireDatabase} from '@angular/fire/database';
 import {DataService} from '../services/data.service';
+import {LoginModalService} from '../widgets/login-modal';
 
 @Component({
   selector: 'app-layout',
@@ -11,7 +10,7 @@ import {DataService} from '../services/data.service';
 export class LayoutComponent implements OnInit {
   data;
   isLoading = true;
-  constructor(public dataService: DataService) {
+  constructor(public dataService: DataService, public loginModalService: LoginModalService) {
     dataService.getHierarchy().subscribe(result => {
       this.data = result;
       this.isLoading = false;

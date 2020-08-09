@@ -37,7 +37,13 @@ nz-header {
   nz-input-group {
     vertical-align: middle;
     padding-left: 5vh;
+    padding-right: 5vh;
     width: auto;
+  }
+
+  #user {
+    vertical-align: middle;
+    display: inline-block;
   }
 
 }
