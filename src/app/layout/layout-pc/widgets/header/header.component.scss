@@ -1,0 +1,31 @@
+.logo {
+  height: 100%;
+  width: auto;
+  float: left;
+  margin-right: 10px;
+  display: inline;
+  #logo {
+    height: 80%;
+    width: auto;
+  }
+}
+
+.header-menu {
+  width: auto;
+  line-height: 64px;
+  display: inline-block;
+}
+
+.header-search {
+  vertical-align: middle;
+  padding-left: 5vh;
+  padding-right: 5vh;
+  width: auto;
+}
+
+.header-user {
+  float: right;
+  .user-button {
+    top: 50%;
+  }
+}
