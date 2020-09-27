@@ -1,0 +1,11 @@
+<ul [ngSwitch]="hierarchy[0].children[0].name" nz-menu nzTheme="light" nzMode="inline">
+  <li *ngSwitchCase="''" nz-menu-item>
+    {{hierarchy[0].name}}
+  </li>
+  <li *ngSwitchDefault nz-submenu nzOpen [nzTitle]="hierarchy[0].name">
+    <ul>
+      <li *ngFor="let child of hierarchy[0].children" nz-menu-item>
+        <a [routerLink]="[dataService.transliterate(child.name)]">{{child.name}}</a></li>
+    </ul>
+  </li>
+</ul>

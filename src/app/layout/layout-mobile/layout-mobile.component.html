@@ -1,0 +1,29 @@
+<nz-layout class="layout">
+  <nz-header>
+    <div class="logo">
+      <a [routerLink]="['/home']">
+        <img id="logo" src="../../assets/logo.png" alt="BROMobile">
+      </a>
+      <i class="trigger" nz-icon
+        [nzType]="dataService.siderCollapsed ? 'menu-unfold' : 'menu-fold'"
+        (click)="dataService.siderCollapsed = !dataService.siderCollapsed">
+      </i>
+    </div>
+    <ul nz-menu nzTheme="dark" nzMode="horizontal">
+      <li nz-submenu nzIcon="menu">
+        <ul>
+          <li nz-menu-item nzMatchRouter>
+            <a [routerLink]="['/catalogue']">Каталог</a>
+          </li>
+          <li nz-menu-item nzMatchRouter>
+            <a [routerLink]="['/search']">Поиск</a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+    <button id="user" nz-button nzType="primary" (click)="loginModalService.openModal()"><i nz-icon nzType="user" nzTheme="outline"></i></button>
+  </nz-header>
+  <router-outlet></router-outlet>
+  <nz-footer>Ant Design ©2020 Powered By Angular</nz-footer>
+</nz-layout>
+

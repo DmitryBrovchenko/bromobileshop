@@ -24,7 +24,7 @@ interface SourceData {
 
 @Component({
   selector: 'app-category-four',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  // changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './category-four.component.html',
   styleUrls: ['./category-four.component.scss']
 })

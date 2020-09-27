@@ -5,10 +5,10 @@ import {CommonModule} from '@angular/common';
 import {RouterModule} from '@angular/router';
 import {FormsModule} from '@angular/forms';
 import {StylesDirective} from '../../directives/styles.directive';
-import {NgZorroAntdModule, NzGridModule} from 'ng-zorro-antd';
+import {NzGridModule} from 'ng-zorro-antd/grid';
 
 @NgModule({
   declarations: [CatalogueComponent, StylesDirective],
-  imports: [CommonModule, AngularFireDatabaseModule, FormsModule, NzGridModule, RouterModule, NgZorroAntdModule]
+  imports: [CommonModule, AngularFireDatabaseModule, FormsModule, NzGridModule, RouterModule]
 })
 export class CatalogueModule {}

@@ -22,7 +22,7 @@ interface SourceData {
 
 @Component({
   selector: 'app-category-three',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  // changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './category-three.component.html',
   styleUrls: ['./category-three.component.scss']
 })

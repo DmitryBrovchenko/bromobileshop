@@ -1,12 +1,13 @@
 import {NgModule} from '@angular/core';
 import {SiderComponent} from './sider.component';
-import {NgZorroAntdModule} from 'ng-zorro-antd';
+import {NzLayoutModule} from 'ng-zorro-antd/layout';
 import {CommonModule} from '@angular/common';
 import {RouterModule} from '@angular/router';
+import {NzMenuModule} from 'ng-zorro-antd/menu';
 
 @NgModule({
   declarations: [SiderComponent],
-  imports: [NgZorroAntdModule, CommonModule, RouterModule],
+  imports: [NzLayoutModule, NzMenuModule, CommonModule, RouterModule],
   exports: [SiderComponent]
 })
 export class SiderModule {}

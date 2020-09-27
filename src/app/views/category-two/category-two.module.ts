@@ -11,7 +11,6 @@ import {NzDividerModule} from 'ng-zorro-antd/divider';
 import {NzDropDownModule} from 'ng-zorro-antd/dropdown';
 import {NzGridModule} from 'ng-zorro-antd/grid';
 import {NzIconModule} from 'ng-zorro-antd/icon';
-import {NzLayoutModule} from 'ng-zorro-antd/layout';
 import {NzPageHeaderModule} from 'ng-zorro-antd/page-header';
 import {NzPaginationModule} from 'ng-zorro-antd/pagination';
 import {NzRadioModule} from 'ng-zorro-antd/radio';
@@ -22,7 +21,6 @@ const ANT_DESIGN_MODULES = [
   NzDropDownModule,
   NzGridModule,
   NzIconModule,
-  NzLayoutModule,
   NzPageHeaderModule,
   NzPaginationModule,
   NzRadioModule

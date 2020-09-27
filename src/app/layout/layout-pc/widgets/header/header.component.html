@@ -1,0 +1,34 @@
+<div class="logo">
+  <a [routerLink]="['/']">
+    <img id="logo" src="assets/logo.png" alt="BROMobile">
+  </a>
+</div>
+<ul class="header-menu" nz-menu nzTheme="dark" nzMode="horizontal">
+  <li nz-submenu nzTitle="Каталог">
+    <ul *ngIf="hierarchy$ async as hierarchy">
+      <li *ngFor="let category of hierarchy" nz-menu-item>
+        <a [routerLink]="['/catalogue', dataService.transliterate(category.name)]"
+        >{{category.name}}</a>
+      </li>
+    </ul>
+  </li>
+  <li nz-menu-item nzMatchRouter>
+    <a [routerLink]="['/about']">Контакты</a>
+  </li>
+  <li nz-menu-item nzMatchRouter *ngIf="auth.auth.currentUser?.email === 'wk_dima@mail.ru'">
+    <a [routerLink]="['/admin']">Админ</a>
+  </li>
+</ul>
+<nz-input-group class="header-search" nzSearch [nzAddOnAfter]="suffixIconButton">
+  <input type="text" nz-input placeholder="Поиск по каталогу"/>
+  <ng-template #suffixIconButton>
+    <button nz-button nzType="primary" nzSearch>
+      <i nz-icon nzType="search"></i>
+    </button>
+  </ng-template>
+</nz-input-group>
+<div class="header-user">
+  <button class="user-button" nz-button nzType="primary" (click)="loginModalService.openModal()">
+    <i nz-icon nzType="user" nzTheme="outline"></i>
+  </button>
+</div>
