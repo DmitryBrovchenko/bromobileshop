@@ -9,13 +9,15 @@ import {RouterModule} from '@angular/router';
 import {NzButtonModule} from 'ng-zorro-antd/button';
 import {NzInputModule} from 'ng-zorro-antd/input';
 import {CommonModule} from '@angular/common';
+import {NzDropDownModule} from 'ng-zorro-antd/dropdown';
 
 const ANT_DESIGN_MODULES = [
   NzLayoutModule,
   NzIconModule,
   NzMenuModule,
   NzButtonModule,
-  NzInputModule
+  NzInputModule,
+  NzDropDownModule
 ];
 
 @NgModule({
@@ -23,6 +25,6 @@ const ANT_DESIGN_MODULES = [
   exports: [
     LayoutPcComponent
   ],
-  imports: [ CommonModule, RouterModule, ANT_DESIGN_MODULES ]
+  imports: [ CommonModule, ANT_DESIGN_MODULES, RouterModule.forChild([]) ]
 })
 export class LayoutPcModule {}

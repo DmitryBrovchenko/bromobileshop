@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {DataService} from '../../services/data.service';
 
 @Component({
@@ -7,13 +7,10 @@ import {DataService} from '../../services/data.service';
   styleUrls: ['./layout-pc.component.scss']
 })
 export class LayoutPcComponent implements OnInit {
-  hierarchy$;
-
-  constructor(public dataService: DataService) {
+  @Input() hierarchy;
+  constructor() {
   }
-
   ngOnInit(): void {
-    this.hierarchy$ = this.dataService.getHierarchy();
   }
 
 }

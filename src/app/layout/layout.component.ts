@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {DataService} from '../services/data.service';
 
 @Component({
   selector: 'app-layout',
@@ -6,8 +7,10 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: []
 })
 export class LayoutComponent implements OnInit {
-
+  hierarchy$;
+  constructor(private dataService: DataService) {}
   ngOnInit(): void {
+    this.hierarchy$ = this.dataService.getHierarchy();
   }
 
 }

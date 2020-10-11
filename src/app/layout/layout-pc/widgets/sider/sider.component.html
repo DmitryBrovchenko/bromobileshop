@@ -1,11 +1,37 @@
-<ul [ngSwitch]="hierarchy[0].children[0].name" nz-menu nzTheme="light" nzMode="inline">
-  <li *ngSwitchCase="''" nz-menu-item>
-    {{hierarchy[0].name}}
-  </li>
-  <li *ngSwitchDefault nz-submenu nzOpen [nzTitle]="hierarchy[0].name">
-    <ul>
-      <li *ngFor="let child of hierarchy[0].children" nz-menu-item>
-        <a [routerLink]="[dataService.transliterate(child.name)]">{{child.name}}</a></li>
-    </ul>
-  </li>
+<ul nz-menu nzTheme="light" nzMode="inline">
+  <ng-container *ngFor="let level1 of hierarchy" [ngSwitch]="level1.children[0].name">
+    <li *ngSwitchCase="''" nz-menu-item>
+      <a [routerLink]="['/catalogue', dataService.transliterate(level1.name)]">{{level1.name}}</a>
+    </li>
+    <li *ngSwitchDefault nz-submenu [nzTitle]="level1.name">
+      <ul>
+        <li nz-menu-item class="sider-show-all"><a [routerLink]="['/catalogue', dataService.transliterate(level1.name)]">Показать все</a></li>
+        <ng-container *ngFor="let level2 of level1.children" [ngSwitch]="level2.children[0].name">
+          <li *ngSwitchCase="''" nz-menu-item>
+            <a [routerLink]="['/catalogue', dataService.transliterate(level1.name), dataService.transliterate(level2.name)]">{{level2.name}}</a>
+          </li>
+          <li *ngSwitchDefault nz-submenu [nzTitle]="level2.name">
+            <ul>
+              <li nz-menu-item class="sider-show-all">
+                <a [routerLink]="['/catalogue', dataService.transliterate(level1.name),  dataService.transliterate(level2.name)]"
+                  >Показать все</a></li>
+              <ng-container *ngFor="let level3 of level2.children" [ngSwitch]="level3.children[0].name">
+                <li *ngSwitchCase="''" nz-menu-item>
+                  <a [routerLink]="['/catalogue', dataService.transliterate(level1.name), dataService.transliterate(level2.name), dataService.transliterate(level3.name)]">{{level3.name}}</a>
+                </li>
+                <li *ngSwitchDefault nz-submenu [nzTitle]="level3.name">
+                  <ul>
+                    <li nz-menu-item class="sider-show-all"><a [routerLink]="['/catalogue', dataService.transliterate(level1.name), dataService.transliterate(level2.name), dataService.transliterate(level3.name)]">Показать все</a> </li>
+                    <li *ngFor="let level4 of level3.children" nz-menu-item>
+                      <a [routerLink]="['/catalogue', dataService.transliterate(level1.name), dataService.transliterate(level2.name), dataService.transliterate(level3.name), dataService.transliterate(level4.name)]">{{level4.name}}</a>
+                    </li>
+                  </ul>
+                </li>
+              </ng-container>
+            </ul>
+          </li>
+        </ng-container>
+      </ul>
+    </li>
+  </ng-container>
 </ul>

@@ -11,6 +11,6 @@ import {LayoutPcModule} from './layout-pc/layout-pc.module';
   exports: [
     LayoutComponent
   ],
-  imports: [CommonModule, RouterModule, NgZorroAntdModule, LayoutPcModule]
+  imports: [CommonModule, NgZorroAntdModule, LayoutPcModule, RouterModule.forChild([])]
 })
 export class LayoutModule {}

@@ -4,14 +4,18 @@
   </a>
 </div>
 <ul class="header-menu" nz-menu nzTheme="dark" nzMode="horizontal">
-  <li nz-submenu nzTitle="Каталог">
-    <ul *ngIf="hierarchy$ async as hierarchy">
+  <li nz-menu-item nz-dropdown [nzDropdownMenu]="catalogueMenu">
+    <a [routerLink]="['/catalogue']">Каталог</a>
+  </li>
+  <nz-dropdown-menu #catalogueMenu="nzDropdownMenu">
+    <ul nz-menu>
       <li *ngFor="let category of hierarchy" nz-menu-item>
         <a [routerLink]="['/catalogue', dataService.transliterate(category.name)]"
         >{{category.name}}</a>
       </li>
     </ul>
-  </li>
+  </nz-dropdown-menu>
+  <ng-template #CatalogueMenu></ng-template>
   <li nz-menu-item nzMatchRouter>
     <a [routerLink]="['/about']">Контакты</a>
   </li>
