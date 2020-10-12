@@ -1,5 +1,4 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {DataService} from '../../../../services/data.service';
 
 @Component({
   selector: 'app-pc-sider',
@@ -9,7 +8,7 @@ import {DataService} from '../../../../services/data.service';
 export class SiderComponent implements OnInit {
   @Input() hierarchy;
 
-  constructor(public dataService: DataService) {
+  constructor() {
   }
 
   ngOnInit(): void {

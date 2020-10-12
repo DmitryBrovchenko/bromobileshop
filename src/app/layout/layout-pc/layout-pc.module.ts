@@ -10,6 +10,7 @@ import {NzButtonModule} from 'ng-zorro-antd/button';
 import {NzInputModule} from 'ng-zorro-antd/input';
 import {CommonModule} from '@angular/common';
 import {NzDropDownModule} from 'ng-zorro-antd/dropdown';
+import {TransliterateArrayPipeModule} from '../../pipes/transliterate-array';
 
 const ANT_DESIGN_MODULES = [
   NzLayoutModule,
@@ -25,6 +26,6 @@ const ANT_DESIGN_MODULES = [
   exports: [
     LayoutPcComponent
   ],
-  imports: [ CommonModule, ANT_DESIGN_MODULES, RouterModule.forChild([]) ]
+  imports: [ CommonModule, ANT_DESIGN_MODULES, RouterModule.forChild([]), TransliterateArrayPipeModule ]
 })
 export class LayoutPcModule {}
