@@ -5,7 +5,6 @@ import {AngularFireDatabaseModule} from '@angular/fire/database';
 import {AppComponent} from './app.component';
 import {environment} from '../environments/environment';
 import {FormsModule} from '@angular/forms';
-import {AppRoutingModule} from './app-routing.module';
 import {LayoutModule} from './layout';
 import {HttpClientModule} from '@angular/common/http';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
@@ -30,6 +29,7 @@ import {StoreModule} from '@ngrx/store';
 import {appReducer} from './@ngrx/app.reducer';
 import {EffectsModule} from '@ngrx/effects';
 import {AppEffects} from './@ngrx/app.effects';
+import {RouterModule} from '@angular/router';
 
 registerLocaleData(ru);
 
@@ -48,19 +48,11 @@ const icons: IconDefinition[] = [LockOutline, MenuOutline, MenuFoldOutline, Menu
     AngularFireStorageModule,
     AngularFireDatabaseModule,
     AngularFireAuthModule,
-    AppRoutingModule,
     HttpClientModule,
     BrowserAnimationsModule,
     LayoutModule,
-    CatalogueModule,
-    CategoryOneModule,
-    CategoryTwoModule,
-    CategoryThreeModule,
-    CategoryFourModule,
-    SearchModule,
-    ErrorPageModule,
-    AdminModule,
-    NzIconModule
+    NzIconModule,
+    RouterModule.forRoot([])
   ],
   providers: [
     { provide: NZ_ICONS, useValue: icons },

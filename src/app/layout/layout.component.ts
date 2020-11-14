@@ -7,7 +7,7 @@ import {selectHierarchy} from '../@ngrx/app.reducer';
 @Component({
   selector: 'app-layout',
   templateUrl: './layout.component.html',
-  styleUrls: []
+  styleUrls: ['./layout.component.scss'],
 })
 export class LayoutComponent implements OnInit {
   hierarchy$;

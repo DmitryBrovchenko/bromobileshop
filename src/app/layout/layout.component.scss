@@ -1,20 +1,3 @@
-.pc {
-  display: none;
-}
-.mobile {
-  vertical-align: middle;
-  font-size: 40px;
-}
-
-@media only screen and (min-width: 768px) {
-  .pc {
-    display: inline-block;
-  }
-  .mobile {
-    display: none;
-  }
-}
-
 .layout {
   min-height: 100vh;
 }
@@ -22,7 +5,8 @@
 nz-header {
   width: 100%;
   position: fixed;
-  z-index: 1;
+  display: inline-block;
+  z-index: 2;
   .logo {
     height: 100%;
     width: auto;
@@ -48,6 +32,14 @@ nz-header {
 
 }
 
+nz-sider {
+  margin-top: 64px;
+  z-index: 1;
+  overflow: auto;
+  min-height: 100%;
+  padding: 20px 0;
+}
+
 #logo {
   height: 80%;
   width: auto;
@@ -57,6 +49,16 @@ nz-header {
   color: white;
   font-size: 24px;
   vertical-align: middle;
+}
+
+.ant-menu-item {
+  word-break: break-all;
+  white-space: normal;
+}
+
+.inner-content {
+  background: #fff;
+  padding: 20px 20px 5px 20px;
 }
 
 nz-footer {
