@@ -8,9 +8,6 @@ import {LayoutPcModule} from './layout-pc/layout-pc.module';
 
 @NgModule({
   declarations: [LayoutComponent, LayoutMobileComponent],
-  exports: [
-    LayoutComponent
-  ],
   imports: [CommonModule, NgZorroAntdModule, LayoutPcModule, RouterModule.forChild([])]
 })
 export class LayoutModule {}
