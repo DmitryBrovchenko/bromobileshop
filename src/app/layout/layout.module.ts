@@ -17,9 +17,6 @@ import {AdminModule} from '../views/admin';
 
 @NgModule({
   declarations: [LayoutComponent, HeaderComponent, SiderComponent],
-  exports: [
-    LayoutComponent
-  ],
   imports: [
     CommonModule,
     NgZorroAntdModule,
