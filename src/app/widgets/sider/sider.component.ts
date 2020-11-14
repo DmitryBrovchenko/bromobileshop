@@ -1,6 +1,4 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
-import {DataService} from '../../services/data.service';
 
 @Component({
   selector: 'app-sider',
@@ -10,7 +8,7 @@ import {DataService} from '../../services/data.service';
 export class SiderComponent implements OnInit {
   @Input() collapsed: boolean;
   @Input() data: any;
-  constructor(public dataService: DataService) { }
+  constructor() { }
 
   ngOnInit(): void {
   }

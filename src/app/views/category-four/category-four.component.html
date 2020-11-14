@@ -33,7 +33,7 @@
         <ul nz-menu>
           <li *ngFor="let child of sourceData.data.hierarchy.children"
               nz-menu-item
-              (click)="router.navigate([dataService.transliterate(child.name)], {relativeTo: route})">{{child.name}}</li>
+              (click)="router.navigate([utilService.transliterate(child.name)], {relativeTo: route})">{{child.name}}</li>
         </ul>
       </nz-dropdown-menu>
     </nz-page-header-extra>

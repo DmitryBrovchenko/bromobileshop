@@ -10,7 +10,7 @@
   <nz-dropdown-menu #catalogueMenu="nzDropdownMenu">
     <ul nz-menu>
       <li *ngFor="let category of hierarchy" nz-menu-item>
-        <a [routerLink]="['/catalogue', dataService.transliterate(category.name)]"
+        <a [routerLink]="['/catalogue', category.name] | transliterateArray: 1"
         >{{category.name}}</a>
       </li>
     </ul>

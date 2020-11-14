@@ -1,10 +1,11 @@
-import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {DataService} from '../../services/data.service';
 import {AngularFireDatabase} from '@angular/fire/database';
 import {map, switchMap} from 'rxjs/operators';
 import {combineLatest, Observable} from 'rxjs';
 import {PageParamsInterface} from '../../interfaces/page-params.interface';
+import {UtilService} from '../../services/util.service';
 
 interface SourceData {
   data: {
@@ -29,7 +30,13 @@ export class CategoryTwoComponent implements OnInit {
   sourceData$: Observable<SourceData>;
   categoryOneSource: string;
 
-  constructor(public dataService: DataService, public route: ActivatedRoute, public router: Router, private db: AngularFireDatabase) {}
+  constructor(
+    private dataService: DataService,
+    public route: ActivatedRoute,
+    public router: Router,
+    private db: AngularFireDatabase,
+    public utilService: UtilService
+  ) {}
   ngOnInit(): void {
     this.data$ = this.route.params.pipe(
       /* Get category names for data and hierarchy */

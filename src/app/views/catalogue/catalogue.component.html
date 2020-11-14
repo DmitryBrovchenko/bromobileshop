@@ -7,7 +7,7 @@
          [nzSm]="12"
     >
       <div class='card' appStyles="#eee">
-        <a [routerLink]="[dataService.transliterate(category.name)]">
+        <a [routerLink]="[category.name] | transliterateArray : 0">
           {{category.name}}
         </a>
       </div>

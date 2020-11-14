@@ -7,7 +7,7 @@
       <li *ngSwitchDefault nz-submenu nzOpen [nzTitle]="data.name">
         <ul>
           <li *ngFor="let child of data.children" nz-menu-item>
-            <a [routerLink]="[dataService.transliterate(child.name)]">{{child.name}}</a></li>
+            <a [routerLink]="[child.name] | transliterateArray: 0">{{child.name}}</a></li>
         </ul>
       </li>
     </ul>

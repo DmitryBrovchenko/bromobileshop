@@ -1,10 +1,11 @@
-import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
+import { Component, OnInit} from '@angular/core';
 import {combineLatest, Observable} from 'rxjs';
 import {DataService} from '../../services/data.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {AngularFireDatabase} from '@angular/fire/database';
 import {map, switchMap} from 'rxjs/operators';
 import {PageParamsInterface} from '../../interfaces/page-params.interface';
+import {UtilService} from '../../services/util.service';
 
 interface SourceData {
   data: {
@@ -33,10 +34,13 @@ export class CategoryFourComponent implements OnInit {
   data$;
   sourceData$: Observable<SourceData>;
   categoryOneSource: string;
-  constructor(public dataService: DataService, public route: ActivatedRoute, public router: Router, private db: AngularFireDatabase) {}
-
-
-  ngOnInit(): void {
+  constructor(
+    private dataService: DataService,
+    public route: ActivatedRoute,
+    public router: Router,
+    private db: AngularFireDatabase,
+    public utilService: UtilService) {}
+    ngOnInit(): void {
     this.data$ = this.route.params.pipe(
       /* Get category names for data and hierarchy */
       switchMap(params => combineLatest(

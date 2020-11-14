@@ -26,6 +26,10 @@ import {CategoryFourModule} from './views/category-four';
 import {AngularFireStorageModule} from '@angular/fire/storage';
 import {AngularFireAuthModule} from '@angular/fire/auth';
 import { AdminModule } from './views/admin';
+import {StoreModule} from '@ngrx/store';
+import {appReducer} from './@ngrx/app.reducer';
+import {EffectsModule} from '@ngrx/effects';
+import {AppEffects} from './@ngrx/app.effects';
 
 registerLocaleData(ru);
 
@@ -36,6 +40,8 @@ const icons: IconDefinition[] = [LockOutline, MenuOutline, MenuFoldOutline, Menu
     AppComponent
   ],
   imports: [
+    EffectsModule.forRoot([AppEffects]),
+    StoreModule.forRoot({hierarchy: appReducer}),
     BrowserModule,
     FormsModule,
     AngularFireModule.initializeApp(environment.firebaseConfig),

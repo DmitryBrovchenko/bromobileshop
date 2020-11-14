@@ -5,6 +5,7 @@ import {combineLatest, Observable} from 'rxjs';
 import {map, switchMap} from 'rxjs/operators';
 import {AngularFireDatabase} from '@angular/fire/database';
 import {PageParamsInterface} from '../../interfaces/page-params.interface';
+import {UtilService} from '../../services/util.service';
 
 interface SourceData {
   data: {
@@ -26,7 +27,13 @@ export class CategoryOneComponent implements OnInit {
   categoryOneSource: string;
   sourceData$: Observable<SourceData>;
 
-  constructor(public dataService: DataService, public route: ActivatedRoute, public router: Router, private db: AngularFireDatabase) {}
+  constructor(
+    private dataService: DataService,
+    public route: ActivatedRoute,
+    public router: Router,
+    private db: AngularFireDatabase,
+    public utilService: UtilService
+  ) {}
   ngOnInit(): void {
     this.data$ = this.route.params.pipe(
       switchMap(params => this.dataService.getDictionary(params.categoryOne)

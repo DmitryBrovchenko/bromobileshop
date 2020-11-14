@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {DataService} from '../../services/data.service';
+import {Store} from '@ngrx/store';
+import {selectHierarchy} from '../../@ngrx/app.reducer';
 
 @Component({
   selector: 'app-catalogue',
@@ -9,13 +10,13 @@ import {DataService} from '../../services/data.service';
 export class CatalogueComponent implements OnInit {
   data;
   isLoading = true;
-  constructor(public dataService: DataService) {
-    dataService.getHierarchy().subscribe(res => {
+  constructor(private store: Store) {  }
+
+  ngOnInit() {
+    this.store.select(selectHierarchy).subscribe(res => {
       this.isLoading = false;
       this.data = res;
     });
   }
-
-  ngOnInit() {}
 
 }
