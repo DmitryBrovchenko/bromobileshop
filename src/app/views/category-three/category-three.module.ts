@@ -11,7 +11,6 @@ import {NzPaginationModule} from 'ng-zorro-antd/pagination';
 import {NzRadioModule} from 'ng-zorro-antd/radio';
 import {RouterModule} from '@angular/router';
 import {CardModule} from '../../widgets/card';
-import {SiderModule} from '../../widgets/sider';
 import {ReactiveFormsModule} from '@angular/forms';
 import {SortedDataPipeModule} from '../../pipes/sorted-data';
 
@@ -32,7 +31,6 @@ const ANT_DESIGN_MODULES = [
       CommonModule,
       RouterModule,
       CardModule,
-      SiderModule,
       ReactiveFormsModule,
       SortedDataPipeModule,
       ANT_DESIGN_MODULES

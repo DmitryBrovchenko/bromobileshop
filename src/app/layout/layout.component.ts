@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import {DataService} from '../services/data.service';
 import {Store} from '@ngrx/store';
-import {loadHierarchy} from '../@ngrx/app.actions';
-import {selectHierarchy} from '../@ngrx/app.reducer';
+import {loadHierarchy} from '../@ngrx/hierarchy/hierarchy.actions';
+import {selectHierarchy} from '../@ngrx/hierarchy/hierarchy.reducer';
 
 @Component({
   selector: 'app-layout',

@@ -12,7 +12,6 @@ import {NzRadioModule} from 'ng-zorro-antd/radio';
 import {RouterModule} from '@angular/router';
 import {CardModule} from '../../widgets/card';
 import {ReactiveFormsModule} from '@angular/forms';
-import {SiderModule} from '../../widgets/sider';
 import {SortedDataPipeModule} from '../../pipes/sorted-data';
 import {CardTableModule} from '../../widgets/card-table';
 
@@ -34,7 +33,6 @@ const ANT_DESIGN_MODULES = [
       RouterModule,
       CardModule,
       CardTableModule,
-      SiderModule,
       ReactiveFormsModule,
       SortedDataPipeModule,
       ANT_DESIGN_MODULES

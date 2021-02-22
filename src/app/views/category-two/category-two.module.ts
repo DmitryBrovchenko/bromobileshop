@@ -1,7 +1,6 @@
 import {NgModule} from '@angular/core';
 import {CategoryTwoComponent} from './category-two.component';
 import {CommonModule} from '@angular/common';
-import {SiderModule} from '../../widgets/sider';
 import {RouterModule} from '@angular/router';
 import {CardModule} from '../../widgets/card';
 import {ReactiveFormsModule} from '@angular/forms';
@@ -32,7 +31,6 @@ const ANT_DESIGN_MODULES = [
     CommonModule,
     RouterModule,
     CardModule,
-    SiderModule,
     ReactiveFormsModule,
     SortedDataPipeModule,
     ANT_DESIGN_MODULES

@@ -2,6 +2,9 @@ import {Injectable} from '@angular/core';
 import {AngularFireDatabase} from '@angular/fire/database';
 import {Observable} from 'rxjs';
 import {PageParamsInterface} from '../interfaces/page-params.interface';
+import {DictionaryItem} from '../interfaces/dictionary-item.interface';
+import {HierarchyItem} from '../interfaces/hierarchy-item.interface';
+import {CatalogueItem} from '../interfaces/catalogue-item.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -22,14 +25,18 @@ export class DataService {
 
   constructor(public db: AngularFireDatabase) {
   }
-
-  getHierarchy(name?: string): Observable<any> {
-    return (name) ? this.db.list(this.structure, ref => ref.orderByChild('/name').equalTo(name)).valueChanges()
-      : this.db.list(this.structure).valueChanges();
+  getCatalogue(): Observable<CatalogueItem[]> {
+    return this.db.list<CatalogueItem>(this.catalogue).valueChanges();
   }
 
-  getDictionary(name: string): Observable<any> {
-    return this.db.list(this.dictionary, ref => ref.orderByChild('/name').equalTo(name)).valueChanges();
+  getDictionary(name?: string): Observable<DictionaryItem[]> {
+    return (name) ? this.db.list<DictionaryItem>(this.dictionary, ref => ref.orderByChild('/name').equalTo(name)).valueChanges()
+      : this.db.list<DictionaryItem>(this.dictionary).valueChanges();
+  }
+
+  getHierarchy(name?: string): Observable<HierarchyItem[]> {
+    return (name) ? this.db.list<HierarchyItem>(this.structure, ref => ref.orderByChild('/name').equalTo(name)).valueChanges()
+      : this.db.list<HierarchyItem>(this.structure).valueChanges();
   }
 }
 

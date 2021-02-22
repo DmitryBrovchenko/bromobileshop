@@ -1,5 +1,5 @@
 import {CatalogueItem} from '../../../interfaces/catalogue-item.interface';
-import {Action, createReducer, on} from '@ngrx/store';
+import {Action, createFeatureSelector, createReducer, createSelector, on} from '@ngrx/store';
 import * as CatalogueActions from './catalogue.actions';
 
 export interface CatalogueState {
@@ -22,3 +22,6 @@ const reducer = createReducer(initialState,
 export function catalogueReducer(state: CatalogueState | undefined, action: Action) {
   return reducer(state, action);
 }
+
+export const selectCatalogueFeature = createFeatureSelector<CatalogueState>('catalogue');
+export const selectCatalogue = createSelector(selectCatalogueFeature, (state) => state.catalogue);
