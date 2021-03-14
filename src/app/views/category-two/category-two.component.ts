@@ -6,6 +6,7 @@ import {map, switchMap} from 'rxjs/operators';
 import {combineLatest, Observable} from 'rxjs';
 import {PageParamsInterface} from '../../interfaces/page-params.interface';
 import {UtilService} from '../../services/util.service';
+import {CatalogueNavigator} from '../../widgets/catalogue-navigator/catalogue-navigator';
 
 interface SourceData {
   data: {
@@ -24,7 +25,7 @@ interface SourceData {
   templateUrl: './category-two.component.html',
   styleUrls: ['./category-two.component.scss']
 })
-export class CategoryTwoComponent implements OnInit {
+export class CategoryTwoComponent extends CatalogueNavigator implements OnInit {
 
   data$;
   sourceData$: Observable<SourceData>;
@@ -36,13 +37,18 @@ export class CategoryTwoComponent implements OnInit {
     public router: Router,
     private db: AngularFireDatabase,
     public utilService: UtilService
-  ) {}
+  ) {
+    super(router);
+  }
   ngOnInit(): void {
     this.data$ = this.route.params.pipe(
       /* Get category names for data and hierarchy */
-      switchMap(params => combineLatest(
-        [this.dataService.getDictionary(params.categoryOne), this.dataService.getDictionary(params.categoryTwo)])
-        .pipe(map(([catOne, catTwo]) => ({catOne: catOne[0], catTwo: catTwo[0]})))),
+      switchMap(params => {
+        this.categoryParams = params;
+        return combineLatest(
+          [this.dataService.getDictionary(params.categoryOne), this.dataService.getDictionary(params.categoryTwo)])
+          .pipe(map(([catOne, catTwo]) => ({catOne: catOne[0], catTwo: catTwo[0]})));
+      }),
       /* Get data and hierarchy */
       switchMap(paramsDict => combineLatest([
           this.db.list(this.dataService.catalogue, ref => ref.orderByChild('/Category 1').equalTo(paramsDict.catOne.origin)).valueChanges()
@@ -59,12 +65,10 @@ export class CategoryTwoComponent implements OnInit {
       ));
     /* Combine with query parameters to generate the page information */
     this.sourceData$ = combineLatest([this.data$, this.route.queryParams]).pipe(
-      map(([data, queryParams]) => ({data, queryParams}) as SourceData)
+      map(([data, queryParams]) => {
+        this.pageParams = queryParams;
+        return ({data, queryParams}) as SourceData;
+      })
     );
   }
-  applyParams(categoryOne: string, categoryTwo: string, sort: string, page: number, show: number, type: string) {
-    this.router.navigate(['/catalogue', categoryOne, categoryTwo],
-      {queryParams: {page, sort, show, type}});
-  }
-
 }

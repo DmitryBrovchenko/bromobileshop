@@ -7,19 +7,17 @@ import {NzDropDownModule} from 'ng-zorro-antd/dropdown';
 import {NzGridModule} from 'ng-zorro-antd/grid';
 import {NzIconModule} from 'ng-zorro-antd/icon';
 import {NzPageHeaderModule} from 'ng-zorro-antd/page-header';
-import {NzPaginationModule} from 'ng-zorro-antd/pagination';
 import {NzRadioModule} from 'ng-zorro-antd/radio';
 import {RouterModule} from '@angular/router';
-import {CardModule} from '../../widgets/card';
 import {ReactiveFormsModule} from '@angular/forms';
 import {SortedDataPipeModule} from '../../pipes/sorted-data';
+import {CatalogueTableModule} from '../../widgets/catalogue-table/catalogue-table.module';
 
 const ANT_DESIGN_MODULES = [
   NzIconModule,
   NzBreadCrumbModule,
   NzDropDownModule,
   NzGridModule,
-  NzPaginationModule,
   NzDividerModule,
   NzPageHeaderModule,
   NzRadioModule
@@ -30,9 +28,8 @@ const ANT_DESIGN_MODULES = [
     imports: [
       CommonModule,
       RouterModule,
-      CardModule,
+      CatalogueTableModule,
       ReactiveFormsModule,
-      SortedDataPipeModule,
       ANT_DESIGN_MODULES
     ]
 })

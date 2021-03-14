@@ -6,6 +6,7 @@ import {map, switchMap} from 'rxjs/operators';
 import {AngularFireDatabase} from '@angular/fire/database';
 import {PageParamsInterface} from '../../interfaces/page-params.interface';
 import {UtilService} from '../../services/util.service';
+import {CatalogueNavigator} from '../../widgets/catalogue-navigator/catalogue-navigator';
 
 interface SourceData {
   data: {
@@ -22,7 +23,7 @@ interface SourceData {
   templateUrl: './category-one.component.html',
   styleUrls: ['./category-one.component.scss']
 })
-export class CategoryOneComponent implements OnInit {
+export class CategoryOneComponent extends CatalogueNavigator implements OnInit {
   data$;
   categoryOneSource: string;
   sourceData$: Observable<SourceData>;
@@ -33,11 +34,17 @@ export class CategoryOneComponent implements OnInit {
     public router: Router,
     private db: AngularFireDatabase,
     public utilService: UtilService
-  ) {}
+  ) {
+    super(router);
+  }
   ngOnInit(): void {
     this.data$ = this.route.params.pipe(
-      switchMap(params => this.dataService.getDictionary(params.categoryOne)
-        .pipe(map(dict => ({dict, categoryOneSource: params.categoryOne})))),
+      switchMap(params => {
+        // Save categories shown on page
+        this.categoryParams = params;
+        return this.dataService.getDictionary(params.categoryOne)
+          .pipe(map(dict => ({dict, categoryOneSource: params.categoryOne})));
+      }),
       switchMap(paramsDict => {
         return combineLatest([
           this.db.list(this.dataService.catalogue, ref => ref.orderByChild('/Category 1')
@@ -48,12 +55,11 @@ export class CategoryOneComponent implements OnInit {
               categoryOneSource: paramsDict.categoryOneSource})));
       }));
     this.sourceData$ = combineLatest([this.data$, this.route.queryParams]).pipe(
-      map(([data, queryParams]) => ({data, queryParams} as SourceData))
+      map(([data, queryParams]) => {
+        // Save options applied to the page
+        this.pageParams = queryParams;
+        return {data, queryParams} as SourceData;
+      })
     );
-  }
-
-  applyParams(categoryOne: string, sort: string, page: number, show: number, type: string) {
-    this.router.navigate(['/catalogue', categoryOne],
-      { queryParams: {page, sort, show, type} });
   }
 }

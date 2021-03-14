@@ -38,90 +38,14 @@
       </nz-dropdown-menu>
     </nz-page-header-extra>
   </nz-page-header>
-  <div> Сортировать по:
-    <a (click)="applyParams(sourceData.data.categoryOneSource, sourceData.data.categoryTwoSource,
-          sourceData.data.categoryThreeSource, sourceData.data.categoryFourSource,
-          'Name', 1, sourceData.queryParams.show || 10, sourceData.queryParams.type || 'tile')">Названию</a>
-    <nz-divider nzType="vertical"></nz-divider>
-    <a (click)="applyParams(sourceData.data.categoryOneSource, sourceData.data.categoryTwoSource,
-          sourceData.data.categoryThreeSource, sourceData.data.categoryFourSource,
-          'Price', 1, sourceData.queryParams.show || 10, sourceData.queryParams.type || 'tile')">Стоимости</a>
-    <nz-radio-group style="float: right; z-index: 0">
-      <label nz-radio-button (click)="applyParams(
-          sourceData.data.categoryOneSource,
-          sourceData.data.categoryTwoSource,
-          sourceData.data.categoryThreeSource,
-          sourceData.data.categoryFourSource,
-          sourceData.queryParams.sort ||'Name',
-          sourceData.queryParams.page || 1,
-          sourceData.queryParams.show || 10,
-          'tile'
-          )"><i nz-icon nzType="appstore" nzTheme="outline"></i></label>
-      <label nz-radio-button (click)="applyParams(
-          sourceData.data.categoryOneSource,
-          sourceData.data.categoryTwoSource,
-          sourceData.data.categoryThreeSource,
-          sourceData.data.categoryFourSource,
-          sourceData.queryParams.sort ||'Name',
-          sourceData.queryParams.page || 1,
-          sourceData.queryParams.show || 10,
-          'table'
-          )"><i nz-icon nzType="bars" nzTheme="outline"></i></label>
-    </nz-radio-group>
-  </div>
-  <div class="pagination">
-    <nz-pagination
-      [nzTotal]="sourceData.data.goods.length"
-      [nzPageIndex]="sourceData.queryParams.page || 1"
-      [nzPageSize]="sourceData.queryParams.show || 10"
-      nzShowSizeChanger
-      (nzPageSizeChange)="applyParams(sourceData.data.categoryOneSource, sourceData.data.categoryTwoSource,
-            sourceData.data.categoryThreeSource, sourceData.data.categoryFourSource,
-            sourceData.queryParams.sort || 'Name',
-            sourceData.queryParams.page || 1,
-            $event,
-            sourceData.queryParams.type || 'tile')"
-      (nzPageIndexChange)="applyParams(sourceData.data.categoryOneSource, sourceData.data.categoryTwoSource,
-            sourceData.data.categoryThreeSource, sourceData.data.categoryFourSource,
-            sourceData.queryParams.sort || 'Name',
-            $event,
-            sourceData.queryParams.show || 10,
-            sourceData.queryParams.type || 'tile')"
-      [nzShowTotal]="totalTemplate"></nz-pagination>
-  </div>
-  <div nz-row [nzGutter]="[16, 24]">
-    <div *ngFor="let item of sourceData.data.goods | sortData : sourceData.queryParams"
-         nz-col class="gutter-row"
-         [nzXs]="24"
-         [nzSm]="12"
-         [nzMd]="12"
-         [nzLg]="8"
-    >
-      <app-card [name]="item['Name']" [price]="item['Price']" [id]="item['id']"></app-card>
-    </div>
-  </div>
-  <div class="pagination">
-    <nz-pagination
-      [nzTotal]="sourceData.data.goods.length"
-      [nzPageIndex]="sourceData.queryParams.page || 1"
-      [nzPageSize]="sourceData.queryParams.show || 10"
-      nzShowSizeChanger
-      (nzPageSizeChange)="applyParams(sourceData.data.categoryOneSource, sourceData.data.categoryTwoSource,
-            sourceData.data.categoryThreeSource, sourceData.data.categoryFourSource,
-            sourceData.queryParams.sort || 'Name',
-            sourceData.queryParams.page || 1,
-            $event,
-            sourceData.queryParams.type || 'tile')"
-      (nzPageIndexChange)="applyParams(sourceData.data.categoryOneSource, sourceData.data.categoryTwoSource,
-            sourceData.data.categoryThreeSource, sourceData.data.categoryFourSource,
-            sourceData.queryParams.sort || 'Name',
-            $event,
-            sourceData.queryParams.show || 10,
-            sourceData.queryParams.type || 'tile')"
-      [nzShowTotal]="totalTemplate"></nz-pagination>
-  </div>
-
-  <ng-template #totalTemplate let-total>Всего {{ sourceData.data.goods.length }} товаров</ng-template>
+  <app-catalogue-table
+    [data]="sourceData.data.goods"
+    [params]="sourceData.queryParams"
+    (pageChanged)="onPageChanged($event)"
+    (sizeChanged)="onSizeChanged($event)"
+    (sortChanged)="onSortChanged($event)"
+    (typeChanged)="onTypeChanged($event)">
+  </app-catalogue-table>
 </ng-container>
 
 <ng-template #loadingTmp> Подождите, идет загрузка</ng-template>
