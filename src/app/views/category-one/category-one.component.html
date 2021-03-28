@@ -1,6 +1,6 @@
 <ng-container *ngIf="sourceData$ | async as sourceData; else loadingTmp">
   <nz-page-header class="site-page-header" [nzTitle]="sourceData.data.categoryOne"
-                  [nzSubtitle]="'Товаров: ' + sourceData.data.goods.length">
+                  [nzSubtitle]="'Товаров: ' + sourceData.data.goods?.length">
     <nz-breadcrumb nz-page-header-breadcrumb>
       <nz-breadcrumb-item><a [routerLink]="['/home']"><i nz-icon nzType="home"></i></a>
       </nz-breadcrumb-item>

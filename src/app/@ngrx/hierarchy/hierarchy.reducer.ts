@@ -26,6 +26,7 @@ export function hierarchyReducer(state: HierarchyState | undefined, action: Acti
 export const selectHierarchyFeature = createFeatureSelector<HierarchyState>('hierarchy');
 export const selectHierarchy = createSelector(selectHierarchyFeature, (state) => state.hierarchy);
 export const selectHierarchyItem = createSelector(
-  selectHierarchyFeature,
-  (state: HierarchyState, props) => state.hierarchy.find(item => item.name === props.name)
+  selectHierarchy,
+  (hierarchy: HierarchyItem[], props) => hierarchy.find(item => item.name === props.name)
 );
+export const selectHierarchyLoading = createSelector(selectHierarchyFeature, (state) => state.hierarchyLoading);

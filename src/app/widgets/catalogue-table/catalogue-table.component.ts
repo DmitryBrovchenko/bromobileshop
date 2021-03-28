@@ -1,4 +1,5 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
+import { PageParamsInterface } from 'src/app/interfaces/page-params.interface';
 import {CatalogueItem} from '../../interfaces/catalogue-item.interface';
 
 @Component({
@@ -11,7 +12,7 @@ export class CatalogueTableComponent {
   data: CatalogueItem[];
 
   @Input()
-  params: any;
+  params: PageParamsInterface;
 
   @Output()
   typeChanged = new EventEmitter<string>();

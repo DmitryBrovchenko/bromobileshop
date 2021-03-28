@@ -24,6 +24,8 @@ import {HierarchyEffects} from './@ngrx/hierarchy/hierarchy.effects';
 import {RouterModule} from '@angular/router';
 import {dictionaryReducer} from './@ngrx/dictionary/dictionary.reducer';
 import {DictionaryEffects} from './@ngrx/dictionary/dictionary.effects';
+import { CatalogueEffects } from './@ngrx/catalogue/catalogue.effects';
+import { catalogueReducer } from './@ngrx/catalogue/catalogue.reducer';
 
 registerLocaleData(ru);
 
@@ -34,8 +36,8 @@ const icons: IconDefinition[] = [LockOutline, MenuOutline, MenuFoldOutline, Menu
     AppComponent
   ],
   imports: [
-    EffectsModule.forRoot([HierarchyEffects, DictionaryEffects]),
-    StoreModule.forRoot({hierarchy: hierarchyReducer, dictionary: dictionaryReducer}),
+    EffectsModule.forRoot([HierarchyEffects, DictionaryEffects, CatalogueEffects]),
+    StoreModule.forRoot({hierarchy: hierarchyReducer, dictionary: dictionaryReducer, catalogue: catalogueReducer}),
     BrowserModule,
     FormsModule,
     AngularFireModule.initializeApp(environment.firebaseConfig),

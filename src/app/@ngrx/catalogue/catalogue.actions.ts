@@ -1,5 +1,5 @@
 import {createAction, props, union} from '@ngrx/store';
-import {CatalogueItem} from '../../../interfaces/catalogue-item.interface';
+import {CatalogueItem} from '../../interfaces/catalogue-item.interface';
 
 export const loadCatalogue = createAction('[catalogue] Load Catalogue');
 export const loadCatalogueSuccess = createAction('[catalogue] Load Catalogue - Success', props<{ catalogue: CatalogueItem[] }>());

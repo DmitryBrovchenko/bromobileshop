@@ -1,43 +1,46 @@
-<div> Сортировать по:
-  <a (click)="sortChanged.emit('Name')">Названию</a>
-  <nz-divider nzType="vertical"></nz-divider>
-  <a (click)="sortChanged.emit('Price')">Стоимости</a>
-  <nz-radio-group style="float: right; z-index: 0">
-    <label nz-radio-button (click)="typeChanged.emit('tile')"><i nz-icon nzType="appstore" nzTheme="outline"></i></label>
-    <label nz-radio-button (click)="typeChanged.emit('table')"><i nz-icon nzType="bars" nzTheme="outline"></i></label>
-  </nz-radio-group>
+<div *ngIf="data; else loadingTmp">
+  <div> Сортировать по:
+    <a (click)="sortChanged.emit('Name')">Названию</a>
+    <nz-divider nzType="vertical"></nz-divider>
+    <a (click)="sortChanged.emit('Price')">Стоимости</a>
+    <nz-radio-group style="float: right; z-index: 0">
+      <label nz-radio-button (click)="typeChanged.emit('tile')"><i nz-icon nzType="appstore" nzTheme="outline"></i></label>
+      <label nz-radio-button (click)="typeChanged.emit('table')"><i nz-icon nzType="bars" nzTheme="outline"></i></label>
+    </nz-radio-group>
+  </div>
+  <ng-container *ngTemplateOutlet="paginationTemplate"></ng-container>
+  
+  <div [ngSwitch]="params.type" nz-row [nzGutter]="[16, 24]">
+    <ng-container *ngSwitchCase="'table'">
+      <div *ngFor="let item of data | sortData : params"
+           nz-col class="gutter-row" nzSpan="24">
+        <app-card-table [name]="item.Name" [price]="item.Price" [id]="item.id"></app-card-table>
+      </div>
+    </ng-container>
+    <ng-container *ngSwitchDefault>
+      <div *ngFor="let item of data | sortData : params"
+           nz-col class="gutter-row"
+           [nzXs]="24"
+           [nzSm]="12"
+           [nzMd]="12"
+           [nzLg]="8"
+      >
+        <app-card [name]="item.Name" [price]="item.Price" [id]="item.id"></app-card>
+      </div>
+    </ng-container>
+  
+  </div>
+  <ng-container *ngTemplateOutlet="paginationTemplate"></ng-container>
 </div>
-<ng-container *ngTemplateOutlet="paginationTemplate"></ng-container>
 
-<div [ngSwitch]="params['type']" nz-row [nzGutter]="[16, 24]">
-  <ng-container *ngSwitchCase="'table'">
-    <div *ngFor="let item of data | sortData : params"
-         nz-col class="gutter-row" nzSpan="24">
-      <app-card-table [name]="item['Name']" [price]="item['Price']" [id]="item['id']"></app-card-table>
-    </div>
-  </ng-container>
-  <ng-container *ngSwitchDefault>
-    <div *ngFor="let item of data | sortData : params"
-         nz-col class="gutter-row"
-         [nzXs]="24"
-         [nzSm]="12"
-         [nzMd]="12"
-         [nzLg]="8"
-    >
-      <app-card [name]="item['Name']" [price]="item['Price']" [id]="item['id']"></app-card>
-    </div>
-  </ng-container>
-
-</div>
-<ng-container *ngTemplateOutlet="paginationTemplate"></ng-container>
-
+<ng-template #loadingTmp>Идет загрузка...</ng-template>
 <ng-template #totalTemplate let-total>Всего {{ data.length }} товаров</ng-template>
 <ng-template #paginationTemplate>
   <div class="pagination">
     <nz-pagination
       [nzTotal]="data.length"
-      [nzPageIndex]="params['page'] || 1"
-      [nzPageSize]="params['show'] || 10"
+      [nzPageIndex]="params.page || 1"
+      [nzPageSize]="params.show || 10"
       nzShowSizeChanger
       (nzPageSizeChange)="sizeChanged.emit($event)"
       (nzPageIndexChange)="pageChanged.emit($event)"

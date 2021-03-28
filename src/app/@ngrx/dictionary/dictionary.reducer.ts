@@ -26,6 +26,6 @@ export function dictionaryReducer(state: DictionaryState | undefined, action: Ac
 export const selectDictionaryFeature = createFeatureSelector<DictionaryState>('dictionary');
 export const selectDictionary = createSelector(selectDictionaryFeature, (state) => state.dictionary);
 export const selectDictionaryItem = createSelector(
-  selectDictionaryFeature,
-  (state: DictionaryState, props) => state.dictionary.find(item => item.name === props.name)
+  selectDictionary,
+  (dictionary: DictionaryItem[], props) => dictionary?.find(item => item.name === props.name)
 );

@@ -14,6 +14,7 @@ import {CategoryFourModule} from '../views/category-four';
 import {SearchModule} from '../views/search/search.module';
 import {ErrorPageModule} from '../views/error-page';
 import {AdminModule} from '../views/admin';
+import { FlexLayoutModule } from '@angular/flex-layout';
 
 @NgModule({
   declarations: [LayoutComponent, HeaderComponent, SiderComponent],
@@ -29,7 +30,8 @@ import {AdminModule} from '../views/admin';
     CategoryFourModule,
     SearchModule,
     ErrorPageModule,
-    AdminModule
+    AdminModule,
+    FlexLayoutModule,
   ]
 })
 export class LayoutModule {}

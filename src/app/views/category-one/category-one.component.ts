@@ -1,12 +1,14 @@
 import { Component, OnInit} from '@angular/core';
-import {DataService} from '../../services/data.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {combineLatest, Observable} from 'rxjs';
-import {map, switchMap} from 'rxjs/operators';
-import {AngularFireDatabase} from '@angular/fire/database';
+import {filter, map, switchMap} from 'rxjs/operators';
 import {PageParamsInterface} from '../../interfaces/page-params.interface';
 import {UtilService} from '../../services/util.service';
 import {CatalogueNavigator} from '../../widgets/catalogue-navigator/catalogue-navigator';
+import { Store } from '@ngrx/store';
+import { selectDictionaryItem } from 'src/app/@ngrx/dictionary/dictionary.reducer';
+import { selectCatalogueFirstLevel } from 'src/app/@ngrx/catalogue/catalogue.reducer';
+import { selectHierarchyItem } from 'src/app/@ngrx/hierarchy/hierarchy.reducer';
 
 interface SourceData {
   data: {
@@ -29,10 +31,9 @@ export class CategoryOneComponent extends CatalogueNavigator implements OnInit {
   sourceData$: Observable<SourceData>;
 
   constructor(
-    private dataService: DataService,
     public route: ActivatedRoute,
     public router: Router,
-    private db: AngularFireDatabase,
+    private store: Store,
     public utilService: UtilService
   ) {
     super(router);
@@ -40,24 +41,22 @@ export class CategoryOneComponent extends CatalogueNavigator implements OnInit {
   ngOnInit(): void {
     this.data$ = this.route.params.pipe(
       switchMap(params => {
-        // Save categories shown on page
         this.categoryParams = params;
-        return this.dataService.getDictionary(params.categoryOne)
-          .pipe(map(dict => ({dict, categoryOneSource: params.categoryOne})));
+        return this.store.select(selectDictionaryItem, {name: params.categoryOne});
       }),
-      switchMap(paramsDict => {
-        return combineLatest([
-          this.db.list(this.dataService.catalogue, ref => ref.orderByChild('/Category 1')
-            .equalTo(paramsDict.dict[0].origin)).valueChanges(),
-          this.dataService.getHierarchy(paramsDict.dict[0].structure)])
-          .pipe(map(([goods, hierarchy]) =>
-            ({goods, hierarchy: hierarchy[0], categoryOne: paramsDict.dict[0].structure,
-              categoryOneSource: paramsDict.categoryOneSource})));
-      }));
+      filter((item) => !!item),
+      switchMap(paramsDict => combineLatest([
+          this.store.select(selectCatalogueFirstLevel, {level1: paramsDict.origin}),
+          this.store.select(selectHierarchyItem, {name: paramsDict.structure})
+        ]).pipe(map(([goods, hierarchy]) => ({goods, hierarchy: hierarchy, categoryOne: paramsDict.structure,
+            categoryOneSource: paramsDict.name})
+            ))
+    ));
     this.sourceData$ = combineLatest([this.data$, this.route.queryParams]).pipe(
       map(([data, queryParams]) => {
         // Save options applied to the page
         this.pageParams = queryParams;
+        console.log(data, queryParams);
         return {data, queryParams} as SourceData;
       })
     );

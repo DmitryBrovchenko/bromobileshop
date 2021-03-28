@@ -4,7 +4,12 @@
       [hierarchy]="hierarchy$ | async"></app-pc-header>
   </nz-header>
   <nz-layout>
-    <nz-sider nzWidth="300px" nzTheme="light">
+    <nz-sider
+      nzCollapsible 
+      nzBreakpoint="md"
+      nzWidth="300px" 
+      nzTheme="light"
+    >
       <app-pc-sider [hierarchy]="hierarchy$ | async"></app-pc-sider>
     </nz-sider>
     <nz-content>

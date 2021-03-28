@@ -1,4 +1,4 @@
-<ng-container *ngIf="!isLoading; else loadingTmp">
+<ng-container *ngIf="!(isLoading$ | async); else loadingTmp">
   <h1>Каталог</h1>
   <h2>Пожалуйста, выберите категорию товаров из списка:</h2>
   <div nz-row [nzGutter]="[16, 24]">

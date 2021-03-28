@@ -1,4 +1,4 @@
-import {CatalogueItem} from '../../../interfaces/catalogue-item.interface';
+import {CatalogueItem} from '../../interfaces/catalogue-item.interface';
 import {Action, createFeatureSelector, createReducer, createSelector, on} from '@ngrx/store';
 import * as CatalogueActions from './catalogue.actions';
 
@@ -25,3 +25,10 @@ export function catalogueReducer(state: CatalogueState | undefined, action: Acti
 
 export const selectCatalogueFeature = createFeatureSelector<CatalogueState>('catalogue');
 export const selectCatalogue = createSelector(selectCatalogueFeature, (state) => state.catalogue);
+export const selectCatalogueFirstLevel = createSelector(
+  selectCatalogue,
+  (catalogue: CatalogueItem[], props) => catalogue?.filter(item => item['Category 1'] === props.level1));
+export const selectCatalogueSecondLevel = createSelector(
+  selectCatalogueFirstLevel,
+  (levelOne: CatalogueItem[], props) => levelOne?.filter(item => item['Category 2'] === props.level2)
+);

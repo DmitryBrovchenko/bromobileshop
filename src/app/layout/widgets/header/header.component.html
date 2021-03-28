@@ -3,7 +3,13 @@
     <img id="logo" src="assets/logo.png" alt="BROMobile">
   </a>
 </div>
-<ul class="header-menu" nz-menu nzTheme="dark" nzMode="horizontal">
+<ul
+  fxShow.lt-md="false" fxShow="true"
+  class="header-menu"
+  nz-menu
+  nzTheme="dark"
+  nzMode="horizontal"
+>
   <li nz-menu-item nz-dropdown [nzDropdownMenu]="catalogueMenu">
     <a [routerLink]="['/catalogue']">Каталог</a>
   </li>
@@ -22,7 +28,12 @@
     <a [routerLink]="['/admin']">Админ</a>
   </li>
 </ul>
-<nz-input-group class="header-search" nzSearch [nzAddOnAfter]="suffixIconButton">
+<nz-input-group 
+  fxShow.lt-md="false" fxShow="true"
+  class="header-search" 
+  nzSearch 
+  [nzAddOnAfter]="suffixIconButton"
+>
   <input type="text" nz-input placeholder="Поиск по каталогу"/>
   <ng-template #suffixIconButton>
     <button nz-button nzType="primary" nzSearch>
@@ -30,6 +41,28 @@
     </button>
   </ng-template>
 </nz-input-group>
+<ul 
+  fxHide.lt-md="false" fxHide="true"
+  class="header-menu"
+  nz-menu
+  nzTheme="dark"
+  nzMode="horizontal"
+>
+  <li nz-submenu nzIcon="menu">
+    <ul>
+      <li nz-menu-item nzMatchRouter>
+        <a [routerLink]="['/catalogue']">Каталог</a>
+      </li>
+      <li nz-menu-item nzMatchRouter>
+        <a [routerLink]="['/search']">Поиск</a>
+      </li>
+      <li nz-menu-item nzMatchRouter>
+        <a [routerLink]="['/about']">Контакты</a>
+      </li>
+    </ul>
+  </li>
+</ul>
+
 <div class="header-user">
   <button class="user-button" nz-button nzType="primary" (click)="loginModalService.openModal()">
     <i nz-icon nzType="user" nzTheme="outline"></i>
