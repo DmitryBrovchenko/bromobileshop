@@ -2,23 +2,13 @@ import { Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {combineLatest, Observable} from 'rxjs';
 import {filter, map, switchMap} from 'rxjs/operators';
-import {PageParamsInterface} from '../../interfaces/page-params.interface';
 import {UtilService} from '../../services/util.service';
 import {CatalogueNavigator} from '../../widgets/catalogue-navigator/catalogue-navigator';
 import { Store } from '@ngrx/store';
 import { selectDictionaryItem } from 'src/app/@ngrx/dictionary/dictionary.reducer';
 import { selectCatalogueFirstLevel } from 'src/app/@ngrx/catalogue/catalogue.reducer';
 import { selectHierarchyItem } from 'src/app/@ngrx/hierarchy/hierarchy.reducer';
-
-interface SourceData {
-  data: {
-    goods: any,
-    hierarchy: any,
-    categoryOne: string,
-    categoryOneSource: string
-  };
-  queryParams: PageParamsInterface;
-}
+import { SourceData } from 'src/app/interfaces/source-data.interface';
 
 @Component({
   selector: 'app-category-one',
@@ -44,7 +34,7 @@ export class CategoryOneComponent extends CatalogueNavigator implements OnInit {
         this.categoryParams = params;
         return this.store.select(selectDictionaryItem, {name: params.categoryOne});
       }),
-      filter((item) => !!item),
+      filter(item => !!item),
       switchMap(paramsDict => combineLatest([
           this.store.select(selectCatalogueFirstLevel, {level1: paramsDict.origin}),
           this.store.select(selectHierarchyItem, {name: paramsDict.structure})
@@ -56,7 +46,6 @@ export class CategoryOneComponent extends CatalogueNavigator implements OnInit {
       map(([data, queryParams]) => {
         // Save options applied to the page
         this.pageParams = queryParams;
-        console.log(data, queryParams);
         return {data, queryParams} as SourceData;
       })
     );

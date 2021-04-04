@@ -32,3 +32,11 @@ export const selectCatalogueSecondLevel = createSelector(
   selectCatalogueFirstLevel,
   (levelOne: CatalogueItem[], props) => levelOne?.filter(item => item['Category 2'] === props.level2)
 );
+export const selectCatalogueThirdLevel = createSelector(
+  selectCatalogueSecondLevel,
+  (levelTwo: CatalogueItem[], props) => levelTwo?.filter(item => item['Category 3'] === props.level3)
+);
+export const selectCatalogueFourthLevel = createSelector(
+  selectCatalogueThirdLevel,
+  (levelThree: CatalogueItem[], props) => levelThree?.filter(item => item['Category 4'] === props.level4)
+);

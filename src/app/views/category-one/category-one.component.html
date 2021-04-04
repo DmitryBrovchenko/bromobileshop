@@ -12,14 +12,14 @@
       </nz-breadcrumb-item>
     </nz-breadcrumb>
     <nz-page-header-extra>
-      <a *ngIf="sourceData.data.hierarchy.children[0].name!==''" nz-dropdown [nzDropdownMenu]="menu">
+      <a *ngIf="sourceData.data.hierarchy?.children[0].name!==''" nz-dropdown [nzDropdownMenu]="menu">
         Перейти в подкатегорию
         <i nz-icon nzType="down"></i>
       </a>
       <a [routerLink]="['/catalogue']">Назад</a>
       <nz-dropdown-menu #menu="nzDropdownMenu">
         <ul nz-menu>
-          <li *ngFor="let child of sourceData.data.hierarchy.children"
+          <li *ngFor="let child of sourceData.data.hierarchy?.children"
               nz-menu-item
               (click)="router.navigate([utilService.transliterate(child.name)], {relativeTo: route})">{{child.name}}</li>
         </ul>

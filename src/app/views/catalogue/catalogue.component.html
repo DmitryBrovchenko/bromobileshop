@@ -6,10 +6,8 @@
          [nzXs]="24"
          [nzSm]="12"
     >
-      <div class='card' appStyles="#eee">
-        <a [routerLink]="[category.name] | transliterateArray : 0">
+      <div class='card' appStyles="#eee" (click)="router.navigate(transliteratePipe.transform(['/catalogue', category.name], 1))">
           {{category.name}}
-        </a>
       </div>
     </div>
   </div>
