@@ -3,24 +3,14 @@ import {combineLatest, Observable} from 'rxjs';
 import {DataService} from '../../services/data.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {AngularFireDatabase} from '@angular/fire/database';
-import {map, switchMap} from 'rxjs/operators';
-import {PageParamsInterface} from '../../interfaces/page-params.interface';
+import {filter, map, switchMap} from 'rxjs/operators';
 import {UtilService} from '../../services/util.service';
 import {CatalogueNavigator} from '../../widgets/catalogue-navigator/catalogue-navigator';
-
-interface SourceData {
-  data: {
-    goods: any,
-    hierarchy: any,
-    categoryOne: string,
-    categoryOneSource: string,
-    categoryTwo: string,
-    categoryTwoSource: string,
-    categoryThree: string,
-    categoryThreeSource: string
-  };
-  queryParams: PageParamsInterface;
-}
+import { SourceData } from 'src/app/interfaces/source-data.interface';
+import { Store } from '@ngrx/store';
+import { selectDictionaryItem } from 'src/app/@ngrx/dictionary/dictionary.reducer';
+import { selectCatalogueThirdLevel } from 'src/app/@ngrx/catalogue/catalogue.reducer';
+import { selectHierarchyItemL3 } from 'src/app/@ngrx/hierarchy/hierarchy.reducer';
 
 @Component({
   selector: 'app-category-three',
@@ -31,12 +21,11 @@ interface SourceData {
 export class CategoryThreeComponent extends CatalogueNavigator implements OnInit {
   data$;
   sourceData$: Observable<SourceData>;
-  categoryOneSource: string;
+  
   constructor(
-    private dataService: DataService,
     public route: ActivatedRoute,
     public router: Router,
-    private db: AngularFireDatabase,
+    private store: Store,
     public utilService: UtilService
   ) {
     super(router);
@@ -47,20 +36,18 @@ export class CategoryThreeComponent extends CatalogueNavigator implements OnInit
       /* Get category names for data and hierarchy */
       switchMap(params => {
         this.categoryParams = params;
-        return combineLatest(
-          [this.dataService.getDictionary(params.categoryOne),
-            this.dataService.getDictionary(params.categoryTwo),
-            this.dataService.getDictionary(params.categoryThree)])
-          .pipe(map(([catOne, catTwo, catThree]) => ({catOne: catOne[0], catTwo: catTwo[0], catThree: catThree[0]})));
+        return combineLatest([
+          this.store.select(selectDictionaryItem, { name: params.categoryOne }),
+          this.store.select(selectDictionaryItem, { name: params.categoryTwo }),
+          this.store.select(selectDictionaryItem, { name: params.categoryThree }),
+        ]).pipe(
+          filter(([catOne, catTwo, catThree]) => !!(catOne && catTwo && catThree)),
+          map(([catOne, catTwo, catThree]) => ({catOne, catTwo, catThree})));
       }),
       /* Get data and hierarchy */
       switchMap(paramsDict => combineLatest([
-          this.db.list(this.dataService.catalogue, ref => ref.orderByChild('/Category 1').equalTo(paramsDict.catOne.origin)).valueChanges()
-            .pipe(map(goods =>
-              goods.filter(d => (d['Category 2'] === paramsDict.catTwo.origin) && (d['Category 3'] === paramsDict.catThree.origin)))),
-          this.dataService.getHierarchy(paramsDict.catOne.structure).pipe(
-            map(hierarchy => hierarchy[0].children.filter(child => child.name === paramsDict.catTwo.structure)[0]
-              .children.filter(child => child.name === paramsDict.catThree.structure)[0]))
+          this.store.select(selectCatalogueThirdLevel, {level1: paramsDict.catOne.origin, level2: paramsDict.catTwo.origin, level3: paramsDict.catThree.origin}),
+          this.store.select(selectHierarchyItemL3, {name: paramsDict.catOne.structure, name2: paramsDict.catTwo.structure, name3: paramsDict.catThree.structure}),
         ]).pipe(map(([goods, hierarchy]) =>
             ({goods, hierarchy,
               categoryOne: paramsDict.catOne.structure, categoryOneSource: paramsDict.catOne.name,

@@ -19,7 +19,6 @@ export class CategoryTwoComponent extends CatalogueNavigator implements OnInit {
 
   data$;
   sourceData$: Observable<SourceData>;
-  categoryOneSource: string;
 
   constructor(
     public route: ActivatedRoute,
@@ -38,7 +37,7 @@ export class CategoryTwoComponent extends CatalogueNavigator implements OnInit {
           this.store.select(selectDictionaryItem, { name: params.categoryOne }),
           this.store.select(selectDictionaryItem, { name: params.categoryTwo }),
         ]).pipe(
-          filter(([catOne, catTwo]) => !!catOne && !!catTwo),
+          filter(([catOne, catTwo]) => !!(catOne && catTwo)),
           map(([catOne, catTwo]) => ({catOne, catTwo})));
       }),
       /* Get data and hierarchy */

@@ -34,3 +34,11 @@ export const selectHierarchyItemL2 = createSelector(
   selectHierarchyItem,
   (hierarchyItem: HierarchyItem, props) => hierarchyItem?.children.find(child => child.name === props.name2) 
 );
+export const selectHierarchyItemL3 = createSelector(
+  selectHierarchyItemL2,
+  (hierarchyItemL2: HierarchyItem, props) => hierarchyItemL2?.children.find((child) => child.name === props.name3)
+);
+export const selectHierarchyItemL4 = createSelector(
+  selectHierarchyItemL3,
+  (hierarchyItemL3: HierarchyItem, props) => hierarchyItemL3?.children.find((child) => child.name === props.name4) 
+);

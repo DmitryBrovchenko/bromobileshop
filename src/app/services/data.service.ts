@@ -5,6 +5,8 @@ import {PageParamsInterface} from '../interfaces/page-params.interface';
 import {DictionaryItem} from '../interfaces/dictionary-item.interface';
 import {HierarchyItem} from '../interfaces/hierarchy-item.interface';
 import {CatalogueItem} from '../interfaces/catalogue-item.interface';
+import { AngularFireStorage } from '@angular/fire/storage';
+import { shareReplay } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -22,9 +24,12 @@ export class DataService {
     type: 'Tile'
   };
   siderCollapsed = true;
+  defaultRef;
 
-  constructor(public db: AngularFireDatabase) {
+  constructor(public db: AngularFireDatabase, private storage: AngularFireStorage) {
+    this.defaultRef = storage.ref('noimage.png').getDownloadURL().pipe(shareReplay(1));
   }
+  
   getCatalogue(): Observable<CatalogueItem[]> {
     return this.db.list<CatalogueItem>(this.catalogue).valueChanges();
   }
