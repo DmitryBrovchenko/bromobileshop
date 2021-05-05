@@ -4,6 +4,7 @@
 
 nz-header {
   width: 100%;
+  padding: 0 24px 0 24px;
   position: fixed;
   display: inline-block;
   z-index: 2;
@@ -35,7 +36,6 @@ nz-header {
 nz-sider {
   margin-top: 64px;
   z-index: 1;
-  overflow: auto;
   min-height: 100%;
   padding: 20px 0;
 }
