@@ -1,11 +1,38 @@
-<ng-container *ngIf="newList$ | async as newList else loadingTmp">
-  <input type=text style="display: block" [(ngModel)]="search"/>
-  <div class='card' *ngFor="let elem of newList | filter:search">
-    <a [routerLink]="['/product', elem.id]">
-      <strong>(ID {{elem.id}}) </strong>
-      {{elem.content}}
-    </a>
-  </div>
+<nz-page-header
+  *ngIf="pageParams"
+  class="site-page-header" 
+  [nzTitle]="search ? 'Результат поиска по запросу:' : 'Поиск по каталогу'"
+  >
+  <nz-page-header-subtitle
+    *ngIf="search">
+    "{{search}}"
+  </nz-page-header-subtitle>
+  <nz-page-header-content>
+    <nz-input-group 
+      nzSearch 
+      [nzAddOnAfter]="suffixIconButton"
+    >
+      <input type="text" [(ngModel)]="criteria" nz-input placeholder="Поиск по каталогу"/>
+      <ng-template #suffixIconButton>
+        <button nz-button nzType="primary" nzSearch
+          (click)="newSearch(criteria)"
+        >
+          {{search ? 'Новый поиск' : 'Поиск'}}
+        </button>
+      </ng-template>
+    </nz-input-group>
+  </nz-page-header-content>
+</nz-page-header>
+
+<ng-container *ngIf="searchResult$ | async as searchResult else loadingTmp">
+  <app-catalogue-table
+    [data]="searchResult"
+    [params]="pageParams"
+    (typeChanged)="onTypeChanged($event)"
+    (sizeChanged)="onSizeChanged($event)"
+    (sortChanged)="onSortChanged($event)"
+    (pageChanged)="onPageChanged($event)">
+  </app-catalogue-table>
 </ng-container>
 
-<ng-template #loadingTmp>loading...</ng-template>
+<ng-template #loadingTmp>Идет загрузка...</ng-template>

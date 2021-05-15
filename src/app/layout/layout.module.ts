@@ -15,6 +15,7 @@ import {SearchModule} from '../views/search/search.module';
 import {ErrorPageModule} from '../views/error-page';
 import {AdminModule} from '../views/admin';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [LayoutComponent, HeaderComponent, SiderComponent],
@@ -32,6 +33,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     ErrorPageModule,
     AdminModule,
     FlexLayoutModule,
+    FormsModule
   ]
 })
 export class LayoutModule {}

@@ -40,3 +40,7 @@ export const selectCatalogueFourthLevel = createSelector(
   selectCatalogueThirdLevel,
   (levelThree: CatalogueItem[], props) => levelThree?.filter(item => item['Category 4'] === props.level4)
 );
+export const selectSearchResult = createSelector(
+  selectCatalogue,
+  (catalogue: CatalogueItem[], props) => catalogue?.filter(item => item.Name?.toLowerCase().includes(props.criteria?.toLowerCase()))
+);

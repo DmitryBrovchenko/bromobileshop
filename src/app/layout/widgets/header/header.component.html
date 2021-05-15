@@ -34,9 +34,11 @@
   nzSearch 
   [nzAddOnAfter]="suffixIconButton"
 >
-  <input type="text" nz-input placeholder="Поиск по каталогу"/>
+  <input type="text" [(ngModel)]="search" nz-input placeholder="Поиск по каталогу"/>
   <ng-template #suffixIconButton>
-    <button nz-button nzType="primary" nzSearch>
+    <button nz-button nzType="primary" nzSearch
+      (click)="doSearch(search)"
+    >
       <i nz-icon nzType="search"></i>
     </button>
   </ng-template>

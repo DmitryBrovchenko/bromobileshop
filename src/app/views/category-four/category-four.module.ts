@@ -10,7 +10,6 @@ import {NzPageHeaderModule} from 'ng-zorro-antd/page-header';
 import {NzRadioModule} from 'ng-zorro-antd/radio';
 import {RouterModule} from '@angular/router';
 import {ReactiveFormsModule} from '@angular/forms';
-import {SortedDataPipeModule} from '../../pipes/sorted-data';
 import {CatalogueTableModule} from '../../widgets/catalogue-table/catalogue-table.module';
 
 const ANT_DESIGN_MODULES = [
