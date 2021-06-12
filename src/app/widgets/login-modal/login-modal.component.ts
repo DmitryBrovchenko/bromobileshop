@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {NzModalRef} from 'ng-zorro-antd/modal';
-import {AngularFireAuth} from '@angular/fire/auth';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-login-modal',
@@ -12,7 +12,7 @@ export class LoginModalComponent implements OnInit {
   credentials: FormGroup;
   error = false;
   errorMessage;
-  constructor(private modal: NzModalRef, private auth: AngularFireAuth, private fb: FormBuilder) {}
+  constructor(private modal: NzModalRef, private userService: UserService, private fb: FormBuilder) {}
 
   ngOnInit(): void {
     this.credentials = this.fb.group({
@@ -27,7 +27,7 @@ export class LoginModalComponent implements OnInit {
   login(): void {
     if (this.credentials.valid) {
       this.error = false;
-      this.auth.auth.signInWithEmailAndPassword(this.credentials.value.email, this.credentials.value.password)
+      this.userService.login(this.credentials.value.email, this.credentials.value.password)
         .catch(() => {
           this.error = true;
           this.errorMessage = 'Пользователь с указанными данными не был найден';

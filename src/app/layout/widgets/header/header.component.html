@@ -24,7 +24,7 @@
   <li nz-menu-item nzMatchRouter>
     <a [routerLink]="['/about']">Контакты</a>
   </li>
-  <li nz-menu-item nzMatchRouter *ngIf="auth.auth.currentUser?.email === 'wk_dima@mail.ru'">
+  <li nz-menu-item nzMatchRouter *ngIf="userService.admin">
     <a [routerLink]="['/admin']">Админ</a>
   </li>
 </ul>
@@ -65,7 +65,11 @@
   </li>
 </ul>
 
-<div class="header-user">
+<div 
+  class="header-user"
+  nz-tooltip
+  [nzTooltipTitle]="userTooltip"
+  >
   <button class="user-button" nz-button nzType="primary" (click)="loginModalService.openModal()">
     <i nz-icon nzType="user" nzTheme="outline"></i>
   </button>

@@ -1,26 +1,19 @@
 import {ActivatedRouteSnapshot, CanActivate, CanActivateChild, Router, RouterStateSnapshot} from '@angular/router';
 import {Observable} from 'rxjs';
 import {Injectable} from '@angular/core';
-import {AngularFireAuth} from '@angular/fire/auth';
-import {map} from 'rxjs/operators';
+import { UserService } from './user.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthGuard implements CanActivate, CanActivateChild {
-  constructor(private auth: AngularFireAuth, private router: Router) {
+  constructor(private userService: UserService, private router: Router) {
   }
 
   canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
-    return this.auth.authState.pipe(map((user) => {
-      if (user?.email === 'wk_dima@mail.ru') {
-        return true;
-      } else {
-        this.router.navigate(['/'], {queryParams: {login: false}});
-      }
-    }));
+      return this.userService.admin;
   }
     canActivateChild(
       route: ActivatedRouteSnapshot,
