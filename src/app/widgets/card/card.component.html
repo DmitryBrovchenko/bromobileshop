@@ -1,6 +1,13 @@
-<nz-card nzHoverable style="height: 300px" [nzCover]="coverTemplate">
+<nz-card 
+  nzHoverable 
+  [nzCover]="coverTemplate"
+  [nzActions]="[editButton]"
+  >
   <nz-card-meta [nzTitle]="name" [nzDescription]="'Цена: ' + price + 'р'"></nz-card-meta>
 </nz-card>
 <ng-template #coverTemplate>
   <img alt="Изображение" style="height: 200px" [src]="id | GetImage | async" />
+</ng-template>
+<ng-template #editButton>
+  <i *ngIf="editable" nz-icon nzType="edit"></i>
 </ng-template>

@@ -9,6 +9,7 @@ export class CardComponent implements OnInit {
   @Input() name;
   @Input() price;
   @Input() id;
+  @Input() editable: boolean = false;
   constructor() {
 
   }

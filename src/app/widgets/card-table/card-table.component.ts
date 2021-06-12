@@ -9,6 +9,7 @@ export class CardTableComponent implements OnInit {
   @Input() name: string;
   @Input() price: number;
   @Input() id: string;
+  @Input() editable: boolean = false;
 
   ngOnInit(): void {
   }

@@ -1,5 +1,6 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 import { PageParamsInterface } from 'src/app/interfaces/page-params.interface';
+import { UserService } from 'src/app/services/user.service';
 import {CatalogueItem} from '../../interfaces/catalogue-item.interface';
 
 @Component({
@@ -25,4 +26,6 @@ export class CatalogueTableComponent {
 
   @Output()
   sizeChanged = new EventEmitter<number>();
+
+  constructor(public userService: UserService) {}
 }

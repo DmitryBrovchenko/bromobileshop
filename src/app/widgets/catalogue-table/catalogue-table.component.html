@@ -14,7 +14,7 @@
     <ng-container *ngSwitchCase="'table'">
       <div *ngFor="let item of data | sortData : params"
            nz-col class="gutter-row" nzSpan="24">
-        <app-card-table [name]="item.Name" [price]="item.Price" [id]="item.id"></app-card-table>
+        <app-card-table [name]="item.Name" [price]="item.Price" [id]="item.id" [editable]="userService.admin"></app-card-table>
       </div>
     </ng-container>
     <ng-container *ngSwitchDefault>
@@ -25,7 +25,7 @@
            [nzMd]="12"
            [nzLg]="8"
       >
-        <app-card [name]="item.Name" [price]="item.Price" [id]="item.id"></app-card>
+        <app-card [name]="item.Name" [price]="item.Price" [id]="item.id" [editable]="userService.admin"></app-card>
       </div>
     </ng-container>
   

@@ -1,6 +1,32 @@
-<nz-card nzHoverable>
+<nz-card 
+  nzHoverable
+  [nzActions]="[editButton]"
+>
   <nz-card-meta [nzAvatar]="avatarTemplate" [nzTitle]="name" [nzDescription]="'Цена: ' + price + 'р'"></nz-card-meta>
 </nz-card>
 <ng-template #avatarTemplate>
-  <nz-avatar [nzSrc]="id | GetImage | async"></nz-avatar>
+  <nz-avatar
+    [nzSrc]="id | GetImage | async"
+    [nzSize]="64"
+    [nzShape]="'square'"
+    nz-popover
+    nzPopoverTitle=""
+    [nzPopoverContent]="bigImageTemplate"
+    nzPopoverPlacement="topLeft"
+  ></nz-avatar>
+  
+  <ng-template #bigImageTemplate>
+    <div
+      style="height:150px; width:150px">
+      <img
+      width="150"
+      height="150"
+      [src]="id | GetImage | async"
+    />
+    </div>
+  </ng-template>  
+</ng-template>
+
+<ng-template #editButton>
+  <i *ngIf="editable" nz-icon nzType="edit"></i>
 </ng-template>
