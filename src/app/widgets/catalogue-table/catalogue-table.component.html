@@ -10,7 +10,7 @@
   </div>
   <ng-container *ngTemplateOutlet="paginationTemplate"></ng-container>
   
-  <div [ngSwitch]="params.type" nz-row [nzGutter]="[16, 24]">
+  <div [ngSwitch]="params.type" nz-row [nzGutter]="12">
     <ng-container *ngSwitchCase="'table'">
       <div *ngFor="let item of data | sortData : params"
            nz-col class="gutter-row" nzSpan="24">
@@ -24,6 +24,7 @@
            [nzSm]="12"
            [nzMd]="12"
            [nzLg]="8"
+           [nzXXl]="6"
       >
         <app-card [name]="item.Name" [price]="item.Price" [id]="item.id" [editable]="userService.admin"></app-card>
       </div>
