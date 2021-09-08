@@ -25,22 +25,22 @@ export function catalogueReducer(state: CatalogueState | undefined, action: Acti
 
 export const selectCatalogueFeature = createFeatureSelector<CatalogueState>('catalogue');
 export const selectCatalogue = createSelector(selectCatalogueFeature, (state) => state.catalogue);
-export const selectCatalogueFirstLevel = createSelector(
+export const selectCatalogueFirstLevel = (level1: string) => createSelector(
   selectCatalogue,
-  (catalogue: CatalogueItem[], props) => catalogue?.filter(item => item['Category 1'] === props.level1));
-export const selectCatalogueSecondLevel = createSelector(
-  selectCatalogueFirstLevel,
-  (levelOne: CatalogueItem[], props) => levelOne?.filter(item => item['Category 2'] === props.level2)
+  (catalogue: CatalogueItem[]) => catalogue?.filter(item => item['Category 1'] === level1));
+export const selectCatalogueSecondLevel = (level1: string, level2: string) => createSelector(
+  selectCatalogueFirstLevel(level1),
+  (levelOne: CatalogueItem[]) => levelOne?.filter(item => item['Category 2'] === level2)
 );
-export const selectCatalogueThirdLevel = createSelector(
-  selectCatalogueSecondLevel,
-  (levelTwo: CatalogueItem[], props) => levelTwo?.filter(item => item['Category 3'] === props.level3)
+export const selectCatalogueThirdLevel = (level1: string, level2: string, level3: string) => createSelector(
+  selectCatalogueSecondLevel(level1, level2),
+  (levelTwo: CatalogueItem[]) => levelTwo?.filter(item => item['Category 3'] === level3)
 );
-export const selectCatalogueFourthLevel = createSelector(
-  selectCatalogueThirdLevel,
-  (levelThree: CatalogueItem[], props) => levelThree?.filter(item => item['Category 4'] === props.level4)
+export const selectCatalogueFourthLevel = (level1: string, level2: string, level3: string, level4: string) => createSelector(
+  selectCatalogueThirdLevel(level1, level2, level3),
+  (levelThree: CatalogueItem[]) => levelThree?.filter(item => item['Category 4'] === level4)
 );
-export const selectSearchResult = createSelector(
+export const selectSearchResult = (criteria: string) => createSelector(
   selectCatalogue,
-  (catalogue: CatalogueItem[], props) => catalogue?.filter(item => item.Name?.toLowerCase().includes(props.criteria?.toLowerCase()))
+  (catalogue: CatalogueItem[]) => catalogue?.filter(item => item.Name?.toLowerCase().includes(criteria?.toLowerCase()))
 );

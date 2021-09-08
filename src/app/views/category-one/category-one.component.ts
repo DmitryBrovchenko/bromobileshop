@@ -16,7 +16,7 @@ import { SourceData } from 'src/app/interfaces/source-data.interface';
   styleUrls: ['./category-one.component.scss']
 })
 export class CategoryOneComponent extends CatalogueNavigator implements OnInit {
-  data$;
+  data$: Observable<any>;
   categoryOneSource: string;
   sourceData$: Observable<SourceData>;
 
@@ -32,12 +32,12 @@ export class CategoryOneComponent extends CatalogueNavigator implements OnInit {
     this.data$ = this.route.params.pipe(
       switchMap(params => {
         this.categoryParams = params;
-        return this.store.select(selectDictionaryItem, {name: params.categoryOne});
+        return this.store.select(selectDictionaryItem(params.categoryOne));
       }),
       filter(item => !!item),
       switchMap(paramsDict => combineLatest([
-          this.store.select(selectCatalogueFirstLevel, {level1: paramsDict.origin}),
-          this.store.select(selectHierarchyItem, {name: paramsDict.structure})
+          this.store.select(selectCatalogueFirstLevel(paramsDict.origin)),
+          this.store.select(selectHierarchyItem(paramsDict.structure))
         ]).pipe(map(([goods, hierarchy]) => ({goods, hierarchy: hierarchy, categoryOne: paramsDict.structure,
             categoryOneSource: paramsDict.name})
             ))

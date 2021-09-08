@@ -2,11 +2,11 @@
   nzHoverable
   [nzActions]="[editButton]"
 >
-  <nz-card-meta [nzAvatar]="avatarTemplate" [nzTitle]="name" [nzDescription]="'Цена: ' + price + 'р'"></nz-card-meta>
+  <nz-card-meta [nzAvatar]="avatarTemplate" [nzTitle]="product?.Name" [nzDescription]="'Цена: ' + product?.Price + 'р'"></nz-card-meta>
 </nz-card>
 <ng-template #avatarTemplate>
   <nz-avatar
-    [nzSrc]="id | GetImage | async"
+    [nzSrc]="product?.id | GetImage | async"
     [nzSize]="64"
     [nzShape]="'square'"
     nz-popover
@@ -21,12 +21,12 @@
       <img
       width="150"
       height="150"
-      [src]="id | GetImage | async"
+      [src]="product?.id | GetImage | async"
     />
     </div>
   </ng-template>  
 </ng-template>
 
 <ng-template #editButton>
-  <i *ngIf="editable" nz-icon nzType="edit"></i>
+  <i *ngIf="editable" nz-icon nzType="edit" (click)="editModalService.openModal(product)"></i>
 </ng-template>

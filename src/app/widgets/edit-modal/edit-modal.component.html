@@ -1,0 +1,99 @@
+<form nz-form [formGroup]="productForm" nzLayout="vertical">
+    <nz-tabset>
+        <nz-tab nzTitle="Общая информация">
+            <div nz-row [nzGutter]="24">
+                <div nz-col [nzSpan]="10">
+                    <img
+                        nz-image
+                        width="200px"
+                        height="200px"
+                        [src]="uploadUrl ?? (product?.id | GetImage | async)"
+                    />
+                    <nz-form-item>
+                        <nz-form-label>Выберите изображение</nz-form-label>
+                        <nz-form-control>
+                            <input nz-input type="file" (change)="uploadImage($event)">
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div nz-col [nzSpan]="14">
+                    <p>ID товара: {{product.id}}</p>
+                    <nz-form-item>
+                        <nz-form-label>Название товара</nz-form-label>
+                        <nz-form-control>
+                            <textarea nz-input formControlName="name" nzAutosize></textarea>
+                        </nz-form-control>
+                    </nz-form-item>
+                    <nz-form-item>
+                        <nz-form-label>Цена</nz-form-label>
+                        <nz-form-control>
+                            <nz-input-group nzSuffix="руб.">
+                                <input nz-input formControlName="price">
+                            </nz-input-group>
+                        </nz-form-control>
+                    </nz-form-item>
+                    <nz-form-item>
+                        <nz-form-label>Количество</nz-form-label>
+                        <nz-form-control>
+                            <input nz-input formControlName="quantity">
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+            </div>
+        </nz-tab>
+        <nz-tab nzTitle="Структура">
+            <nz-form-item>
+                <nz-form-label>Категория товара 1</nz-form-label>
+                <nz-form-control>
+                    <nz-select formControlName="category1">
+                        <nz-option 
+                            *ngFor="let category of categoryList"
+                            [nzValue]="category.origin"
+                            [nzLabel]="category.origin"
+                            >
+                        </nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+                <nz-form-label>Категория товара 2</nz-form-label>
+                <nz-form-control>
+                    <nz-select formControlName="category2">
+                        <nz-option
+                            *ngFor="let category of categoryTwoList$ | async"
+                            [nzValue]="category"
+                            [nzLabel]="category"
+                        >
+                        </nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+                <nz-form-label>Категория товара 3</nz-form-label>
+                <nz-form-control>
+                    <nz-select formControlName="category3">
+                        <nz-option
+                            *ngFor="let category of categoryThreeList$ | async"
+                            [nzValue]="category"
+                            [nzLabel]="category"
+                        >
+                        </nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+                <nz-form-label>Категория товара 4</nz-form-label>
+                <nz-form-control>
+                    <nz-select formControlName="category4">
+                        <nz-option
+                            *ngFor="let category of categoryFourList$ | async"
+                            [nzValue]="category"
+                            [nzLabel]="category"
+                        >
+                        </nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+        </nz-tab>
+    </nz-tabset>
+</form>

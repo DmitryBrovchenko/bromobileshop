@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {ActivatedRoute, Params, Router} from '@angular/router';
-import {AngularFireDatabase} from '@angular/fire/database';
+import {AngularFireDatabase} from '@angular/fire/compat/database';
 
 interface Product {
   content: string;

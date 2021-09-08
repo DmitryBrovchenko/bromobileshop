@@ -1,20 +1,37 @@
 import {Injectable} from '@angular/core';
-import {AngularFireDatabase} from '@angular/fire/database';
+import {AngularFireDatabase, AngularFireList} from '@angular/fire/compat/database';
+import { AngularFireStorage } from '@angular/fire/compat/storage';
+import { map } from 'rxjs/operators';
+import { CatalogueItem } from '../interfaces/catalogue-item.interface';
+import { DictionaryItem } from '../interfaces/dictionary-item.interface';
+import { ImageItem } from '../interfaces/image-item.interface';
 import {UtilService} from './util.service';
 
 @Injectable({
   providedIn: 'root'
 })
-
+// Service for Admin operations with Firebase
 export class FirebaseAdminService {
-  dictionary;
-  structure;
-  data;
+  dictionary: AngularFireList<DictionaryItem>;
+  structure: AngularFireList<any>;
+  data: CatalogueItem[];
+  dataServer: AngularFireList<CatalogueItem>;
+  images: (ImageItem & {key: string})[];
+  imageServer: AngularFireList<ImageItem>;
 
-  constructor(private db: AngularFireDatabase, private util: UtilService) {
+  constructor(
+    private db: AngularFireDatabase, 
+    private storage: AngularFireStorage,
+    private util: UtilService
+    ) {
     this.dictionary = db.list('Dictionary');
     this.structure = db.list('Structure');
-    db.list('Catalogue').valueChanges().subscribe(res => this.data = res);
+    this.dataServer = db.list('Catalogue');
+    this.dataServer.valueChanges().subscribe(res => this.data = res);
+    this.imageServer = db.list('Images');
+    this.imageServer.snapshotChanges().pipe(
+      map(snapshot => snapshot.map(item => ({key: item.payload.key, ...item.payload.val()})))
+    ).subscribe(res => this.images = res);
   }
 
   createDictionary() {
@@ -101,5 +118,38 @@ export class FirebaseAdminService {
       this.structure.push(object1);
     });
     console.log('Hierarchy has been created!');
+  }
+
+  async uploadImage(file: File, id: string): Promise<any> {
+    const imageItem: ImageItem = {
+      id,
+      path: id,
+    };
+    const existingKey = this.images.find(item => item.id === id)?.key;
+    // Upload image
+    await this.storage.upload(imageItem.path, file);
+    // Update or create new dictionary reference
+    if (existingKey) {
+      this.imageServer.update(existingKey, imageItem);
+    } else {
+      this.imageServer.push(imageItem);
+    }
+  }
+
+  createProduct(product: CatalogueItem) {
+
+  }
+
+  updateProduct(product: CatalogueItem): Promise<void> {
+    // Extract the object database key and properties
+    const key = product.dbKey;
+    const productUpdate = {...product};
+    delete productUpdate.dbKey;
+    // Update existing product
+    return this.dataServer.update(key, productUpdate);
+  }
+
+  deleteProduct(product: CatalogueItem) {
+
   }
 }

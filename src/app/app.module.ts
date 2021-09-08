@@ -1,7 +1,7 @@
 import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
-import {AngularFireModule} from '@angular/fire';
-import {AngularFireDatabaseModule} from '@angular/fire/database';
+import {AngularFireModule} from '@angular/fire/compat';
+import {AngularFireDatabaseModule} from '@angular/fire/compat/database';
 import {AppComponent} from './app.component';
 import {environment} from '../environments/environment';
 import {FormsModule} from '@angular/forms';
@@ -9,14 +9,14 @@ import {LayoutModule} from './layout';
 import {HttpClientModule} from '@angular/common/http';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { NZ_ICONS, NzIconModule } from 'ng-zorro-antd/icon';
-import {NZ_I18N, ru_RU} from 'ng-zorro-antd/i18n';
+import {NzI18nModule, NZ_I18N, ru_RU} from 'ng-zorro-antd/i18n';
 import { IconDefinition } from '@ant-design/icons-angular';
 import {LockOutline, MenuOutline, MenuFoldOutline, MenuUnfoldOutline, HomeOutline, AppstoreOutline, UserOutline
 } from '@ant-design/icons-angular/icons';
 import ru from '@angular/common/locales/ru';
 import {registerLocaleData} from '@angular/common';
-import {AngularFireStorageModule} from '@angular/fire/storage';
-import {AngularFireAuthModule} from '@angular/fire/auth';
+import {AngularFireStorageModule} from '@angular/fire/compat/storage';
+import {AngularFireAuthModule} from '@angular/fire/compat/auth';
 import {StoreModule} from '@ngrx/store';
 import {hierarchyReducer} from './@ngrx/hierarchy/hierarchy.reducer';
 import {EffectsModule} from '@ngrx/effects';
@@ -33,7 +33,7 @@ const icons: IconDefinition[] = [LockOutline, MenuOutline, MenuFoldOutline, Menu
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
   ],
   imports: [
     EffectsModule.forRoot([HierarchyEffects, DictionaryEffects, CatalogueEffects]),
@@ -48,6 +48,7 @@ const icons: IconDefinition[] = [LockOutline, MenuOutline, MenuFoldOutline, Menu
     BrowserAnimationsModule,
     LayoutModule,
     NzIconModule,
+    NzI18nModule,
     RouterModule.forRoot([])
   ],
   providers: [

@@ -26,19 +26,56 @@ export function hierarchyReducer(state: HierarchyState | undefined, action: Acti
 export const selectHierarchyFeature = createFeatureSelector<HierarchyState>('hierarchy');
 export const selectHierarchyLoading = createSelector(selectHierarchyFeature, (state) => state.hierarchyLoading);
 export const selectHierarchy = createSelector(selectHierarchyFeature, (state) => state.hierarchy);
-export const selectHierarchyItem = createSelector(
+export const selectHierarchyItem = (name: string) => createSelector(
   selectHierarchy,
-  (hierarchy: HierarchyItem[], props) => hierarchy.find(item => item.name === props.name)
+  (hierarchy: HierarchyItem[]) => hierarchy.find(item => item.name === name)
 );
-export const selectHierarchyItemL2 = createSelector(
-  selectHierarchyItem,
-  (hierarchyItem: HierarchyItem, props) => hierarchyItem?.children.find(child => child.name === props.name2) 
+export const selectHierarchyItemL2 = (name: string, name2: string) => createSelector(
+  selectHierarchyItem(name),
+  (hierarchyItem: HierarchyItem) => hierarchyItem?.children.find(child => child.name === name2) 
 );
-export const selectHierarchyItemL3 = createSelector(
-  selectHierarchyItemL2,
-  (hierarchyItemL2: HierarchyItem, props) => hierarchyItemL2?.children.find((child) => child.name === props.name3)
+export const selectHierarchyItemL3 = (name: string, name2: string, name3: string) => createSelector(
+  selectHierarchyItemL2(name, name2),
+  (hierarchyItemL2: HierarchyItem) => hierarchyItemL2?.children.find((child) => child.name === name3)
 );
-export const selectHierarchyItemL4 = createSelector(
-  selectHierarchyItemL3,
-  (hierarchyItemL3: HierarchyItem, props) => hierarchyItemL3?.children.find((child) => child.name === props.name4) 
+export const selectHierarchyItemL4 = (name: string, name2: string, name3: string, name4: string) => createSelector(
+  selectHierarchyItemL3(name, name2, name3),
+  (hierarchyItemL3: HierarchyItem) => hierarchyItemL3?.children.find((child) => child.name === name4) 
 );
+
+export const getDistinctNames = (hierarchyItem: HierarchyItem) => {
+  const items = [];
+  hierarchyItem?.children.forEach((item) => {
+  if (!items.includes(item.name)) {
+    items.push(item.name)
+  }
+});
+return items;
+}
+
+export const selectHierarchyNamesL1 = createSelector(
+  selectHierarchy,
+  (hierarchyItems: HierarchyItem[]) => {
+    const items = [];
+    hierarchyItems?.forEach((item) => {
+    if (!items.includes(item.name)) {
+      items.push(item.name)
+    }
+  });
+  return items;
+});
+
+export const selectHierarchyNamesL2 = (name: string) => createSelector(
+  selectHierarchyItem(name),
+  getDistinctNames
+)
+
+export const selectHierarchyNamesL3 = (name: string, name2: string) => createSelector(
+  selectHierarchyItemL2(name, name2),
+  getDistinctNames
+)
+
+export const selectHierarchyNamesL4 = (name: string, name2: string, name3: string) => createSelector(
+  selectHierarchyItemL3(name, name2, name3),
+  getDistinctNames
+)

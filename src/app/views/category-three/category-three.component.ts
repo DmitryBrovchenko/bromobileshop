@@ -1,8 +1,6 @@
 import { Component, OnInit} from '@angular/core';
 import {combineLatest, Observable} from 'rxjs';
-import {DataService} from '../../services/data.service';
 import {ActivatedRoute, Router} from '@angular/router';
-import {AngularFireDatabase} from '@angular/fire/database';
 import {filter, map, switchMap} from 'rxjs/operators';
 import {UtilService} from '../../services/util.service';
 import {CatalogueNavigator} from '../../widgets/catalogue-navigator/catalogue-navigator';
@@ -19,7 +17,7 @@ import { selectHierarchyItemL3 } from 'src/app/@ngrx/hierarchy/hierarchy.reducer
   styleUrls: ['./category-three.component.scss']
 })
 export class CategoryThreeComponent extends CatalogueNavigator implements OnInit {
-  data$;
+  data$: Observable<any>;
   sourceData$: Observable<SourceData>;
   
   constructor(
@@ -37,17 +35,17 @@ export class CategoryThreeComponent extends CatalogueNavigator implements OnInit
       switchMap(params => {
         this.categoryParams = params;
         return combineLatest([
-          this.store.select(selectDictionaryItem, { name: params.categoryOne }),
-          this.store.select(selectDictionaryItem, { name: params.categoryTwo }),
-          this.store.select(selectDictionaryItem, { name: params.categoryThree }),
+          this.store.select(selectDictionaryItem(params.categoryOne)),
+          this.store.select(selectDictionaryItem(params.categoryTwo)),
+          this.store.select(selectDictionaryItem(params.categoryThree)),
         ]).pipe(
           filter(([catOne, catTwo, catThree]) => !!(catOne && catTwo && catThree)),
           map(([catOne, catTwo, catThree]) => ({catOne, catTwo, catThree})));
       }),
       /* Get data and hierarchy */
       switchMap(paramsDict => combineLatest([
-          this.store.select(selectCatalogueThirdLevel, {level1: paramsDict.catOne.origin, level2: paramsDict.catTwo.origin, level3: paramsDict.catThree.origin}),
-          this.store.select(selectHierarchyItemL3, {name: paramsDict.catOne.structure, name2: paramsDict.catTwo.structure, name3: paramsDict.catThree.structure}),
+          this.store.select(selectCatalogueThirdLevel(paramsDict.catOne.origin, paramsDict.catTwo.origin, paramsDict.catThree.origin)),
+          this.store.select(selectHierarchyItemL3(paramsDict.catOne.structure, paramsDict.catTwo.structure, paramsDict.catThree.structure)),
         ]).pipe(map(([goods, hierarchy]) =>
             ({goods, hierarchy,
               categoryOne: paramsDict.catOne.structure, categoryOneSource: paramsDict.catOne.name,

@@ -17,7 +17,7 @@ import { selectHierarchyItemL2 } from 'src/app/@ngrx/hierarchy/hierarchy.reducer
 })
 export class CategoryTwoComponent extends CatalogueNavigator implements OnInit {
 
-  data$;
+  data$: Observable<any>;
   sourceData$: Observable<SourceData>;
 
   constructor(
@@ -34,16 +34,16 @@ export class CategoryTwoComponent extends CatalogueNavigator implements OnInit {
       switchMap(params => {
         this.categoryParams = params;
         return combineLatest([
-          this.store.select(selectDictionaryItem, { name: params.categoryOne }),
-          this.store.select(selectDictionaryItem, { name: params.categoryTwo }),
+          this.store.select(selectDictionaryItem(params.categoryOne)),
+          this.store.select(selectDictionaryItem(params.categoryTwo)),
         ]).pipe(
           filter(([catOne, catTwo]) => !!(catOne && catTwo)),
           map(([catOne, catTwo]) => ({catOne, catTwo})));
       }),
       /* Get data and hierarchy */
       switchMap(paramsDict => combineLatest([
-          this.store.select(selectCatalogueSecondLevel, {level1: paramsDict.catOne.origin, level2: paramsDict.catTwo.origin}),
-          this.store.select(selectHierarchyItemL2, {name: paramsDict.catOne.structure, name2: paramsDict.catTwo.structure}),
+          this.store.select(selectCatalogueSecondLevel(paramsDict.catOne.origin, paramsDict.catTwo.origin)),
+          this.store.select(selectHierarchyItemL2(paramsDict.catOne.structure, paramsDict.catTwo.structure)),
          ])
           .pipe(map(([goods, hierarchy]) =>
             ({goods, hierarchy,

@@ -29,7 +29,7 @@ export class SearchComponent extends CatalogueNavigator implements OnInit {
         this.pageParams = params;
         this.search = params.criteria;
         this.criteria = params.criteria;
-        this.searchResult$ = this.store.select(selectSearchResult, {criteria: params.criteria});
+        this.searchResult$ = this.store.select(selectSearchResult(params.criteria));
       }
     );
   }

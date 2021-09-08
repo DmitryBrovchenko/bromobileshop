@@ -1,7 +1,6 @@
 import {NgModule} from '@angular/core';
 import {LayoutComponent} from './layout.component';
 import {CommonModule} from '@angular/common';
-import {NgZorroAntdModule} from 'ng-zorro-antd';
 import {HeaderComponent} from './widgets/header/header.component';
 import {SiderComponent} from './widgets/sider/sider.component';
 import {TransliterateArrayPipeModule} from '../pipes/transliterate-array';
@@ -16,12 +15,20 @@ import {ErrorPageModule} from '../views/error-page';
 import {AdminModule} from '../views/admin';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule } from '@angular/forms';
+import { NzLayoutModule } from 'ng-zorro-antd/layout';
+import { NzMenuModule } from 'ng-zorro-antd/menu';
+import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
+import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
+import { NzIconModule } from 'ng-zorro-antd/icon';
 
+const ANT_DESIGN_MODULES = [NzLayoutModule, NzMenuModule, NzDropDownModule, NzIconModule, NzInputModule, NzButtonModule, NzToolTipModule]
 @NgModule({
   declarations: [LayoutComponent, HeaderComponent, SiderComponent],
   imports: [
     CommonModule,
-    NgZorroAntdModule,
+    ANT_DESIGN_MODULES,
     LayoutRoutingModule,
     TransliterateArrayPipeModule,
     CatalogueModule,

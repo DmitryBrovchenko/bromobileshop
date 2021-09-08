@@ -1,12 +1,12 @@
 import {Injectable} from '@angular/core';
-import {AngularFireDatabase} from '@angular/fire/database';
+import {AngularFireDatabase} from '@angular/fire/compat/database';
 import {Observable} from 'rxjs';
 import {PageParamsInterface} from '../interfaces/page-params.interface';
 import {DictionaryItem} from '../interfaces/dictionary-item.interface';
 import {HierarchyItem} from '../interfaces/hierarchy-item.interface';
 import {CatalogueItem} from '../interfaces/catalogue-item.interface';
-import { AngularFireStorage } from '@angular/fire/storage';
-import { shareReplay } from 'rxjs/operators';
+import { AngularFireStorage } from '@angular/fire/compat/storage';
+import { map, shareReplay } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -31,7 +31,8 @@ export class DataService {
   }
   
   getCatalogue(): Observable<CatalogueItem[]> {
-    return this.db.list<CatalogueItem>(this.catalogue).valueChanges();
+    return this.db.list<CatalogueItem>(this.catalogue).snapshotChanges()
+      .pipe(map(changes => changes.map(c => ({...c.payload.val(), dbKey: c.payload.key}))));
   }
 
   getDictionary(name?: string): Observable<DictionaryItem[]> {
