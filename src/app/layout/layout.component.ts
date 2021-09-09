@@ -5,6 +5,7 @@ import {loadHierarchy} from '../@ngrx/hierarchy/hierarchy.actions';
 import {selectHierarchy} from '../@ngrx/hierarchy/hierarchy.reducer';
 import { loadDictionary } from '../@ngrx/dictionary/dictionary.actions';
 import { loadCatalogue } from '../@ngrx/catalogue/catalogue.actions';
+import { loadImages } from '../@ngrx/images/images.actions';
 
 @Component({
   selector: 'app-layout',
@@ -17,6 +18,7 @@ export class LayoutComponent implements OnInit {
     store.dispatch(loadHierarchy());
     store.dispatch(loadDictionary());
     store.dispatch(loadCatalogue());
+    store.dispatch(loadImages());
     console.log('Dispatched');
   }
   ngOnInit(): void {

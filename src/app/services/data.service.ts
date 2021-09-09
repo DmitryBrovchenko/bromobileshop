@@ -6,7 +6,8 @@ import {DictionaryItem} from '../interfaces/dictionary-item.interface';
 import {HierarchyItem} from '../interfaces/hierarchy-item.interface';
 import {CatalogueItem} from '../interfaces/catalogue-item.interface';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
-import { map, shareReplay } from 'rxjs/operators';
+import { map, shareReplay, switchMap, take } from 'rxjs/operators';
+import { ImageItem } from '../interfaces/image-item.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -24,10 +25,13 @@ export class DataService {
     type: 'Tile'
   };
   siderCollapsed = true;
-  defaultRef;
+  defaultRef: string;
 
   constructor(public db: AngularFireDatabase, private storage: AngularFireStorage) {
-    this.defaultRef = storage.ref('noimage.png').getDownloadURL().pipe(shareReplay(1));
+    storage.ref('noimage.png').getDownloadURL().pipe(take(1)).subscribe(ref => {
+      console.log(ref);
+      this.defaultRef = ref;
+    });
   }
   
   getCatalogue(): Observable<CatalogueItem[]> {
@@ -43,6 +47,14 @@ export class DataService {
   getHierarchy(name?: string): Observable<HierarchyItem[]> {
     return (name) ? this.db.list<HierarchyItem>(this.structure, ref => ref.orderByChild('/name').equalTo(name)).valueChanges()
       : this.db.list<HierarchyItem>(this.structure).valueChanges();
+  }
+
+  getImages(): Observable<ImageItem[]> {
+    return this.db.list<ImageItem>('Images').valueChanges();
+  }
+
+  getImageUrl(path: string): Observable<string> {
+    return this.storage.ref(path).getDownloadURL().pipe(take(1));
   }
 }
 

@@ -1,7 +1,8 @@
 import {Injectable} from '@angular/core';
 import {AngularFireDatabase, AngularFireList} from '@angular/fire/compat/database';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
-import { map } from 'rxjs/operators';
+import { firstValueFrom } from 'rxjs';
+import { map, tap } from 'rxjs/operators';
 import { CatalogueItem } from '../interfaces/catalogue-item.interface';
 import { DictionaryItem } from '../interfaces/dictionary-item.interface';
 import { ImageItem } from '../interfaces/image-item.interface';
@@ -128,6 +129,8 @@ export class FirebaseAdminService {
     const existingKey = this.images.find(item => item.id === id)?.key;
     // Upload image
     await this.storage.upload(imageItem.path, file);
+    // Save the reference
+    imageItem.downloadUrl = await firstValueFrom(this.storage.ref(imageItem.path).getDownloadURL());
     // Update or create new dictionary reference
     if (existingKey) {
       this.imageServer.update(existingKey, imageItem);
