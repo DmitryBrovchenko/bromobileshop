@@ -1,6 +1,6 @@
 <nz-card 
   nzHoverable
-  [nzActions]="[editButton]"
+  [nzActions]="editable ? [editButton] : []"
 >
   <nz-card-meta [nzAvatar]="avatarTemplate" [nzTitle]="product?.Name" [nzDescription]="'Цена: ' + product?.Price + 'р'"></nz-card-meta>
 </nz-card>
@@ -28,5 +28,5 @@
 </ng-template>
 
 <ng-template #editButton>
-  <i *ngIf="editable" nz-icon nzType="edit" (click)="editModalService.openModal(product)"></i>
+  <i nz-icon nzType="edit" (click)="editModalService.openModal(product)"></i>
 </ng-template>
