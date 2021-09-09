@@ -11,7 +11,7 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { NZ_ICONS, NzIconModule } from 'ng-zorro-antd/icon';
 import {NzI18nModule, NZ_I18N, ru_RU} from 'ng-zorro-antd/i18n';
 import { IconDefinition } from '@ant-design/icons-angular';
-import {LockOutline, MenuOutline, MenuFoldOutline, MenuUnfoldOutline, HomeOutline, AppstoreOutline, UserOutline
+import {LockOutline, MenuOutline, MenuFoldOutline, MenuUnfoldOutline, HomeOutline, AppstoreOutline, LoginOutline, LogoutOutline, UserOutline
 } from '@ant-design/icons-angular/icons';
 import ru from '@angular/common/locales/ru';
 import {registerLocaleData} from '@angular/common';
@@ -31,7 +31,7 @@ import { ImagesEffects } from './@ngrx/images/images.effects';
 
 registerLocaleData(ru);
 
-const icons: IconDefinition[] = [LockOutline, MenuOutline, MenuFoldOutline, MenuUnfoldOutline, HomeOutline, AppstoreOutline, UserOutline];
+const icons: IconDefinition[] = [LockOutline, MenuOutline, MenuFoldOutline, MenuUnfoldOutline, HomeOutline, AppstoreOutline, LoginOutline, LogoutOutline, UserOutline];
 
 @NgModule({
   declarations: [

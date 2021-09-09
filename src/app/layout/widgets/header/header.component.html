@@ -70,7 +70,7 @@
   nz-tooltip
   [nzTooltipTitle]="userTooltip"
   >
-  <button class="user-button" nz-button nzType="primary" (click)="loginModalService.openModal()">
-    <i nz-icon nzType="user" nzTheme="outline"></i>
+  <button class="user-button" nz-button nzType="primary" (click)="loginAction()">
+    <i nz-icon [nzType]="userIcon" nzTheme="outline"></i>
   </button>
 </div>

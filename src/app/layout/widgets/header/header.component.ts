@@ -19,9 +19,13 @@ export class HeaderComponent implements OnInit {
     : 'Войти в профиль'
   }
 
+  get userIcon(): string {
+    return this.userService.userName ? 'logout' : 'login';
+  }
+
   constructor(
     public dataService: DataService,
-    public loginModalService: LoginModalService,
+    private loginModalService: LoginModalService,
     public userService: UserService,
     private router: Router
     ) { }
@@ -35,6 +39,14 @@ export class HeaderComponent implements OnInit {
       {
         queryParams: {criteria}
       });
+    }
+  }
+
+  loginAction() {
+    if (this.userService.userName) {
+      this.userService.loginGuest();
+    } else {
+      this.loginModalService.openModal();
     }
   }
 }
