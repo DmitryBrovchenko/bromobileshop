@@ -42,5 +42,19 @@ export const selectCatalogueFourthLevel = (level1: string, level2: string, level
 );
 export const selectSearchResult = (criteria: string) => createSelector(
   selectCatalogue,
-  (catalogue: CatalogueItem[]) => catalogue?.filter(item => item.Name?.toLowerCase().includes(criteria?.toLowerCase()))
+  (catalogue: CatalogueItem[]) => catalogue?.filter(item => matchesSearchCriteria(item, criteria))
 );
+
+function matchesSearchCriteria(item: CatalogueItem, criteria: string): boolean {
+  let result = true;
+  const words: string[] = criteria.trim().split(' ');
+  words.forEach((word) => {
+    const searchWord = word.slice(0, word.length - 1).toLowerCase();
+    result &&= item['Category 1'].toLowerCase().includes(searchWord)
+      || item['Category 2'].toLowerCase().includes(searchWord)
+      || item['Category 3'].toLowerCase().includes(searchWord)
+      || item['Category 4'].toLowerCase().includes(searchWord)
+      || item.Name.toLowerCase().includes(searchWord);
+  })
+  return result;
+}
