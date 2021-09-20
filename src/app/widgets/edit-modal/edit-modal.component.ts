@@ -7,6 +7,7 @@ import { switchMap, takeUntil } from 'rxjs/operators';
 import { selectHierarchyNamesL2, selectHierarchyNamesL3, selectHierarchyNamesL4 } from 'src/app/@ngrx/hierarchy/hierarchy.reducer';
 import { CatalogueItem } from 'src/app/interfaces/catalogue-item.interface';
 import { DictionaryItem } from 'src/app/interfaces/dictionary-item.interface';
+import { getBase64 } from 'src/app/utils';
 
 @Component({
   selector: 'app-edit-modal',
@@ -107,17 +108,11 @@ export class EditModalComponent implements OnInit, OnDestroy {
     return this.productForm.controls.picture.value;
   }
 
-  uploadImage(event) {
-    const file = event.target.files[0];
+  uploadImage(event: Event) {
+    const file = (event.target as HTMLInputElement).files[0];
     this.productForm.controls.picture.setValue(file);
-    this.getBase64(file, (img) => {
+    getBase64(file, (img) => {
       this.uploadUrl = img;
     });
-  }
-
-  private getBase64(img: File, callback: (img: string) => void): void {
-    const reader = new FileReader();
-    reader.addEventListener('load', () => callback(reader.result!.toString()));
-    reader.readAsDataURL(img);
   }
 }

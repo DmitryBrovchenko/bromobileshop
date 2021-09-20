@@ -1,8 +1,23 @@
 import {AdminComponent} from './admin.component';
 import {NgModule} from '@angular/core';
+import { AdminRoutingModule } from './admin-routing.module';
+import { NzTableModule } from 'ng-zorro-antd/table';
+import { NzAutocompleteModule } from 'ng-zorro-antd/auto-complete';
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzSelectModule } from 'ng-zorro-antd/select';
+import { NzPopoverModule } from 'ng-zorro-antd/popover';
+import { NzDropDownModule } from 'ng-zorro-antd/dropdown'
+import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
+import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import { FlexLayoutModule } from '@angular/flex-layout';
+
+const ANT_DESIGN_MODULES = [NzTableModule, NzAutocompleteModule, NzButtonModule, NzDropDownModule, NzIconModule, NzInputModule, NzSelectModule, NzPopconfirmModule, NzPopoverModule]
 
 @NgModule({
   declarations: [AdminComponent],
-  imports: []
+  imports: [AdminRoutingModule, CommonModule, FlexLayoutModule, FormsModule, ANT_DESIGN_MODULES]
 })
 export class AdminModule {}

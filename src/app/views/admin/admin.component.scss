@@ -1,0 +1,40 @@
+.table-actions {
+    padding: 16px 0 16px;
+
+    .action-button {
+        margin-right: 8px;
+    }
+}
+
+.save-edit {
+    color: green;
+    margin-right: 8px;
+}
+
+.cancel-edit {
+    color: red;
+}
+
+.filter-box {
+    padding: 8px;
+
+    input {
+        width: 218px;
+        margin-bottom: 8px;
+        display: block;
+      }
+
+    button {
+        width: 105px;
+    }
+
+    .filter-button {
+        margin-right: 8px;
+    }
+}
+
+.row-actions {
+    button {
+        text-align: left;
+    }
+}

@@ -1,5 +1,211 @@
-<h2>Доступны следующие действия:</h2>
-<div class="inner-content">
-  <button class="btn" (click)="adminService.createDictionary()">Создать словарь (админ)</button>
-  <button class="btn" (click)="adminService.createHierarchy()">Создать иерархию (админ)</button>
+<h2>Администрирование контента</h2>
+<div class="table-actions" fxLayout="row">
+  <button class="action-button" nz-button (click)="createProduct()"><i nz-icon nzType="plus-circle"></i> Добавить продукт</button>
+  <button class="action-button" nz-button (click)="uploadFile.click()">
+    <i nz-icon nzType="file-text"></i> Загрузить из JSON
+    <input #uploadFile type="file" hidden (change)="load($event)" accept="application/json">
+  </button>
+  <button class="action-button" nz-button (click)="resetFilters()"><i nz-icon nzType="clear" nzTheme="outline"></i> Очистить фильтры</button>
+  <button class="action-button" nz-button nzType="primary" nz-popconfirm nzPopconfirmTitle="Вы уверены, что хотите обновить данные на сервере?" (nzOnConfirm)="save()"><i nz-icon nzType="cloud-upload" nzTheme="outline"></i> Сохранить изменения</button>
+  <button class="action-button" nz-button (click)="cancel()"><i nz-icon nzType="rollback" nzTheme="outline"></i> Сбросить изменения</button>
 </div>
+<nz-table 
+  #contentTable 
+  [nzData]="dataFiltered"
+  nzBordered 
+  nzTableLayout="fixed"
+  nzPaginationPosition="both"
+  [nzScroll]="{y: '520px'}"
+>
+  <thead>
+    <tr>
+      <th nzWidth="80px">
+        Действие
+      </th>
+      <th nzWidth="60px"></th>
+      <th 
+        nzCustomFilter
+        [nzSortFn]="sortFns['Name']"
+      >
+        Название
+        <nz-filter-trigger 
+          [(nzVisible)]="nameFilterVisible" 
+          [nzActive]="nameFilterValue.length > 0" 
+          [nzDropdownMenu]="nameFilter">
+          <i nz-icon nzType="filter"></i>
+        </nz-filter-trigger>
+      </th>
+      <th
+        [nzSortFn]="sortFns['Category 1']"
+        [nzFilters]="categoryList1"
+        [nzFilterFn]="filterFns['Category 1']"
+        [nzFilterMultiple]="true"
+        (nzFilterChange)="updateCacheAndLists($event, 1)"
+      >
+        Категория 1
+      </th>
+      <th
+        [nzSortFn]="sortFns['Category 2']"
+        [nzFilters]="categoryList2"
+        [nzFilterFn]="filterFns['Category 2']"
+        [nzFilterMultiple]="true"
+        (nzFilterChange)="updateCacheAndLists($event, 2)"
+      >
+        Категория 2
+      </th>
+      <th
+        [nzSortFn]="sortFns['Category 3']"
+        [nzFilters]="categoryList3"
+        [nzFilterFn]="filterFns['Category 3']"
+        [nzFilterMultiple]="true"
+        (nzFilterChange)="updateCacheAndLists($event, 3)"
+      >
+        Категория 3
+      </th>
+      <th
+        [nzSortFn]="sortFns['Category 4']"
+        [nzFilters]="categoryList4"
+        [nzFilterFn]="filterFns['Category 4']"
+        [nzFilterMultiple]="true"
+        (nzFilterChange)="updateCacheAndLists($event, 4)"
+      >
+        Категория 4
+      </th>
+      <th
+        [nzSortFn]="sortFns['Price']"
+      >
+        Цена, руб.
+      </th>
+      <th
+        [nzSortFn]="sortFns['Quantity']"
+      >
+        Количество
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let product of contentTable.data">
+      <ng-container *ngIf="!editCache[product.id]; else editTemplate">
+        <td>
+          <button 
+            nz-button
+            nzShape="circle"
+            nzType="text"
+            nz-popover 
+            nzPopoverTrigger="click" 
+            nzPopoverTitle="Действия" 
+            [nzPopoverContent]="rowActionsTemplate"
+          >
+            <i nz-icon nzType="more" nzTheme="outline"></i>
+          </button>
+        </td>
+        <td>
+          <button
+            *ngIf="imageDisplayed[product.id]"
+            nz-button
+            nzType="text"
+            nz-popover
+            nzPopoverTrigger="click"
+            nzPopoverTitle=""
+            [nzPopoverContent]="imageTemplate"
+          >
+          <i nz-icon nzType="picture" nzTheme="outline"></i>
+        </button>
+        </td>
+        <td>{{ product.Name }}</td>
+        <td>{{ product['Category 1'] }}</td>
+        <td>{{ product['Category 2'] }}</td>
+        <td>{{ product['Category 3'] }}</td>
+        <td>{{ product['Category 4'] }}</td>
+        <td>{{ product.Price | number }}</td>
+        <td>{{ product.Quantity | number }}</td>
+      </ng-container>
+
+      <ng-template #rowActionsTemplate>
+        <div class="row-actions" fxLayout="column">
+          <button nz-button nzType="text" (click)="startEdit(product.id)"><i nz-icon nzType="edit"></i> Редактировать</button>
+          <button nz-button nzType="text" (click)="deleteProduct(product.id)"><i nz-icon nzType="delete-row"></i>Удалить товар</button>
+          <button nz-button nzType="text" (click)="uploadImage.click()">
+            <i nz-icon nzType="picture"></i> Загрузить изображение
+            <input #uploadImage type="file" hidden (change)="loadImage(product.id, $event)" accept="image/*">
+          </button>
+          <button nz-button [disabled]="!imageDisplayed[product.id]" nzType="text" (click)="deleteImage(product.id)"><i nz-icon nzType="delete"></i> Удалить изображение</button>
+        </div>
+      </ng-template>
+
+      <ng-template #imageTemplate>
+        <div
+          style="height:150px; width:150px">
+          <img
+          width="150"
+          height="150"
+          [src]="imageDisplayed[product.id].downloadUrl"
+          />
+        </div>
+      </ng-template>
+
+      <ng-template #editTemplate>
+        <td>
+          <div fxLayout="row">
+            <button nz-button nzType="text" (click)="saveEdit(product.id)" class="save-edit"><i nz-icon nzType="check-circle" nzTheme="outline"></i></button>
+            <button nz-button nzType="text" (click)="cancelEdit(product.id)" class="cancel-edit"><i nz-icon nzType="close-circle" nzTheme="outline"></i></button>
+          </div>
+        </td>
+        <td></td>
+        <td><textarea nz-input nzAutosize [(ngModel)]="editCache[product.id].Name"></textarea></td>
+        <td>
+          <input
+            type="text"
+            nz-input
+            [(ngModel)]="editCache[product.id]['Category 1']"
+            (ngModelChange)="updateAutocomplete($event, 1)"
+            [nzAutocomplete]="category1Auto"
+          />
+          <nz-autocomplete #category1Auto [nzDataSource]="autocompleteCategories[1]"></nz-autocomplete>
+        </td>
+        <td>
+          <input
+           type="text" 
+           nz-input 
+           [(ngModel)]="editCache[product.id]['Category 2']"
+           (ngModelChange)="updateAutocomplete($event, 2)"
+           [nzAutocomplete]="category2Auto"
+          />
+          <nz-autocomplete #category2Auto [nzDataSource]="autocompleteCategories[2]"></nz-autocomplete>
+        </td>
+        <td>
+          <input 
+            type="text" 
+            nz-input 
+            [(ngModel)]="editCache[product.id]['Category 3']"
+            (ngModelChange)="updateAutocomplete($event, 3)"
+            [nzAutocomplete]="category3Auto"
+          />
+          <nz-autocomplete #category3Auto [nzDataSource]="autocompleteCategories[3]"></nz-autocomplete>
+        </td>
+        <td>
+          <input 
+            type="text" 
+            nz-input 
+            [(ngModel)]="editCache[product.id]['Category 4']"
+            (ngModelChange)="updateAutocomplete($event, 4)"
+            [nzAutocomplete]="category4Auto"
+          />
+          <nz-autocomplete #category4Auto [nzDataSource]="autocompleteCategories[4]"></nz-autocomplete>
+        </td>
+        <td><input type="number" nz-input [(ngModel)]="editCache[product.id].Price" /></td>
+        <td><input type="number" nz-input [(ngModel)]="editCache[product.id].Quantity" /></td>
+      </ng-template>
+    </tr>
+  </tbody>
+</nz-table>
+
+<nz-dropdown-menu #nameFilter="nzDropdownMenu">
+  <div class="ant-table-filter-dropdown">
+    <div class="filter-box">
+      <input type="text" nz-input placeholder="Введите текст" [(ngModel)]="nameFilterValue" />
+      <button nz-button nzSize="small" nzType="primary" (click)="filterName()" class="filter-button">Фильтровать</button>
+      <button nz-button nzSize="small" (click)="resetNameFilter()">Очистить</button>
+    </div>
+  </div>
+</nz-dropdown-menu>

@@ -15,7 +15,7 @@ import {UtilService} from './util.service';
 export class FirebaseAdminService {
   dictionary: AngularFireList<DictionaryItem>;
   structure: AngularFireList<any>;
-  data: CatalogueItem[];
+  data: (CatalogueItem & {dbKey: string})[];
   dataServer: AngularFireList<CatalogueItem>;
   images: (ImageItem & {key: string})[];
   imageServer: AngularFireList<ImageItem>;
@@ -28,7 +28,13 @@ export class FirebaseAdminService {
     this.dictionary = db.list('Dictionary');
     this.structure = db.list('Structure');
     this.dataServer = db.list('Catalogue');
-    this.dataServer.valueChanges().subscribe(res => this.data = res);
+    this.dataServer.snapshotChanges().pipe(
+      map(snapshots => snapshots.map(snapshot => ({
+        dbKey: snapshot.payload.key,
+        ...snapshot.payload.val()
+      })))
+    )
+    .subscribe(res => this.data = res);
     this.imageServer = db.list('Images');
     this.imageServer.snapshotChanges().pipe(
       map(snapshot => snapshot.map(item => ({key: item.payload.key, ...item.payload.val()})))
@@ -125,12 +131,9 @@ export class FirebaseAdminService {
     const imageItem: ImageItem = {
       id,
       path: id,
+      downloadUrl: await this.uploadImageFile(file, id),
     };
     const existingKey = this.images.find(item => item.id === id)?.key;
-    // Upload image
-    await this.storage.upload(imageItem.path, file);
-    // Save the reference
-    imageItem.downloadUrl = await firstValueFrom(this.storage.ref(imageItem.path).getDownloadURL());
     // Update or create new dictionary reference
     if (existingKey) {
       this.imageServer.update(existingKey, imageItem);
@@ -139,20 +142,39 @@ export class FirebaseAdminService {
     }
   }
 
-  createProduct(product: CatalogueItem) {
-
+  async uploadImageFile(file: File, path: string): Promise<string> {
+    // Upload image (overrides exisitng file)
+    await this.storage.upload(path, file);
+    // Get the reference
+    return firstValueFrom(this.storage.ref(path).getDownloadURL());
   }
 
-  updateProduct(product: CatalogueItem): Promise<void> {
+  async updateProduct(product: CatalogueItem): Promise<void> {
     // Extract the object database key and properties
-    const key = product.dbKey;
-    const productUpdate = {...product};
-    delete productUpdate.dbKey;
-    // Update existing product
-    return this.dataServer.update(key, productUpdate);
+    const key = this.data.find(item => item.id === product.id)?.dbKey;
+    // Update existing product or create new
+    if (key) {
+      this.dataServer.update(key, product);
+    } else {
+      this.dataServer.push(product);
+    }
   }
 
   deleteProduct(product: CatalogueItem) {
+    const key = this.data.find(item => item.id === product.id)?.dbKey;
+    if (key) {
+      this.dataServer.remove(key);
+    }
+  }
 
+  async updateImagesList(images: ImageItem[]) {
+    throw new Error('Method not implemented.');
+  }
+
+  async updateProductList(products: CatalogueItem[]) {
+    await this.dataServer.remove();
+    products.forEach((product) => {
+      this.dataServer.push(product)
+    });
   }
 }

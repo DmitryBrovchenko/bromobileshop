@@ -6,8 +6,9 @@ import {DictionaryItem} from '../interfaces/dictionary-item.interface';
 import {HierarchyItem} from '../interfaces/hierarchy-item.interface';
 import {CatalogueItem} from '../interfaces/catalogue-item.interface';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
-import { map, shareReplay, switchMap, take } from 'rxjs/operators';
+import { map, take } from 'rxjs/operators';
 import { ImageItem } from '../interfaces/image-item.interface';
+import { parseNumber } from '../utils/parse-number';
 
 @Injectable({
   providedIn: 'root'
@@ -35,8 +36,12 @@ export class DataService {
   }
   
   getCatalogue(): Observable<CatalogueItem[]> {
-    return this.db.list<CatalogueItem>(this.catalogue).snapshotChanges()
-      .pipe(map(changes => changes.map(c => ({...c.payload.val(), dbKey: c.payload.key}))));
+    return this.db.list<CatalogueItem>(this.catalogue).valueChanges()
+      .pipe(map(items => items.map(item => ({
+        ...item, 
+        Price: parseNumber(item.Price), 
+        Quantity: parseNumber(item.Quantity),
+      }))));
   }
 
   getDictionary(name?: string): Observable<DictionaryItem[]> {

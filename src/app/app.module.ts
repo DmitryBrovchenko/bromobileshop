@@ -11,7 +11,7 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { NZ_ICONS, NzIconModule } from 'ng-zorro-antd/icon';
 import {NzI18nModule, NZ_I18N, ru_RU} from 'ng-zorro-antd/i18n';
 import { IconDefinition } from '@ant-design/icons-angular';
-import {LockOutline, MenuOutline, MenuFoldOutline, MenuUnfoldOutline, HomeOutline, AppstoreOutline, LoginOutline, LogoutOutline, UserOutline
+import {CheckCircleOutline, ClearOutline, CloseCircleOutline, CloudUploadOutline, DeleteOutline, DeleteRowOutline, EditOutline, FileTextOutline, FilterOutline, LockOutline, MenuOutline, MenuFoldOutline, MenuUnfoldOutline, MoreOutline, PlusCircleOutline, HomeOutline, AppstoreOutline, LoginOutline, LogoutOutline, PictureOutline, RollbackOutline, UserOutline
 } from '@ant-design/icons-angular/icons';
 import ru from '@angular/common/locales/ru';
 import {registerLocaleData} from '@angular/common';
@@ -31,7 +31,30 @@ import { ImagesEffects } from './@ngrx/images/images.effects';
 
 registerLocaleData(ru);
 
-const icons: IconDefinition[] = [LockOutline, MenuOutline, MenuFoldOutline, MenuUnfoldOutline, HomeOutline, AppstoreOutline, LoginOutline, LogoutOutline, UserOutline];
+const icons: IconDefinition[] = [
+  CheckCircleOutline,
+  ClearOutline,
+  CloseCircleOutline,
+  CloudUploadOutline,
+  DeleteOutline,
+  DeleteRowOutline,
+  EditOutline,
+  FileTextOutline,
+  FilterOutline,
+  LockOutline, 
+  MenuOutline, 
+  MenuFoldOutline, 
+  MenuUnfoldOutline, 
+  MoreOutline,
+  PlusCircleOutline,
+  HomeOutline, 
+  AppstoreOutline, 
+  LoginOutline, 
+  LogoutOutline, 
+  PictureOutline,
+  RollbackOutline,
+  UserOutline
+];
 
 @NgModule({
   declarations: [
