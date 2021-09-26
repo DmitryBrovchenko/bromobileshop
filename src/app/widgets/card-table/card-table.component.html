@@ -2,7 +2,7 @@
   nzHoverable
   [nzActions]="editable ? [editButton] : []"
 >
-  <nz-card-meta [nzAvatar]="avatarTemplate" [nzTitle]="product?.Name" [nzDescription]="'Цена: ' + product?.Price + 'р'"></nz-card-meta>
+  <nz-card-meta [nzAvatar]="avatarTemplate" [nzTitle]="product?.Name" [nzDescription]="productDescription"></nz-card-meta>
 </nz-card>
 <ng-template #avatarTemplate>
   <nz-avatar

@@ -64,6 +64,13 @@ export class AdminComponent implements OnInit {
     'Category 4': (list: string[], item: CatalogueItem) => this.filterList(list, item, 4),
   }
 
+  saving = false;
+
+  allCheckedOnPage = false;
+  indeterminate = false;
+  checkedRows = new Set<string>();
+  pageData: CatalogueItem[] = [];
+
   constructor(private adminService: FirebaseAdminService, private store: Store) { }
 
   ngOnInit(): void {
@@ -130,6 +137,7 @@ export class AdminComponent implements OnInit {
   }
 
   async save() {
+    this.saving = true;
     // Save the list of images
     await this.adminService.updateImagesList(Object.values(this.imageDisplayed));
     // Save images from cache and refresh references
@@ -137,7 +145,8 @@ export class AdminComponent implements OnInit {
       await this.adminService.uploadImage(image, id);
     })
     // Save the list of products
-    this.adminService.updateProductList(this.dataDisplayed);
+    await this.adminService.updateProductList(this.dataDisplayed);
+    this.saving = false;
   }
 
   cancel() {
@@ -189,7 +198,12 @@ export class AdminComponent implements OnInit {
   }
 
   bulkDeleteProduct() {
-
+    // Remove product from the data displayed
+    this.dataDisplayed = this.dataDisplayed.filter(item => !this.checkedRows.has(item.id));
+    this.dataFiltered = this.dataFiltered.filter(item => !this.checkedRows.has(item.id));
+    // Clear the checked row set and refresh flags
+    this.checkedRows.clear();
+    this.refreshCheckedAllStatus();
   }
 
   loadImage(id: string, event: Event) {
@@ -231,7 +245,8 @@ export class AdminComponent implements OnInit {
   }
 
   bulkDeleteImage() {
-
+    // Should not clear checked row set
+    this.checkedRows.forEach(id => this.deleteImage(id));
   }
 
   resetNameFilter() {
@@ -303,6 +318,34 @@ export class AdminComponent implements OnInit {
       return 1;
     } else {
       return a.toLowerCase().localeCompare(b.toLowerCase());
+    }
+  }
+
+  onAllChecked(checked: boolean) {
+    this.pageData.forEach(product => this.updateCheckedSet(product.id, checked));
+    this.refreshCheckedAllStatus();
+  }
+
+  onItemChecked(id: string, checked: boolean) {
+    this.updateCheckedSet(id, checked);
+    this.refreshCheckedAllStatus();
+  }
+
+  onCurrentPageDataChange(data: CatalogueItem[]) {
+    this.pageData = data;
+    this.refreshCheckedAllStatus();
+  }
+
+  refreshCheckedAllStatus() {
+    this.allCheckedOnPage = this.pageData.every(product => this.checkedRows.has(product.id));
+    this.indeterminate = !this.allCheckedOnPage && this.pageData.some(product => this.checkedRows.has(product.id));
+  }
+
+  updateCheckedSet(id: string, checked: boolean) {
+    if (checked) {
+      this.checkedRows.add(id);
+    } else {
+      this.checkedRows.delete(id);
     }
   }
 }

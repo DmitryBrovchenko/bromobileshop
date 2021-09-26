@@ -3,7 +3,7 @@
   [nzCover]="coverTemplate"
   [nzActions]="editable ? [editButton] : []"
   >
-  <nz-card-meta [nzTitle]="product?.Name" [nzDescription]="'Цена: ' + product?.Price + 'р'"></nz-card-meta>
+  <nz-card-meta [nzTitle]="product?.Name" [nzDescription]="productDescription"></nz-card-meta>
 </nz-card>
 <ng-template #coverTemplate>
   <img alt="Изображение" style="height: 200px" [src]="product?.id | GetImage | async" />

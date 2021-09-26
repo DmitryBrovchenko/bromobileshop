@@ -11,9 +11,12 @@ export class CardTableComponent implements OnInit {
   @Input() product: CatalogueItem;
   @Input() editable: boolean = false;
 
+  productDescription: string;
+
   constructor(public editModalService: EditModalService) {}
 
   ngOnInit(): void {
+    this.productDescription = this.product?.Quantity ? `Цена: ${this.product.Price}р` : 'Нет в наличии';
   }
 
 }

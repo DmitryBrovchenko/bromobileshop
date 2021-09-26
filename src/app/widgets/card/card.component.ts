@@ -10,11 +10,14 @@ import { EditModalService } from '../edit-modal/edit-modal.service';
 export class CardComponent implements OnInit {
   @Input() product: CatalogueItem;
   @Input() editable: boolean = false;
+
+  productDescription: string;
   
   constructor(public editModalService: EditModalService) {
   }
 
   ngOnInit(): void {
+    this.productDescription = this.product?.Quantity ? `Цена: ${this.product.Price}р` : 'Нет в наличии';
   }
 
 }

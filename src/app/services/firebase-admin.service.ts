@@ -1,8 +1,8 @@
 import {Injectable} from '@angular/core';
-import {AngularFireDatabase, AngularFireList} from '@angular/fire/compat/database';
+import {AngularFireDatabase, AngularFireList, AngularFireObject} from '@angular/fire/compat/database';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
 import { firstValueFrom } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
+import { debounceTime, map, take, tap } from 'rxjs/operators';
 import { CatalogueItem } from '../interfaces/catalogue-item.interface';
 import { DictionaryItem } from '../interfaces/dictionary-item.interface';
 import { ImageItem } from '../interfaces/image-item.interface';
@@ -13,11 +13,12 @@ import {UtilService} from './util.service';
 })
 // Service for Admin operations with Firebase
 export class FirebaseAdminService {
-  dictionary: AngularFireList<DictionaryItem>;
+  dictionaryObj: AngularFireObject<DictionaryItem[]>;
   structure: AngularFireList<any>;
   data: (CatalogueItem & {dbKey: string})[];
   dataServer: AngularFireList<CatalogueItem>;
   images: (ImageItem & {key: string})[];
+  imageObj:AngularFireObject<ImageItem[]>;
   imageServer: AngularFireList<ImageItem>;
 
   constructor(
@@ -25,26 +26,33 @@ export class FirebaseAdminService {
     private storage: AngularFireStorage,
     private util: UtilService
     ) {
-    this.dictionary = db.list('Dictionary');
+    this.dictionaryObj = db.object('Dictionary');
     this.structure = db.list('Structure');
     this.dataServer = db.list('Catalogue');
     this.dataServer.snapshotChanges().pipe(
-      map(snapshots => snapshots.map(snapshot => ({
-        dbKey: snapshot.payload.key,
-        ...snapshot.payload.val()
-      })))
+      debounceTime(200),
+      map(snapshots => snapshots
+        .filter(snapshot => snapshot.key !== null && snapshot.key !== undefined)
+        .map(snapshot => ({
+          dbKey: snapshot.payload.key,
+          ...snapshot.payload.val()
+        })
+      ))
     )
     .subscribe(res => this.data = res);
+    this.imageObj = db.object('Images');
     this.imageServer = db.list('Images');
     this.imageServer.snapshotChanges().pipe(
       map(snapshot => snapshot.map(item => ({key: item.payload.key, ...item.payload.val()})))
     ).subscribe(res => this.images = res);
   }
 
-  createDictionary() {
+  async createDictionary() {
     const distinct = (value, index, self) => (self.indexOf(value) === index);
     const category1 = this.data.map(d => d['Category 1']).filter(distinct);
-    this.dictionary.remove();
+    await this.dictionaryObj.remove();
+    console.log('Old dictionary has been removed!');
+    const dictionaryNew: DictionaryItem[] = [];
     category1.forEach(c1 => {
       const category2 = this.data
         .filter(d => d['Category 1'] === c1)
@@ -62,7 +70,7 @@ export class FirebaseAdminService {
             .filter(distinct)
             .forEach(d => {
               if (d !== '') {
-                this.dictionary.push({
+                dictionaryNew.push({
                   name: this.util.transliterate(d),
                   origin: d,
                   structure: d
@@ -70,7 +78,7 @@ export class FirebaseAdminService {
               }
             });
           if (c3 !== '') {
-            this.dictionary.push({
+            dictionaryNew.push({
               name: this.util.transliterate(c3),
               origin: c3,
               structure: c3
@@ -78,28 +86,30 @@ export class FirebaseAdminService {
           }
         });
         if (c2 !== '') {
-          this.dictionary.push({
+          dictionaryNew.push({
             name: this.util.transliterate(c2),
             origin: c2,
             structure: c2
           });
         }
       });
-      this.dictionary.push({
+      dictionaryNew.push({
         name: this.util.transliterate(c1.substring(4)),
         origin: c1,
         structure: c1.substring(4)
       });
     });
+    await this.dictionaryObj.set(dictionaryNew);
     console.log('Dictionary has been created!');
     return;
   }
 
-  createHierarchy() {
+  async createHierarchy() {
     const distinct = (value, index, self) => (self.indexOf(value) === index);
-    const category1 = this.data.map(d => d['Category 1']).filter(distinct);
-    this.structure.remove();
-    category1.forEach(c1 => {
+    const category1 = this.data.map(d => d['Category 1']).sort((a, b) => a.localeCompare(b)).filter(distinct);
+    await this.structure.remove();
+    console.log('Old hierarchy has been removed!');
+    category1.forEach(async c1 => {
       const object1 = {name: c1.substring(4), children: []};
       const category2 = this.data
         .filter(d => d['Category 1'] === c1)
@@ -122,7 +132,7 @@ export class FirebaseAdminService {
         });
         object1.children.push(object2);
       });
-      this.structure.push(object1);
+      await this.structure.push(object1);
     });
     console.log('Hierarchy has been created!');
   }
@@ -168,13 +178,25 @@ export class FirebaseAdminService {
   }
 
   async updateImagesList(images: ImageItem[]) {
-    throw new Error('Method not implemented.');
+    await this.imageObj.remove();
+    await this.imageObj.set(images);
   }
 
   async updateProductList(products: CatalogueItem[]) {
     await this.dataServer.remove();
-    products.forEach((product) => {
-      this.dataServer.push(product)
+    console.log('Old data removed');
+    products.forEach(async (product) => {
+      await this.dataServer.push(product);
     });
+    console.log('New data set');
+    // Give some time to finish the processing
+    return new Promise((resolve) => this.dataServer.valueChanges().pipe(
+      debounceTime(1000),
+      take(1),
+    ).subscribe(async () => {
+      await this.createHierarchy();
+      await this.createDictionary();
+      resolve(true);
+    }));
   }
 }
