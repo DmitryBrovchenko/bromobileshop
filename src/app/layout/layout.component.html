@@ -5,13 +5,15 @@
   </nz-header>
   <nz-layout>
     <nz-sider
-      nzCollapsible 
+      #sider
+      nzCollapsible
+      [(nzCollapsed)]="isCollapsed" 
       [nzCollapsedWidth]="0"
       nzBreakpoint="md"
       nzWidth="300px" 
       nzTheme="light"
     >
-      <app-pc-sider [hierarchy]="hierarchy$ | async"></app-pc-sider>
+      <app-pc-sider [hierarchy]="hierarchy$ | async" (collapsed)="collapseSider()"></app-pc-sider>
     </nz-sider>
     <nz-content>
       <div class="inner-content">

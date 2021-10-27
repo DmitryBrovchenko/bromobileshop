@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, HostListener, Input, OnInit, Output} from '@angular/core';
 
 @Component({
   selector: 'app-pc-sider',
@@ -7,6 +7,15 @@ import {Component, Input, OnInit} from '@angular/core';
 })
 export class SiderComponent implements OnInit {
   @Input() hierarchy;
+
+  @Output()
+  collapsed = new EventEmitter<void>();
+
+  @HostListener('click', ['$event']) onClick(event) {
+    if (event.target.tagName.toLowerCase() === 'a') {
+      this.collapsed.emit();
+    }
+  }
 
   constructor() {
   }

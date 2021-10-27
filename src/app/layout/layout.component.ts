@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import {DataService} from '../services/data.service';
 import {Store} from '@ngrx/store';
 import {loadHierarchy} from '../@ngrx/hierarchy/hierarchy.actions';
@@ -13,8 +13,11 @@ import { loadImages } from '../@ngrx/images/images.actions';
   styleUrls: ['./layout.component.scss'],
 })
 export class LayoutComponent implements OnInit {
+  @ViewChild('sider', {static: true})
+  siderComponent;
   hierarchy$;
-  constructor(private dataService: DataService, private store: Store) {
+  isCollapsed = false;
+  constructor(private store: Store) {
     store.dispatch(loadHierarchy());
     store.dispatch(loadDictionary());
     store.dispatch(loadCatalogue());
@@ -23,6 +26,11 @@ export class LayoutComponent implements OnInit {
   }
   ngOnInit(): void {
     this.hierarchy$ = this.store.select(selectHierarchy);
+  }
+  collapseSider() {
+    if (this.siderComponent.matchBreakPoint) {
+      this.isCollapsed = true;
+    }
   }
 
 }
