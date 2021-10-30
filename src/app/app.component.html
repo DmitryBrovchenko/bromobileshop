@@ -1,4 +1,7 @@
 <head>
     <title>{{title}}</title>
 </head>
-<router-outlet></router-outlet>
+<app-layout
+    [hierarchy]="hierarchy$ | async">
+    <router-outlet></router-outlet>
+</app-layout>

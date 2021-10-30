@@ -1,7 +1,7 @@
 <nz-layout class="layout">
   <nz-header>
     <app-pc-header
-      [hierarchy]="hierarchy$ | async"></app-pc-header>
+      [hierarchy]="hierarchy"></app-pc-header>
   </nz-header>
   <nz-layout>
     <nz-sider
@@ -13,11 +13,11 @@
       nzWidth="300px" 
       nzTheme="light"
     >
-      <app-pc-sider [hierarchy]="hierarchy$ | async" (collapsed)="collapseSider()"></app-pc-sider>
+      <app-pc-sider [hierarchy]="hierarchy" (collapsed)="collapseSider()"></app-pc-sider>
     </nz-sider>
     <nz-content>
       <div class="inner-content">
-        <router-outlet></router-outlet>
+        <ng-content></ng-content>
       </div>
     </nz-content>
   </nz-layout>

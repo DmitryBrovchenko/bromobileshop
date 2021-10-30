@@ -28,6 +28,15 @@ import { CatalogueEffects } from './@ngrx/catalogue/catalogue.effects';
 import { catalogueReducer } from './@ngrx/catalogue/catalogue.reducer';
 import { imagesReducer } from './@ngrx/images/images.reducer';
 import { ImagesEffects } from './@ngrx/images/images.effects';
+import { AppRoutingModule } from './app-routing.module';
+import { CatalogueModule } from './views/catalogue';
+import { CategoryOneModule } from './views/category-one';
+import { CategoryTwoModule } from './views/category-two';
+import { CategoryThreeModule } from './views/category-three';
+import { CategoryFourModule } from './views/category-four';
+import { SearchModule } from './views/search/search.module';
+import { ErrorPageModule } from './views/error-page';
+import { AdminModule } from './views/admin';
 
 registerLocaleData(ru);
 
@@ -61,6 +70,16 @@ const icons: IconDefinition[] = [
     AppComponent,
   ],
   imports: [
+    AppRoutingModule,
+    LayoutModule,
+    CatalogueModule,
+    CategoryOneModule,
+    CategoryTwoModule,
+    CategoryThreeModule,
+    CategoryFourModule,
+    SearchModule,
+    ErrorPageModule,
+    AdminModule,
     EffectsModule.forRoot([
       HierarchyEffects,
       DictionaryEffects, 
@@ -81,7 +100,6 @@ const icons: IconDefinition[] = [
     AngularFireAuthModule,
     HttpClientModule,
     BrowserAnimationsModule,
-    LayoutModule,
     NzIconModule,
     NzI18nModule,
     RouterModule.forRoot([])
