@@ -1,34 +1,8 @@
 <ng-container *ngIf="sourceData$ | async as sourceData; else loadingTmp">
-  <nz-page-header class="site-page-header" [nzTitle]="sourceData.data.categoryTwo"
-                  [nzSubtitle]="'Товаров: ' + sourceData.data.goods?.length">
-    <nz-breadcrumb nz-page-header-breadcrumb>
-      <nz-breadcrumb-item><a [routerLink]="['/home']"><i nz-icon nzType="home"></i></a>
-      </nz-breadcrumb-item>
-      <nz-breadcrumb-item>
-        <a [routerLink]="['/catalogue']">Каталог</a>
-      </nz-breadcrumb-item>
-      <nz-breadcrumb-item>
-        <a [routerLink]="['/catalogue', sourceData.data.categoryOneSource]">{{sourceData.data.categoryOne}}</a>
-      </nz-breadcrumb-item>
-      <nz-breadcrumb-item>
-        {{sourceData.data.categoryTwo}}
-      </nz-breadcrumb-item>
-    </nz-breadcrumb>
-    <nz-page-header-extra>
-      <a *ngIf="sourceData.data.hierarchy?.children[0].name!==''" nz-dropdown [nzDropdownMenu]="menu">
-        Перейти в подкатегорию
-        <i nz-icon nzType="down"></i>
-      </a>
-      <a [routerLink]="['/catalogue', sourceData.data.categoryOneSource]">Назад</a>
-      <nz-dropdown-menu #menu="nzDropdownMenu">
-        <ul nz-menu>
-          <li *ngFor="let child of sourceData.data.hierarchy?.children"
-              nz-menu-item
-              (click)="router.navigate([utilService.transliterate(child.name)], {relativeTo: route})">{{child.name}}</li>
-        </ul>
-      </nz-dropdown-menu>
-    </nz-page-header-extra>
-  </nz-page-header>
+  <app-catalogue-header
+    [pageData]="sourceData.data"
+    [hierarchyLevel]="2">
+  </app-catalogue-header>
   <app-catalogue-table
     [data]="sourceData.data.goods"
     [params]="sourceData.queryParams"

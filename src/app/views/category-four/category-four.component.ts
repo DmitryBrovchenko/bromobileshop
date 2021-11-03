@@ -2,7 +2,6 @@ import {Component, OnInit} from '@angular/core';
 import {combineLatest, Observable} from 'rxjs';
 import {ActivatedRoute, Router} from '@angular/router';
 import {filter, map, switchMap} from 'rxjs/operators';
-import {UtilService} from '../../services/util.service';
 import {CatalogueNavigator} from '../../widgets/catalogue-navigator/catalogue-navigator';
 import { SourceData } from 'src/app/interfaces/source-data.interface';
 import { Store } from '@ngrx/store';
@@ -24,8 +23,7 @@ export class CategoryFourComponent extends CatalogueNavigator implements OnInit 
   constructor(
     public route: ActivatedRoute,
     public router: Router,
-    private store: Store,
-    public utilService: UtilService) {
+    private store: Store) {
     super(router);
   }
 

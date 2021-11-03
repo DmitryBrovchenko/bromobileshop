@@ -2,7 +2,6 @@ import { Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {combineLatest, Observable} from 'rxjs';
 import {filter, map, switchMap} from 'rxjs/operators';
-import {UtilService} from '../../services/util.service';
 import {CatalogueNavigator} from '../../widgets/catalogue-navigator/catalogue-navigator';
 import { Store } from '@ngrx/store';
 import { selectDictionaryItem } from 'src/app/@ngrx/dictionary/dictionary.reducer';
@@ -23,8 +22,7 @@ export class CategoryOneComponent extends CatalogueNavigator implements OnInit {
   constructor(
     public route: ActivatedRoute,
     public router: Router,
-    private store: Store,
-    public utilService: UtilService
+    private store: Store
   ) {
     super(router);
   }
