@@ -6,7 +6,7 @@
   <nz-card-meta [nzTitle]="product?.Name" [nzDescription]="productDescription"></nz-card-meta>
 </nz-card>
 <ng-template #coverTemplate>
-  <img alt="Изображение" style="height: 200px" [src]="product?.id | GetImage | async" />
+  <img alt="Изображение" style="height: 200px; padding: 4px" [src]="product?.id | GetImage | async" />
 </ng-template>
 <ng-template #editButton>
   <i nz-icon nzType="edit" (click)="editModalService.openModal(product)"></i>
