@@ -37,6 +37,7 @@ import { CategoryFourModule } from './views/category-four';
 import { SearchModule } from './views/search/search.module';
 import { ErrorPageModule } from './views/error-page';
 import { AdminModule } from './views/admin';
+import { ContactsModule } from './views/contacts/contacts.module';
 
 registerLocaleData(ru);
 
@@ -77,6 +78,7 @@ const icons: IconDefinition[] = [
     CategoryTwoModule,
     CategoryThreeModule,
     CategoryFourModule,
+    ContactsModule,
     SearchModule,
     ErrorPageModule,
     AdminModule,

@@ -18,9 +18,9 @@ const routes: Routes = [
     {path: 'catalogue/:categoryOne/:categoryTwo', component: CategoryTwoComponent},
     {path: 'catalogue/:categoryOne/:categoryTwo/:categoryThree', component: CategoryThreeComponent},
     {path: 'catalogue/:categoryOne/:categoryTwo/:categoryThree/:categoryFour', component: CategoryFourComponent},
+    {path: 'contacts', loadChildren: () => import('./views/contacts').then(m => m.ContactsModule)},
     {path: 'search', component: SearchComponent},
     {path: 'product/:id', component: ProductComponent},
-    {path: 'about', loadChildren: () => import('./views/about').then(m => m.AboutModule)},
     {path: 'admin', canActivate: [AuthGuard], loadChildren: () => import('./views/admin').then(m => m.AdminModule)},
     {path: '**', component: ErrorPageComponent}
 ];

@@ -22,7 +22,7 @@
     </ul>
   </nz-dropdown-menu>
   <li nz-menu-item nzMatchRouter>
-    <a [routerLink]="['/about']">Контакты</a>
+    <a [routerLink]="['/contacts']">Контакты</a>
   </li>
   <li nz-menu-item nzMatchRouter *ngIf="userService.admin">
     <a [routerLink]="['/admin']">Админ</a>
@@ -59,7 +59,7 @@
         <a [routerLink]="['/search']">Поиск</a>
       </li>
       <li nz-menu-item nzMatchRouter>
-        <a [routerLink]="['/about']">Контакты</a>
+        <a [routerLink]="['/contacts']">Контакты</a>
       </li>
     </ul>
   </li>
