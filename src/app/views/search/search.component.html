@@ -24,15 +24,18 @@
   </nz-page-header-content>
 </nz-page-header>
 
-<ng-container *ngIf="searchResult$ | async as searchResult else loadingTmp">
-  <app-catalogue-table
-    [data]="searchResult"
-    [params]="pageParams"
-    (typeChanged)="onTypeChanged($event)"
-    (sizeChanged)="onSizeChanged($event)"
-    (sortChanged)="onSortChanged($event)"
-    (pageChanged)="onPageChanged($event)">
-  </app-catalogue-table>
+<ng-container *ngIf="search; else noCriteriaTmp">
+  <ng-container *ngIf="searchResult$ | async as searchResult else loadingTmp">
+    <app-catalogue-table
+      [data]="searchResult"
+      [params]="pageParams"
+      (typeChanged)="onTypeChanged($event)"
+      (sizeChanged)="onSizeChanged($event)"
+      (sortChanged)="onSortChanged($event)"
+      (pageChanged)="onPageChanged($event)">
+    </app-catalogue-table>
+  </ng-container>
 </ng-container>
 
+<ng-template #noCriteriaTmp>Введите критерий чтобы начать поиск.</ng-template>
 <ng-template #loadingTmp>Идет загрузка...</ng-template>

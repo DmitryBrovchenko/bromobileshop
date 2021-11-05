@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
+import { of } from 'rxjs';
 import { selectSearchResult } from 'src/app/@ngrx/catalogue/catalogue.reducer';
 import { CatalogueNavigator } from 'src/app/widgets/catalogue-navigator/catalogue-navigator';
 
@@ -29,7 +30,7 @@ export class SearchComponent extends CatalogueNavigator implements OnInit {
         this.pageParams = params;
         this.search = params.criteria;
         this.criteria = params.criteria;
-        this.searchResult$ = this.store.select(selectSearchResult(params.criteria));
+        this.searchResult$ = params.criteria ? this.store.select(selectSearchResult(params.criteria)) : of(null);
       }
     );
   }
