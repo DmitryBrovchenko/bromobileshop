@@ -1,0 +1,50 @@
+.carousel-item {
+    min-height: 200px;
+    background-size: contain;
+    height: 30vh;
+    width: 100%;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .carousel-description {
+        max-width: 70%;
+        padding: 10px;
+        background-color: hsla(240, 61%, 55%, 0.8);
+        width: fit-content;
+        border-radius: 5%;
+        color: white;
+        font-size: 18px;
+    }
+    .carousel-description:hover {
+        background-color: hsl(240, 61%, 55%);
+    }
+}
+
+.brand-item {
+    background-size: 100% 100%;
+    min-height: 300px;
+    width: calc(25% - 20px);
+    margin: 10px;
+    border-radius: 5%;
+}
+
+@media screen and (max-width: 1280px) { 
+    .brand-item {
+        width: calc(33% - 20px);
+    }
+}
+
+@media screen and (max-width: 1000px) {
+    .brand-item {
+        width: calc(50% - 20px);
+    }
+}
+
+@media screen and (max-width: 500px) {
+    .brand-item {
+        width: calc(100% - 20px);
+    }
+    
+}

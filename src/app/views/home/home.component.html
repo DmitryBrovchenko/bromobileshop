@@ -1,0 +1,26 @@
+<nz-carousel nzAutoPlay>
+    <div 
+        nz-carousel-content
+        *ngFor="let item of carouselItems$ | async"
+    >
+        <div 
+            class="carousel-item" 
+            [style.background-image]="'url(' + item.downloadUrl + ')'">
+            <div *ngIf="item.description" class="carousel-description">
+                {{ item.description }}
+            </div>
+        </div>
+    </div>
+</nz-carousel>
+<nz-card nzTitle="Популярные бренды"> 
+    <div 
+        nz-card-grid
+        *ngFor="let brandItem of brands$ | async"
+        class="brand-item"
+        [style.background-image]="'url(' + brandItem.logo + ')'"
+        nz-tooltip 
+        [nzTooltipTitle]="brandItem.name"
+        (click)="goToSearch(brandItem.criteria)"
+    >
+    </div>
+</nz-card>

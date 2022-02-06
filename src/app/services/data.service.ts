@@ -9,6 +9,8 @@ import { AngularFireStorage } from '@angular/fire/compat/storage';
 import { map, take } from 'rxjs/operators';
 import { ImageItem } from '../interfaces/image-item.interface';
 import { parseNumber } from '../utils/parse-number';
+import { BrandItem } from '../interfaces/brand-item.interface';
+import { CarouselItem } from '../interfaces/carousel-item';
 
 @Injectable({
   providedIn: 'root'
@@ -18,6 +20,8 @@ export class DataService {
   structure = '/Structure';
   dictionary = '/Dictionary';
   catalogue = '/Catalogue';
+  brands = '/Brands';
+  carousel = '/Carousel';
 
   defaultParams: PageParamsInterface = {
     sort: 'Name',
@@ -56,6 +60,14 @@ export class DataService {
 
   getImages(): Observable<ImageItem[]> {
     return this.db.list<ImageItem>('Images').valueChanges();
+  }
+
+  getBrands(): Observable<BrandItem[]> {
+    return this.db.list<BrandItem>(this.brands).valueChanges();
+  }
+
+  getCarousel(): Observable<CarouselItem[]> {
+    return this.db.list<CarouselItem>(this.carousel).valueChanges();
   }
 
   getImageUrl(path: string): Observable<string> {

@@ -37,7 +37,12 @@ import { CategoryFourModule } from './views/category-four';
 import { SearchModule } from './views/search/search.module';
 import { ErrorPageModule } from './views/error-page';
 import { AdminModule } from './views/admin';
-import { ContactsModule } from './views/contacts/contacts.module';
+import { ContactsModule } from './views/contacts';
+import { BrandsEffects } from './@ngrx/brands/brands.effects';
+import { CarouselEffects } from './@ngrx/carousel/carousel.effects';
+import { brandsReducer } from './@ngrx/brands/brands.reducer';
+import { carouselReducer } from './@ngrx/carousel/carousel.reducer';
+import { HomeModule } from './views/home';
 
 registerLocaleData(ru);
 
@@ -79,18 +84,23 @@ const icons: IconDefinition[] = [
     CategoryThreeModule,
     CategoryFourModule,
     ContactsModule,
+    HomeModule,
     SearchModule,
     ErrorPageModule,
     AdminModule,
     EffectsModule.forRoot([
+      BrandsEffects,
+      CarouselEffects,
       HierarchyEffects,
       DictionaryEffects, 
       CatalogueEffects,
       ImagesEffects,
     ]),
     StoreModule.forRoot({
+      brands: brandsReducer,
       hierarchy: hierarchyReducer,
       dictionary: dictionaryReducer,
+      carousel: carouselReducer,
       catalogue: catalogueReducer,
       images: imagesReducer,
     }),

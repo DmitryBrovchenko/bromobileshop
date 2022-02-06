@@ -5,6 +5,16 @@
       ".read": "auth != null",
       ".write": "auth != null"
     },
+    "Carousel": {
+      ".indexOn": ["id"],
+      ".read": "auth != null",
+      ".write": "auth != null"
+    },
+    "Brands": {
+      ".indexOn": ["id"],
+      ".read": "auth != null",
+      ".write": "auth != null"
+    },
     "Dictionary": {
       ".indexOn": ["name"],
       ".read": "auth != null",
