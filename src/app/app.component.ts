@@ -18,20 +18,27 @@ export class AppComponent {
   title = 'Bromobile shop';
 
   constructor(public userService: UserService, private store: Store) {
-    store.dispatch(loadHierarchy());
-    store.dispatch(loadDictionary());
-    store.dispatch(loadCatalogue());
-    store.dispatch(loadImages());
-    console.log('Dispatched');
-
     this.userService.getAuthState().pipe(take(1))
     .subscribe((user) => {
       console.log('User', user);
       if(!user) {
-        this.userService.loginGuest().then(() => console.log('Logged in as guest'))
+        this.userService.loginGuest().then(() => {
+          console.log('Logged in as guest');
+          this.triggerDataLoad();
+        })
+      } else {
+        this.triggerDataLoad();
       }
-    });
+    });  
 
     this.hierarchy$ = this.store.select(selectHierarchy);
+  }
+
+  triggerDataLoad() {
+    this.store.dispatch(loadHierarchy());
+    this.store.dispatch(loadDictionary());
+    this.store.dispatch(loadCatalogue());
+    this.store.dispatch(loadImages());
+    console.log('Dispatched');
   }
 }
