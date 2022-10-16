@@ -12,7 +12,7 @@ import {CategoryFourComponent} from './views/category-four';
 
 
 const routes: Routes = [
-    {path: '', redirectTo: 'home'},
+    {path: '', pathMatch: 'full', redirectTo: 'home'},
     {path: 'home', loadChildren: () => import('./views/home').then(m => m.HomeModule)},
     {path: 'catalogue', component: CatalogueComponent},
     {path: 'catalogue/:categoryOne', component: CategoryOneComponent},

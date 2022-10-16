@@ -5,7 +5,7 @@ import { AdminHomePageComponent } from "./admin-home-page/admin-home-page.compon
 import { AdminComponent } from "./admin.component";
 
 const routes: Routes = [
-    {path: '', redirectTo: 'content'},
+    {path: '', pathMatch: 'full', redirectTo: 'content'},
     {
         path: '', 
         component: AdminComponent,
