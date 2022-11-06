@@ -34,7 +34,6 @@ export class DataService {
 
   constructor(public db: AngularFireDatabase, private storage: AngularFireStorage) {
     storage.ref('noimage.png').getDownloadURL().pipe(take(1)).subscribe(ref => {
-      console.log(ref);
       this.defaultRef = ref;
     });
   }

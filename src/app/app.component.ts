@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { take } from 'rxjs/operators';
 import { loadCatalogue } from './@ngrx/catalogue/catalogue.actions';
 import { loadDictionary } from './@ngrx/dictionary/dictionary.actions';
 import { loadHierarchy } from './@ngrx/hierarchy/hierarchy.actions';
@@ -22,16 +21,6 @@ export class AppComponent {
     store.dispatch(loadDictionary());
     store.dispatch(loadCatalogue());
     store.dispatch(loadImages());
-    console.log('Dispatched');
-
-    this.userService.getAuthState().pipe(take(1))
-    .subscribe((user) => {
-      console.log('User', user);
-      if(!user) {
-        this.userService.loginGuest().then(() => console.log('Logged in as guest'))
-      }
-    });
-
     this.hierarchy$ = this.store.select(selectHierarchy);
   }
 }

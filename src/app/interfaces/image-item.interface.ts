@@ -3,3 +3,7 @@ export interface ImageItem {
     path: string; 
     downloadUrl?: string;
 }
+
+export interface ImageAdminItem extends ImageItem {
+  dbKey: string;
+}

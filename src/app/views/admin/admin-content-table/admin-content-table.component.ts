@@ -141,7 +141,7 @@ export class AdminContentTableComponent implements OnInit {
     await this.adminService.updateImagesList(Object.values(this.imageDisplayed));
     // Save images from cache and refresh references
     Object.entries(this.imageCache).forEach(async ([id, image]) => {
-      await this.adminService.uploadImage(image, id);
+      await this.adminService.uploadImage(image, id, 'Catalogue');
     })
     // Save the list of products
     await this.adminService.updateProductList(this.dataDisplayed);
@@ -216,7 +216,7 @@ export class AdminContentTableComponent implements OnInit {
         getBase64(image, (img) => {
           this.imageDisplayed[id] = {
             id,
-            path: id,
+            path: `Catalogue/${id}`,
             downloadUrl: img
           };
         });
@@ -225,7 +225,7 @@ export class AdminContentTableComponent implements OnInit {
         this.adminService.uploadImageFile(image, id).then(
           (link) => this.imageDisplayed[id] = {
             id,
-            path: id,
+            path: `Catalogue${id}`,
             downloadUrl: link
           } 
         )

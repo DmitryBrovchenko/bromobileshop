@@ -32,7 +32,7 @@ export class EditModalService {
                     const updateProduct = component.getUpdatedProduct();
                     const uploadedFile = component.getUploadedFile();
                     if (uploadedFile) {
-                        await this.firebaseAdminService.uploadImage(uploadedFile, updateProduct.id);
+                        await this.firebaseAdminService.uploadImage(uploadedFile, updateProduct.id, 'Catalogue');
                     } 
                     return this.firebaseAdminService.updateProduct(updateProduct);
                 }

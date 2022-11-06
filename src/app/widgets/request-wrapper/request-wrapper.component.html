@@ -1,0 +1,24 @@
+<ng-container *ngIf="request$ | async">
+</ng-container>
+
+<div *ngIf="error; else contentTmp" fxLayout="column">
+  <h2 *ngIf="error?.status as status">{{ status }}</h2>
+  <h4>{{ error?.message || 'Что-то пошло не так' }}</h4>
+
+  <div fxLayout="row" fxLayoutGap="12px">
+    <button *ngIf="hasBackBtn" nz-button nzType="text" (click)="request$ = getUpdatedRequest$(request$)">Назад</button>
+    <button nz-button nzType="primary" (click)="error = null">Повторить</button>
+  </div>
+</div>
+
+<ng-template #contentTmp>
+  <nz-spin
+    nzTip="Подождите, идет загрузка"
+    nzSize="large"
+    [nzSpinning]="isLoading"
+  >
+  <ng-container *ngIf="hasFirstRs">
+    <ng-content></ng-content>
+  </ng-container>
+  </nz-spin>
+</ng-template>
