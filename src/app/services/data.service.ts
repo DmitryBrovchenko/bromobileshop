@@ -29,7 +29,7 @@ export class DataService {
     show: 10,
     type: 'Tile'
   };
-  siderCollapsed = true;
+
   defaultRef: string;
 
   constructor(public db: AngularFireDatabase, private storage: AngularFireStorage) {

@@ -1,5 +1,6 @@
+import { DataService } from 'src/app/services/data.service';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, Output } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { CarouselAdminItem, CarouselEditItem } from 'src/app/interfaces/carousel-item';
 import { getBase64 } from 'src/app/utils';
 
@@ -17,7 +18,7 @@ export class CarouselEditComponent {
       this.uploadUrl = item.downloadUrl;
     } else {
       this.form.reset();
-      this.uploadUrl = null;
+      this.uploadUrl = this.dataService.defaultRef;
     }
   }
 
@@ -27,17 +28,18 @@ export class CarouselEditComponent {
   @Output()
   save = new EventEmitter<CarouselEditItem>();
 
-  uploadUrl: string;
+  uploadUrl = this.dataService.defaultRef;
 
   form = new FormGroup({
     dbKey: new FormControl(),
     id: new FormControl(),
     description: new FormControl(),
-    image: new FormControl(),
+    image: new FormControl(null, Validators.required),
   });
   
   constructor(
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private dataService: DataService
   ) { }
 
   uploadImage(event: Event) {
@@ -50,7 +52,17 @@ export class CarouselEditComponent {
   }
 
   saveItem() {
-    this.save.emit(this.form.value);
+    this.form.updateValueAndValidity();
+    if (this.form.valid) {
+      this.save.emit(this.form.value);
+    } else {
+      Object.values(this.form.controls).forEach((control) => {
+        if (control.invalid) {
+          control.markAsDirty();
+          control.updateValueAndValidity();
+        }
+      })
+    }
   }
 
   deleteItem() {

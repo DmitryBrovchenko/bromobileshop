@@ -4,8 +4,8 @@
     <img nz-image alt="Фон" width="100%" height="200px" [nzSrc]="uploadUrl" />
     <nz-form-item>
       <nz-form-label>Выберите изображение</nz-form-label>
-      <nz-form-control>
-        <input nz-input type="file" (change)="uploadImage($event)" />
+      <nz-form-control nzErrorTip="Загрузите изображение">
+        <input nz-input type="file" formControlName="image" (change)="uploadImage($event)" />
       </nz-form-control>
     </nz-form-item>
     <h4>Описание</h4>
