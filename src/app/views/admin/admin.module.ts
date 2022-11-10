@@ -21,11 +21,13 @@ import { AdminContentTableComponent } from './admin-content-table/admin-content-
 import { AdminHomePageComponent } from './admin-home-page/admin-home-page.component';
 import { NzMenuModule } from 'ng-zorro-antd/menu';
 import { AdminEditCarouselComponent } from './admin-edit-carousel/admin-edit-carousel.component';
+import { NzDividerModule } from 'ng-zorro-antd/divider';
 
 const ANT_DESIGN_MODULES = [
   NzTableModule,
   NzAutocompleteModule,
   NzButtonModule, 
+  NzDividerModule,
   NzDropDownModule, 
   NzFormModule,
   NzIconModule, 

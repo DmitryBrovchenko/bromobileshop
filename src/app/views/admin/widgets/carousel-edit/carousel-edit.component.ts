@@ -15,9 +15,11 @@ export class CarouselEditComponent {
   set carouselItem(item: CarouselAdminItem) {
     if (item) {
       this.form.patchValue(item);
+      this.form.controls.image.setValidators(Validators.required);
       this.uploadUrl = item.downloadUrl;
     } else {
       this.form.reset();
+      this.form.controls.image.removeValidators(Validators.required);
       this.uploadUrl = this.dataService.defaultRef;
     }
   }
@@ -34,7 +36,7 @@ export class CarouselEditComponent {
     dbKey: new FormControl(),
     id: new FormControl(),
     description: new FormControl(),
-    image: new FormControl(null, Validators.required),
+    image: new FormControl(),
   });
   
   constructor(
