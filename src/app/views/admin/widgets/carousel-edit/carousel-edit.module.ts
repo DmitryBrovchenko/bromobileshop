@@ -6,9 +6,10 @@ import { NgModule } from '@angular/core';
 import { CarouselEditComponent } from './carousel-edit.component';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { CommonModule } from '@angular/common';
+import { ButtonModule } from 'src/app/widgets/button';
 
 @NgModule({
-  imports: [CommonModule, NzButtonModule, NzFormModule, NzImageModule, NzInputModule, ReactiveFormsModule],
+  imports: [ButtonModule, CommonModule, NzButtonModule, NzFormModule, NzImageModule, NzInputModule, ReactiveFormsModule],
   declarations: [CarouselEditComponent],
   exports: [CarouselEditComponent],
 })

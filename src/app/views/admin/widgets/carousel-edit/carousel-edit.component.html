@@ -1,7 +1,7 @@
 <form nz-form [formGroup]="form">
   <div nz-column>
     <h4>Фон</h4>
-    <img nz-image alt="Фон" width="100%" height="200px" [nzSrc]="uploadUrl" />
+    <img nz-image alt="Фон" width="100%" height="200px" [nzSrc]="imageUrl" />
     <nz-form-item>
       <nz-form-label>Выберите изображение</nz-form-label>
       <nz-form-control nzErrorTip="Загрузите изображение">
@@ -15,8 +15,8 @@
       </nz-form-control>
     </nz-form-item>
     <div class="actions">
-      <button nz-button type="button" nzType="primary" (click)="saveItem()">Сохранить изменения</button>
-      <button *ngIf="form.value.id" nz-button type="button" (click)="deleteItem()">Удалить объект</button>
+      <app-button appearance="primary" label="Сохранить изменения" [actionCallback$]="saveItem"></app-button>
+      <app-button *ngIf="form.value.id" label="Удалить объект" [actionCallback$]="deleteItem"></app-button>
     </div>
   </div>  
 </form>

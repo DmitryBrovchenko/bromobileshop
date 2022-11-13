@@ -1,0 +1,27 @@
+<ng-container *ngIf="action$ | async"></ng-container>
+
+<button
+  *ngIf="!btnRouterLink"
+  nz-button
+  type="button"
+  [nzType]="appearance"
+  [nzShape]="shape"
+  [nzSize]="size"
+  [nzLoading]="isLoading"
+  [disabled]="isDisabled"
+  (click)="onClick()"
+  >
+  <span *ngIf="icon" nz-icon nzType="icon"></span>
+  <span *ngIf="label">{{ label }}</span>
+</button>
+
+<a
+  *ngIf="btnRouterLink"
+  nz-button
+  nzType="link"
+  [routerLink]="btnRouterLink"
+  [queryParams]="btnRouterQueryParams"
+>
+  <span *ngIf="icon" nz-icon nzType="icon"></span>
+  <span *ngIf="label">{{ label }}</span>
+</a>

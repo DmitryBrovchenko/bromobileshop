@@ -1,8 +1,10 @@
 import { DataService } from 'src/app/services/data.service';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { CarouselAdminItem, CarouselEditItem } from 'src/app/interfaces/carousel-item';
 import { getBase64 } from 'src/app/utils';
+import { Observable } from 'rxjs';
+import { Nullable } from 'src/app/interfaces/nullable';
 
 @Component({
   selector: 'app-carousel-edit',
@@ -16,21 +18,24 @@ export class CarouselEditComponent {
     if (item) {
       this.form.patchValue(item);
       this.form.controls.image.setValidators(Validators.required);
-      this.uploadUrl = item.downloadUrl;
+      this.imageUrl = item.downloadUrl;
     } else {
       this.form.reset();
       this.form.controls.image.removeValidators(Validators.required);
-      this.uploadUrl = this.dataService.defaultRef;
+      this.imageUrl = this.dataService.defaultRef;
+      this.uploadedImage = null;
     }
   }
 
-  @Output()
-  delete = new EventEmitter<string>();
+  @Input()
+  deleteCallback$: (key: string) => Observable<unknown>;
 
-  @Output()
-  save = new EventEmitter<CarouselEditItem>();
+  @Input()
+  saveCallback$: (item: CarouselEditItem) => Observable<unknown>;
 
-  uploadUrl = this.dataService.defaultRef;
+  imageUrl = this.dataService.defaultRef;
+
+  uploadedImage: Nullable<File>;
 
   form = new FormGroup({
     dbKey: new FormControl(),
@@ -46,17 +51,21 @@ export class CarouselEditComponent {
 
   uploadImage(event: Event) {
     const file = (event.target as HTMLInputElement).files[0];
-    this.form.controls.image.setValue(file);
+    if (!file) return;
+    this.uploadedImage = file;
     getBase64(file, (img) => {
-        this.uploadUrl = img;
+        this.imageUrl = img;
         this.cdr.detectChanges();
     })
   }
 
-  saveItem() {
+  saveItem = () => {
     this.form.updateValueAndValidity();
     if (this.form.valid) {
-      this.save.emit(this.form.value);
+      return this.saveCallback$({
+        ...this.form.value,
+        image: this.uploadedImage
+      });
     } else {
       Object.values(this.form.controls).forEach((control) => {
         if (control.invalid) {
@@ -67,7 +76,6 @@ export class CarouselEditComponent {
     }
   }
 
-  deleteItem() {
-    this.delete.emit(this.form.value.dbKey);
-  }
+  deleteItem = () => this.deleteCallback$(this.form.value.dbKey);
+
 }

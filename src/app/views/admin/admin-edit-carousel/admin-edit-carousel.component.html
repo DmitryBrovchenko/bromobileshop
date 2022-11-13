@@ -18,7 +18,7 @@
     </nz-list>
     <app-carousel-edit 
       [carouselItem]="selectedItem"
-      (save)="saveItem($event)"
-      (delete)="deleteItem($event)"
+      [saveCallback$]="saveCallback"
+      [deleteCallback$]="deleteCallback"
     ></app-carousel-edit>
 </div>

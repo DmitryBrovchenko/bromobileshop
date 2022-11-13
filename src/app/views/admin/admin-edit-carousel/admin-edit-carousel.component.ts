@@ -1,7 +1,7 @@
 import { CarouselAdminService } from 'src/app/services/admin/carousel-admin.service';
 import { ChangeDetectionStrategy, Component } from "@angular/core";
 import { Observable, of } from "rxjs";
-import { switchMap } from 'rxjs/operators';
+import { switchMap, tap } from 'rxjs/operators';
 import { CarouselAdminItem, CarouselEditItem, CarouselItem } from "src/app/interfaces/carousel-item";
 import { ImageAdminService } from 'src/app/services/admin/image-admin.service';
 import { omit } from 'lodash-es';
@@ -22,25 +22,26 @@ export class AdminEditCarouselComponent {
       private imageService: ImageAdminService,
     ) {}
 
-    saveItem(value: CarouselEditItem) {
+    saveCallback = (value: CarouselEditItem) => {
+      const id = value.id ?? new Date().getTime();
+
       const imageAction$ = value.image 
-        ? this.imageService.uploadImage(value.image, `${value.id}`, 'Carousel')
+        ? this.imageService.uploadImage(value.image, `${id}`, 'Carousel')
         : of(null);
-        
-      imageAction$.pipe(
+
+      return imageAction$.pipe(
         switchMap(imageItem => this.adminService.updateCarouselItem({
           ...omit(value, 'image'),
+          id,
           ...(imageItem ? {
             path: imageItem.path,
             downloadUrl: imageItem.downloadUrl,
           } : {}),
         }))
-      ).subscribe();
+      )
     }
 
-    deleteItem(key: string) {
-      this.adminService.deleteCarouselItem(key).subscribe(
-        () => this.selectedItem = null
-      );
-    }
+    deleteCallback = (key: string) => this.adminService.deleteCarouselItem(key).pipe(
+      tap(() => this.selectedItem = null)
+    )
 }

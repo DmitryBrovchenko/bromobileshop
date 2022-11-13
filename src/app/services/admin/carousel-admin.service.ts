@@ -25,7 +25,7 @@ export class CarouselAdminService {
     // Update or create
     const action = carousel.dbKey 
       ? this.itemsServer.update(carousel.dbKey, omit(carousel, 'dbKey'))
-      : this.itemsServer.push({...carousel, id: new Date().getTime()} as CarouselItem);
+      : this.itemsServer.push(carousel as CarouselItem);
     return from(action);
   }
 
