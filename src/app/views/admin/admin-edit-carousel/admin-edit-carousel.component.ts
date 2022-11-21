@@ -2,9 +2,9 @@ import { CarouselAdminService } from 'src/app/services/admin/carousel-admin.serv
 import { ChangeDetectionStrategy, Component } from "@angular/core";
 import { Observable, of } from "rxjs";
 import { switchMap, tap } from 'rxjs/operators';
-import { CarouselAdminItem, CarouselEditItem, CarouselItem } from "src/app/interfaces/carousel-item";
+import { CarouselAdminItem, CarouselEditItem } from "src/app/interfaces/carousel-item";
 import { ImageAdminService } from 'src/app/services/admin/image-admin.service';
-import { omit } from 'lodash-es';
+import omit from 'lodash-es/omit';
 
 @Component({
     selector: 'app-admin-edit-carousel',
@@ -15,7 +15,7 @@ import { omit } from 'lodash-es';
 export class AdminEditCarouselComponent {
     carouselItems$: Observable<CarouselAdminItem[]> = this.adminService.items$;
 
-    selectedItem: CarouselItem = null;
+    selectedItem: CarouselAdminItem = null;
 
     constructor(
       private adminService: CarouselAdminService,

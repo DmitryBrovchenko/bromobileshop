@@ -1,0 +1,24 @@
+<div class="edit-brands-container">
+  <nz-list nzItemLayout="vertical">
+    <nz-list-item>
+      <div class="brand-list-item" [class.selected]="!selectedItem" (click)="selectedItem = null">
+        <i nz-icon nzType="plus-square" nzTheme="outline"></i>
+        Добавить элемент
+      </div>
+    </nz-list-item>
+    <nz-list-item *ngFor="let brandItem of brandItems$ | async">
+      <div class="brand-list-item" [class.selected]="brandItem.id === selectedItem?.id" (click)="selectedItem = brandItem">
+        <img 
+          nz-image
+          [nzDisablePreview]="true"
+          [nzSrc]="brandItem.logoUrl"
+          />
+      </div>
+    </nz-list-item>
+  </nz-list>
+  <app-brand-edit
+    [brandItem]="selectedItem"
+    [saveCallback$]="saveCallback"
+    [deleteCallback$]="deleteCallback"
+  ></app-brand-edit>
+</div>

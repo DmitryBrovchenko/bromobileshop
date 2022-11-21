@@ -1,3 +1,4 @@
+import { BrandEditModule } from './widgets/brand-edit';
 import { CarouselEditModule } from './widgets/carousel-edit';
 import { NzFormModule } from 'ng-zorro-antd/form';
 import {AdminComponent} from './admin.component';
@@ -22,6 +23,7 @@ import { AdminHomePageComponent } from './admin-home-page/admin-home-page.compon
 import { NzMenuModule } from 'ng-zorro-antd/menu';
 import { AdminEditCarouselComponent } from './admin-edit-carousel/admin-edit-carousel.component';
 import { NzDividerModule } from 'ng-zorro-antd/divider';
+import { AdminEditBrandsComponent } from './admin-edit-brands/admin-edit-brands.component';
 
 const ANT_DESIGN_MODULES = [
   NzTableModule,
@@ -41,7 +43,7 @@ const ANT_DESIGN_MODULES = [
 ]
 
 @NgModule({
-  declarations: [AdminComponent, AdminContentTableComponent, AdminHomePageComponent, AdminEditCarouselComponent],
-  imports: [AdminRoutingModule, CarouselEditModule, CommonModule, FlexLayoutModule, FormsModule, ReactiveFormsModule, ANT_DESIGN_MODULES]
+  declarations: [AdminComponent, AdminContentTableComponent, AdminHomePageComponent, AdminEditBrandsComponent, AdminEditCarouselComponent],
+  imports: [AdminRoutingModule, BrandEditModule, CarouselEditModule, CommonModule, FlexLayoutModule, FormsModule, ReactiveFormsModule, ANT_DESIGN_MODULES]
 })
 export class AdminModule {}

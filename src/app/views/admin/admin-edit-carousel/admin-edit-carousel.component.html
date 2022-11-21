@@ -7,7 +7,7 @@
             </div>
         </nz-list-item>
         <nz-list-item *ngFor="let carouselItem of carouselItems$ | async">
-            <div class="carousel-list-item" [class.selected]="carouselItem.id == selectedItem?.id" (click)="selectedItem = carouselItem">
+            <div class="carousel-list-item" [class.selected]="carouselItem.id === selectedItem?.id" (click)="selectedItem = carouselItem">
                 <img 
                 nz-image
                 [nzDisablePreview]="true"

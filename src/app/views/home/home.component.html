@@ -17,10 +17,10 @@
         nz-card-grid
         *ngFor="let brandItem of brands$ | async"
         class="brand-item"
-        [style.background-image]="'url(' + brandItem.logo + ')'"
+        [style.background-image]="'url(' + brandItem.logoUrl + ')'"
         nz-tooltip 
         [nzTooltipTitle]="brandItem.name"
-        (click)="goToSearch(brandItem.criteria)"
+        (click)="goToSearch(brandItem.searchCriteria)"
     >
     </div>
 </nz-card>
