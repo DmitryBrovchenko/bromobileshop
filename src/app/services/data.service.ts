@@ -29,12 +29,11 @@ export class DataService {
     show: 10,
     type: 'Tile'
   };
-  siderCollapsed = true;
+
   defaultRef: string;
 
   constructor(public db: AngularFireDatabase, private storage: AngularFireStorage) {
     storage.ref('noimage.png').getDownloadURL().pipe(take(1)).subscribe(ref => {
-      console.log(ref);
       this.defaultRef = ref;
     });
   }

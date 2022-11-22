@@ -1,0 +1,24 @@
+<div class="edit-carousel-container">
+    <nz-list nzItemLayout="vertical">
+        <nz-list-item>
+            <div class="carousel-list-item" [class.selected]="!selectedItem" (click)="selectedItem = null">
+              <i nz-icon nzType="plus-square" nzTheme="outline"></i>
+              Добавить элемент
+            </div>
+        </nz-list-item>
+        <nz-list-item *ngFor="let carouselItem of carouselItems$ | async">
+            <div class="carousel-list-item" [class.selected]="carouselItem.id === selectedItem?.id" (click)="selectedItem = carouselItem">
+                <img 
+                nz-image
+                [nzDisablePreview]="true"
+                [nzSrc]="carouselItem.downloadUrl"
+            />
+            </div>
+        </nz-list-item>
+    </nz-list>
+    <app-carousel-edit 
+      [carouselItem]="selectedItem"
+      [saveCallback$]="saveCallback"
+      [deleteCallback$]="deleteCallback"
+    ></app-carousel-edit>
+</div>

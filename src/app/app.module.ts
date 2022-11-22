@@ -1,5 +1,6 @@
+import { UserService } from 'src/app/services/user.service';
 import {BrowserModule} from '@angular/platform-browser';
-import {NgModule} from '@angular/core';
+import {APP_INITIALIZER, NgModule} from '@angular/core';
 import {AngularFireModule} from '@angular/fire/compat';
 import {AngularFireDatabaseModule} from '@angular/fire/compat/database';
 import {AppComponent} from './app.component';
@@ -11,7 +12,7 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { NZ_ICONS, NzIconModule } from 'ng-zorro-antd/icon';
 import {NzI18nModule, NZ_I18N, ru_RU} from 'ng-zorro-antd/i18n';
 import { IconDefinition } from '@ant-design/icons-angular';
-import {CheckCircleOutline, ClearOutline, CloseCircleOutline, CloudUploadOutline, DeleteOutline, DeleteRowOutline, EditOutline, FileTextOutline, FilterOutline, LockOutline, MenuOutline, MenuFoldOutline, MenuUnfoldOutline, MoreOutline, PlusCircleOutline, HomeOutline, AppstoreOutline, LoginOutline, LogoutOutline, PictureOutline, RollbackOutline, UserOutline
+import {CheckCircleOutline, ClearOutline, CloseCircleOutline, CloudUploadOutline, DeleteOutline, DeleteRowOutline, EditOutline, FileTextOutline, FilterOutline, LockOutline, MenuOutline, MenuFoldOutline, MenuUnfoldOutline, MoreOutline, PlusCircleOutline, HomeOutline, AppstoreOutline, LoginOutline, LogoutOutline, PictureOutline, PlusSquareOutline, RollbackOutline, UserOutline
 } from '@ant-design/icons-angular/icons';
 import ru from '@angular/common/locales/ru';
 import {registerLocaleData} from '@angular/common';
@@ -43,6 +44,7 @@ import { CarouselEffects } from './@ngrx/carousel/carousel.effects';
 import { brandsReducer } from './@ngrx/brands/brands.reducer';
 import { carouselReducer } from './@ngrx/carousel/carousel.reducer';
 import { HomeModule } from './views/home';
+import { authInitializer } from './services/auth.initializer';
 
 registerLocaleData(ru);
 
@@ -62,6 +64,7 @@ const icons: IconDefinition[] = [
   MenuUnfoldOutline, 
   MoreOutline,
   PlusCircleOutline,
+  PlusSquareOutline,
   HomeOutline, 
   AppstoreOutline, 
   LoginOutline, 
@@ -119,6 +122,12 @@ const icons: IconDefinition[] = [
   providers: [
     { provide: NZ_ICONS, useValue: icons },
     {provide: NZ_I18N, useValue: ru_RU},
+    { 
+      provide: APP_INITIALIZER,
+      useFactory: () => authInitializer,
+      deps: [UserService],
+      multi: true 
+    },
   ],
   bootstrap: [AppComponent]
 })

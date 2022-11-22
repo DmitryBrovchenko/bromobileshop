@@ -1,7 +1,8 @@
+import { CarouselItem } from 'src/app/interfaces/carousel-item';
 import {Injectable} from '@angular/core';
 import {AngularFireDatabase, AngularFireList, AngularFireObject} from '@angular/fire/compat/database';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
-import { firstValueFrom } from 'rxjs';
+import { firstValueFrom, from, Observable, of } from 'rxjs';
 import { debounceTime, map, take, tap } from 'rxjs/operators';
 import { CatalogueItem } from '../interfaces/catalogue-item.interface';
 import { DictionaryItem } from '../interfaces/dictionary-item.interface';
@@ -13,10 +14,13 @@ import {UtilService} from './util.service';
 })
 // Service for Admin operations with Firebase
 export class FirebaseAdminService {
+  
   dictionaryObj: AngularFireObject<DictionaryItem[]>;
   structure: AngularFireList<any>;
+
   data: (CatalogueItem & {dbKey: string})[];
   dataServer: AngularFireList<CatalogueItem>;
+  
   images: (ImageItem & {key: string})[];
   imageObj:AngularFireObject<ImageItem[]>;
   imageServer: AngularFireList<ImageItem>;
@@ -40,6 +44,7 @@ export class FirebaseAdminService {
       ))
     )
     .subscribe(res => this.data = res);
+
     this.imageObj = db.object('Images');
     this.imageServer = db.list('Images');
     this.imageServer.snapshotChanges().pipe(
@@ -137,26 +142,28 @@ export class FirebaseAdminService {
     console.log('Hierarchy has been created!');
   }
 
-  async uploadImage(file: File, id: string): Promise<any> {
+  async uploadImage(file: File, id: string, path: string): Promise<ImageItem> {
+    const filePath = `${path}/${id}`;
     const imageItem: ImageItem = {
       id,
-      path: id,
-      downloadUrl: await this.uploadImageFile(file, id),
+      path: filePath,
+      downloadUrl: await this.uploadImageFile(file, filePath),
     };
     const existingKey = this.images.find(item => item.id === id)?.key;
-    // Update or create new dictionary reference
-    if (existingKey) {
-      this.imageServer.update(existingKey, imageItem);
-    } else {
-      this.imageServer.push(imageItem);
-    }
+    // Update or create new dictionary reference, return image item
+    const action = existingKey 
+      ? this.imageServer.update(existingKey, imageItem)
+      : this.imageServer.push(imageItem);
+
+    return action.then(() => imageItem);
   }
 
   async uploadImageFile(file: File, path: string): Promise<string> {
     // Upload image (overrides exisitng file)
-    await this.storage.upload(path, file);
+    const ref = this.storage.ref(path);
+    await ref.put(file);
     // Get the reference
-    return firstValueFrom(this.storage.ref(path).getDownloadURL());
+    return firstValueFrom(ref.getDownloadURL());
   }
 
   async updateProduct(product: CatalogueItem): Promise<void> {
