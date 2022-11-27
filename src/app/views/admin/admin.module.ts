@@ -17,7 +17,6 @@ import { NzDropDownModule } from 'ng-zorro-antd/dropdown'
 import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { FlexLayoutModule } from '@angular/flex-layout';
 import { AdminContentTableComponent } from './admin-content-table/admin-content-table.component';
 import { AdminHomePageComponent } from './admin-home-page/admin-home-page.component';
 import { NzMenuModule } from 'ng-zorro-antd/menu';
@@ -44,6 +43,6 @@ const ANT_DESIGN_MODULES = [
 
 @NgModule({
   declarations: [AdminComponent, AdminContentTableComponent, AdminHomePageComponent, AdminEditBrandsComponent, AdminEditCarouselComponent],
-  imports: [AdminRoutingModule, BrandEditModule, CarouselEditModule, CommonModule, FlexLayoutModule, FormsModule, ReactiveFormsModule, ANT_DESIGN_MODULES]
+  imports: [AdminRoutingModule, BrandEditModule, CarouselEditModule, CommonModule, FormsModule, ReactiveFormsModule, ANT_DESIGN_MODULES]
 })
 export class AdminModule {}

@@ -32,3 +32,15 @@
     top: 50%;
   }
 }
+
+@media screen and (max-width: 959px) {
+  .desktop-header {
+    display: none;
+  }
+}
+
+@media screen and (min-width: 960px) {
+  .mobile-header {
+    display: none;
+  }
+}

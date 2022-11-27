@@ -4,7 +4,6 @@ import {CommonModule} from '@angular/common';
 import {HeaderComponent} from './widgets/header/header.component';
 import {SiderComponent} from './widgets/sider/sider.component';
 import {TransliterateArrayPipeModule} from '../pipes/transliterate-array';
-import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule } from '@angular/forms';
 import { NzLayoutModule } from 'ng-zorro-antd/layout';
 import { NzMenuModule } from 'ng-zorro-antd/menu';
@@ -22,7 +21,6 @@ const ANT_DESIGN_MODULES = [NzLayoutModule, NzMenuModule, NzDropDownModule, NzIc
   imports: [
     CommonModule,
     ANT_DESIGN_MODULES,
-    FlexLayoutModule,
     FormsModule,
     RouterModule.forChild([]),
     TransliterateArrayPipeModule,
