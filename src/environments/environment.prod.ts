@@ -1,5 +1,18 @@
 export const environment = {
   production: true,
+  dbConfig: {
+    brandPath: 'Brands',
+    carouselPath: 'Carousel',
+    cataloguePath: 'Catalogue',
+    dictionaryPath: 'Dictionary',
+    imagesPath: 'Images',
+    structurePath: 'Structure',
+  },
+  storageConfig: {
+    brandPath: 'Brands',
+    carouselPath: 'Carousel',
+    cataloguePath: 'Catalogue',
+  },
   firebaseConfig: {
     apiKey: 'AIzaSyD11SypMc_BWbk4FVM0LuP2Qg_Z_1rnY2I',
     authDomain: 'bromobileshop.firebaseapp.com',

@@ -3,7 +3,7 @@ import { Component, Input, OnChanges, Output, EventEmitter, ChangeDetectorRef } 
 import { Observable, throwError } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 import { Nullable } from 'src/app/interfaces/nullable';
-import { getHttpErrorMessage } from 'src/app/utils/error-message.utils';
+import { getHttpErrorMessage } from 'src/app/utils';
 
 interface Error {
   status: number;

@@ -9,6 +9,7 @@ import { CatalogueItem } from 'src/app/interfaces/catalogue-item.interface';
 import { ImageItem } from 'src/app/interfaces/image-item.interface';
 import { getBase64 } from 'src/app/utils';
 import { parseNumber } from 'src/app/utils/parse-number';
+import { environment } from 'src/environments/environment';
 import { FirebaseAdminService } from '../../../services/firebase-admin.service';
 
 @Component({
@@ -207,6 +208,7 @@ export class AdminContentTableComponent implements OnInit {
 
   loadImage(id: string, event: Event) {
     const input = event.target as HTMLInputElement;
+    const path = `${environment.storageConfig.cataloguePath}/${id}`;
     if (input.files.length) {
       const image: File = input.files[0];
       if (this.imageOrigin.find((item) => item.id === id)) {
@@ -216,16 +218,16 @@ export class AdminContentTableComponent implements OnInit {
         getBase64(image, (img) => {
           this.imageDisplayed[id] = {
             id,
-            path: `Catalogue/${id}`,
+            path,
             downloadUrl: img
           };
         });
       } else {
         // Original product has no image, upload it to the database
-        this.adminService.uploadImageFile(image, id).then(
+        this.adminService.uploadImageFile(image, path).then(
           (link) => this.imageDisplayed[id] = {
             id,
-            path: `Catalogue${id}`,
+            path,
             downloadUrl: link
           } 
         )

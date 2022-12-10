@@ -1,12 +1,9 @@
-import {Injectable} from '@angular/core';
+import { Nullable } from 'src/app/interfaces/nullable';
 
-@Injectable({
-  providedIn: 'root'
-})
+export function transliterate(str: Nullable<string>): Nullable<string> {
+  if (!str) return str;
 
-export class UtilService {
-  transliterate(str) {
-    const sp = '_';
+  const sp = '_';
     const text = str.toLowerCase();
     const transl = {
       \u0430: 'a', \u0431: 'b', \u0432: 'v', \u0433: 'g', \u0434: 'd', \u0435: 'e', \u0451: 'e', \u0436: 'zh',
@@ -38,5 +35,4 @@ export class UtilService {
     }
     result = result.replace(/^_/, '').replace(/_$/, ''); // trim
     return result;
-  }
 }

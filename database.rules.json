@@ -29,6 +29,36 @@
       ".indexOn": ["id"],
       ".read": "auth != null",
       ".write": "auth != null"
+    },
+    "dev_Catalogue": {
+      ".indexOn": ["Category 1"],
+      ".read": "auth != null",
+      ".write": "auth != null"
+    },
+    "dev_Carousel": {
+      ".indexOn": ["id"],
+      ".read": "auth != null",
+      ".write": "auth != null"
+    },
+    "dev_Brands": {
+      ".indexOn": ["id"],
+      ".read": "auth != null",
+      ".write": "auth != null"
+    },
+    "dev_Dictionary": {
+      ".indexOn": ["name"],
+      ".read": "auth != null",
+      ".write": "auth != null"
+    },
+    "dev_Structure": {
+      ".indexOn": ["name"],
+      ".read": "auth != null",
+      ".write": "auth != null"
+    },
+    "dev_Images": {
+      ".indexOn": ["id"],
+      ".read": "auth != null",
+      ".write": "auth != null"
     }
   }
 }

@@ -4,13 +4,14 @@ import { Injectable } from "@angular/core";
 import { Observable, from, of, map } from 'rxjs';
 import { CarouselItem } from 'src/app/interfaces/carousel-item';
 import { omit } from 'lodash-es';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class CarouselAdminService {
 
-  private itemsServer: AngularFireList<CarouselItem> = this.db.list('Carousel');
+  private itemsServer: AngularFireList<CarouselItem> = this.db.list(environment.dbConfig.carouselPath);
 
   items$: Observable<CarouselAdminItem[]> = this.itemsServer.snapshotChanges()
     .pipe(

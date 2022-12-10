@@ -1,7 +1,7 @@
 import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PageData } from 'src/app/interfaces/source-data.interface';
-import { UtilService } from 'src/app/services/util.service';
+import { transliterate } from 'src/app/utils';
 
 const LEVELS = ['One', 'Two', 'Three', 'Four']; 
 
@@ -27,7 +27,6 @@ export class CatalogueHeaderComponent implements OnChanges {
   constructor(
     public route: ActivatedRoute,
     public router: Router,
-    public utilService: UtilService,
   ) { }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -49,6 +48,10 @@ export class CatalogueHeaderComponent implements OnChanges {
         });
       }
     }
+  }
+
+  navigateToSubcategory(name: string) {
+    this.router.navigate([transliterate(name)], {relativeTo: this.route})
   }
 
   trackByName(index: number, item: {name: string, route: string[]}) {
