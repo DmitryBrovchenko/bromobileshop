@@ -1,3 +1,4 @@
+import { environment } from './../../environments/environment';
 import {Injectable} from '@angular/core';
 import {AngularFireDatabase} from '@angular/fire/compat/database';
 import {Observable} from 'rxjs';
@@ -17,11 +18,12 @@ import { CarouselItem } from '../interfaces/carousel-item';
 })
 
 export class DataService {
-  structure = '/Structure';
-  dictionary = '/Dictionary';
-  catalogue = '/Catalogue';
-  brands = '/Brands';
-  carousel = '/Carousel';
+  structure = environment.dbConfig.structurePath;
+  dictionary = environment.dbConfig.dictionaryPath;
+  catalogue = environment.dbConfig.cataloguePath;
+  brands = environment.dbConfig.brandPath;
+  carousel = environment.dbConfig.carouselPath;
+  images = environment.dbConfig.imagesPath;
 
   defaultParams: PageParamsInterface = {
     sort: 'Name',
@@ -58,7 +60,7 @@ export class DataService {
   }
 
   getImages(): Observable<ImageItem[]> {
-    return this.db.list<ImageItem>('Images').valueChanges();
+    return this.db.list<ImageItem>(this.images).valueChanges();
   }
 
   getBrands(): Observable<BrandItem[]> {

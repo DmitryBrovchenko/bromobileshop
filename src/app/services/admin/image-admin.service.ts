@@ -4,15 +4,18 @@ import { AngularFireStorage } from "@angular/fire/compat/storage";
 import { from, Observable } from "rxjs";
 import { map, switchMap } from 'rxjs/operators';
 import { ImageAdminItem, ImageItem } from "src/app/interfaces/image-item.interface";
+import { environment } from "src/environments/environment";
 
 @Injectable({
   providedIn: 'root'
 })
 export class ImageAdminService {
 
+  imagesPath = environment.dbConfig.imagesPath;
+
   images: ImageAdminItem[];
-  imageObj:AngularFireObject<ImageItem[]> = this.db.object('Images');
-  imageServer: AngularFireList<ImageItem> = this.db.list('Images');
+  imageObj:AngularFireObject<ImageItem[]> = this.db.object(this.imagesPath);
+  imageServer: AngularFireList<ImageItem> = this.db.list(this.imagesPath);
 
   constructor(
     private db: AngularFireDatabase, 
@@ -31,6 +34,11 @@ export class ImageAdminService {
         path: fullPath,
         downloadUrl
       })),
+    )
+  }
+
+  uploadCatalogueImage(file: File, id: string, path: string): Observable<ImageItem> {
+    return this.uploadImage(file, id, path).pipe(
       switchMap(imageItem => this.updateImageList(imageItem))
     )
   }

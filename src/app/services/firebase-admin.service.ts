@@ -1,13 +1,13 @@
-import { CarouselItem } from 'src/app/interfaces/carousel-item';
 import {Injectable} from '@angular/core';
 import {AngularFireDatabase, AngularFireList, AngularFireObject} from '@angular/fire/compat/database';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
-import { firstValueFrom, from, Observable, of } from 'rxjs';
-import { debounceTime, map, take, tap } from 'rxjs/operators';
+import { firstValueFrom } from 'rxjs';
+import { debounceTime, map, take } from 'rxjs/operators';
 import { CatalogueItem } from '../interfaces/catalogue-item.interface';
 import { DictionaryItem } from '../interfaces/dictionary-item.interface';
 import { ImageItem } from '../interfaces/image-item.interface';
-import {UtilService} from './util.service';
+import { environment } from 'src/environments/environment';
+import { transliterate } from '../utils';
 
 @Injectable({
   providedIn: 'root'
@@ -15,24 +15,20 @@ import {UtilService} from './util.service';
 // Service for Admin operations with Firebase
 export class FirebaseAdminService {
   
-  dictionaryObj: AngularFireObject<DictionaryItem[]>;
-  structure: AngularFireList<any>;
+  dictionaryObj: AngularFireObject<DictionaryItem[]> = this.db.object(environment.dbConfig.dictionaryPath);
+  structure: AngularFireList<any> = this.db.list(environment.dbConfig.structurePath);
 
   data: (CatalogueItem & {dbKey: string})[];
-  dataServer: AngularFireList<CatalogueItem>;
+  dataServer: AngularFireList<CatalogueItem> = this.db.list(environment.dbConfig.cataloguePath);
   
   images: (ImageItem & {key: string})[];
-  imageObj:AngularFireObject<ImageItem[]>;
-  imageServer: AngularFireList<ImageItem>;
+  imageObj:AngularFireObject<ImageItem[]> = this.db.object(environment.dbConfig.imagesPath);
+  imageServer: AngularFireList<ImageItem> = this.db.list(environment.dbConfig.imagesPath);
 
   constructor(
     private db: AngularFireDatabase, 
     private storage: AngularFireStorage,
-    private util: UtilService
     ) {
-    this.dictionaryObj = db.object('Dictionary');
-    this.structure = db.list('Structure');
-    this.dataServer = db.list('Catalogue');
     this.dataServer.snapshotChanges().pipe(
       debounceTime(200),
       map(snapshots => snapshots
@@ -45,8 +41,6 @@ export class FirebaseAdminService {
     )
     .subscribe(res => this.data = res);
 
-    this.imageObj = db.object('Images');
-    this.imageServer = db.list('Images');
     this.imageServer.snapshotChanges().pipe(
       map(snapshot => snapshot.map(item => ({key: item.payload.key, ...item.payload.val()})))
     ).subscribe(res => this.images = res);
@@ -76,7 +70,7 @@ export class FirebaseAdminService {
             .forEach(d => {
               if (d !== '') {
                 dictionaryNew.push({
-                  name: this.util.transliterate(d),
+                  name: transliterate(d),
                   origin: d,
                   structure: d
                 });
@@ -84,7 +78,7 @@ export class FirebaseAdminService {
             });
           if (c3 !== '') {
             dictionaryNew.push({
-              name: this.util.transliterate(c3),
+              name: transliterate(c3),
               origin: c3,
               structure: c3
             });
@@ -92,14 +86,14 @@ export class FirebaseAdminService {
         });
         if (c2 !== '') {
           dictionaryNew.push({
-            name: this.util.transliterate(c2),
+            name: transliterate(c2),
             origin: c2,
             structure: c2
           });
         }
       });
       dictionaryNew.push({
-        name: this.util.transliterate(c1.substring(4)),
+        name: transliterate(c1.substring(4)),
         origin: c1,
         structure: c1.substring(4)
       });

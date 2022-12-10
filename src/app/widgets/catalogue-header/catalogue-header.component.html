@@ -24,7 +24,7 @@
           <ul nz-menu>
             <li *ngFor="let child of pageData.hierarchy.children"
                 nz-menu-item
-                (click)="router.navigate([utilService.transliterate(child.name)], {relativeTo: route})">{{child.name}}</li>
+                (click)="navigateToSubcategory(child.name)">{{child.name}}</li>
           </ul>
         </nz-dropdown-menu>
     </nz-page-header-extra>

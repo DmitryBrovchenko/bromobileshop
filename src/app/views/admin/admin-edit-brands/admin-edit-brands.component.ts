@@ -6,6 +6,7 @@ import { Nullable } from "src/app/interfaces/nullable";
 import { BrandsAdminService } from "src/app/services/admin/brands-admin.service";
 import { ImageAdminService } from "src/app/services/admin/image-admin.service";
 import omit from 'lodash-es/omit';
+import { environment } from "src/environments/environment";
 
 @Component({
   selector: 'app-admin-edit-brands',
@@ -26,7 +27,7 @@ export class AdminEditBrandsComponent {
     const id = value.id ?? new Date().getTime();
 
     const imageAction$ = value.image
-      ? this.imageService.uploadImage(value.image, `${id}`, 'Brands')
+      ? this.imageService.uploadImage(value.image, `${id}`, environment.storageConfig.brandPath)
       : of(null);
 
     return imageAction$.pipe(

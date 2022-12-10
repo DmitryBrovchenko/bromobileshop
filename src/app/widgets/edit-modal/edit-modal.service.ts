@@ -6,6 +6,7 @@ import { selectItemsByStructure } from "src/app/@ngrx/dictionary/dictionary.redu
 import { selectHierarchyNamesL1 } from "src/app/@ngrx/hierarchy/hierarchy.reducer";
 import { CatalogueItem } from "src/app/interfaces/catalogue-item.interface";
 import { FirebaseAdminService } from "src/app/services/firebase-admin.service";
+import { environment } from "src/environments/environment";
 import { EditModalComponent } from "./edit-modal.component";
 
 @Injectable()
@@ -32,7 +33,7 @@ export class EditModalService {
                     const updateProduct = component.getUpdatedProduct();
                     const uploadedFile = component.getUploadedFile();
                     if (uploadedFile) {
-                        await this.firebaseAdminService.uploadImage(uploadedFile, updateProduct.id, 'Catalogue');
+                        await this.firebaseAdminService.uploadImage(uploadedFile, updateProduct.id, environment.storageConfig.cataloguePath);
                     } 
                     return this.firebaseAdminService.updateProduct(updateProduct);
                 }
