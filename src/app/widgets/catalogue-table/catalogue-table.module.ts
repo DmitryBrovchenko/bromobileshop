@@ -1,3 +1,4 @@
+import { FormsModule } from '@angular/forms';
 import {NgModule} from '@angular/core';
 import {CatalogueTableComponent} from './catalogue-table.component';
 import {CommonModule} from '@angular/common';
@@ -9,6 +10,7 @@ import { NzRadioModule} from 'ng-zorro-antd/radio';
 import {CardModule} from '../card';
 import {SortedDataPipeModule} from '../../pipes/sorted-data';
 import {CardTableModule} from '../card-table';
+import { ExecuteWithPipeModule } from 'src/app/pipes/execute-with';
 
 const ANT_DESIGN_MODULES = [
   NzPaginationModule,
@@ -20,7 +22,7 @@ const ANT_DESIGN_MODULES = [
 
 @NgModule({
   declarations: [CatalogueTableComponent],
-  imports: [CommonModule, CardModule, SortedDataPipeModule, CardTableModule, ANT_DESIGN_MODULES],
+  imports: [CommonModule, CardModule, ExecuteWithPipeModule, FormsModule, SortedDataPipeModule, CardTableModule, ANT_DESIGN_MODULES],
   exports: [CatalogueTableComponent],
 })
 export class CatalogueTableModule {}
