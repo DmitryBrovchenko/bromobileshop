@@ -1,8 +1,8 @@
 import { NzModalService } from 'ng-zorro-antd/modal';
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { NzTableFilterFn, NzTableFilterList, NzTableSortFn } from 'ng-zorro-antd/table';
-import { combineLatest, forkJoin } from 'rxjs';
+import { combineLatest, forkJoin, of } from 'rxjs';
 import { filter, switchMap, take, tap } from 'rxjs/operators';
 import { selectCatalogue } from 'src/app/@ngrx/catalogue/catalogue.reducer';
 import { selectImages } from 'src/app/@ngrx/images/images.reducer';
@@ -19,7 +19,7 @@ import { environment } from 'src/environments/environment';
   templateUrl: './admin-content-table.component.html',
   styleUrls: ['./admin-content-table.component.scss']
 })
-export class AdminContentTableComponent implements OnInit {
+export class AdminContentTableComponent {
   dataOrigin: CatalogueItem[]; // Original array
   dataDisplayed: CatalogueItem[]; // Array to display in the table
   dataFiltered: CatalogueItem[]; // Filtered array of displayed items
@@ -78,20 +78,19 @@ export class AdminContentTableComponent implements OnInit {
     private store: Store
   ) { }
 
-  ngOnInit(): void {
-    combineLatest([this.store.select(selectCatalogue), this.store.select(selectImages)])
-    .pipe(take(1))
-    .subscribe(([catalogue, images]) => {
+  getData$ = combineLatest([this.store.select(selectCatalogue), this.store.select(selectImages)]).pipe(
+    filter(([catalogue, images]) => (catalogue || images) && !this.dataOrigin),
+    tap(([catalogue, images]) => {
       this.dataOrigin = catalogue;
       this.imageOrigin = images;
       // Copy the original arrays to allow modifications
-      this.dataDisplayed = catalogue.map(item => ({...item}));
-      this.dataFiltered = this.dataDisplayed.map(item => ({...item}));
-      images.forEach((image) => this.imageDisplayed[image.id] = image);
+      this.dataDisplayed = catalogue?.map(item => ({...item}));
+      this.dataFiltered = this.dataDisplayed?.map(item => ({...item}));
+      images?.forEach((image) => this.imageDisplayed[image.id] = image);
       // Set the list of avaliable categories for filers
       this.setCategoryFilters();
-    });
-  }
+    })
+  );
 
   // Set the lists of available categories for filters based on data values
   setCategoryFilters() {
@@ -148,17 +147,23 @@ export class AdminContentTableComponent implements OnInit {
       nzOnOk: () => true,
     }).afterClose.pipe(
       filter(Boolean),
-      // Save images from cache and refresh references
-      switchMap(() => forkJoin(Object.entries(this.imageCache)
-        .map(([id, image]) => this.imageService.uploadImage(image, id, environment.storageConfig.cataloguePath)
-          .pipe(
-            tap(item => this.imageDisplayed[id] = item)
-          )))),
-      // Save the list of images
-      switchMap(() => this.imageService.replaceImagesList(Object.values(this.imageDisplayed))),
+      switchMap(() => this.saveImages$()),
       // Save the list of products
       switchMap(() => this.catalogueService.updateProductList(this.dataDisplayed))
     )
+  }
+
+  private saveImages$() {
+    if (!Object.values(this.imageCache).length) return of(null);
+    // Save images from cache and refresh references
+    return forkJoin(Object.entries(this.imageCache)
+      .map(([id, image]) => this.imageService.uploadImage(image, id, environment.storageConfig.cataloguePath)
+        .pipe(tap(item => this.imageDisplayed[id] = item))
+      )
+    ).pipe(
+      // Save the list of images
+      switchMap(() => this.imageService.replaceImagesList(Object.values(this.imageDisplayed))),
+    );
   }
 
   cancel = () => {

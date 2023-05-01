@@ -1,3 +1,4 @@
+<ng-container *ngIf="getData$ | async"></ng-container>
 <div class="table-actions d-flex flex-row flex-wrap gap-2 mb-1">
   <app-button  icon="plus-circle" label="Добавить продукт" [actionCallback$]="createProduct"></app-button>
   <app-button icon="file-text" label="Загрузить из JSON" [actionCallback$]="uploadFile | executeWith: uploadFileControl"></app-button>
