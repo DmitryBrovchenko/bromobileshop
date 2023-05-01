@@ -22,8 +22,6 @@
     "@angular/platform-browser": "^12.2.4",
     "@angular/platform-browser-dynamic": "^12.2.4",
     "@angular/router": "^12.2.4",
-    "@firebaseui/ng-bootstrap": "^0.4.1",
-    "@ng-bootstrap/ng-bootstrap": "^10.0.0",
     "@ngrx/effects": "^12.4.0",
     "@ngrx/store": "^12.4.0",
     "angular8-yandex-maps": "^12.3.0",
