@@ -1,12 +1,14 @@
-import {Component, EventEmitter, HostListener, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, HostListener, Input, Output} from '@angular/core';
+import { HierarchyItem } from 'src/app/interfaces/hierarchy-item.interface';
+import { Nullable } from 'src/app/interfaces/nullable';
 
 @Component({
   selector: 'app-pc-sider',
   templateUrl: './sider.component.html',
   styleUrls: ['./sider.component.scss']
 })
-export class SiderComponent implements OnInit {
-  @Input() hierarchy;
+export class SiderComponent {
+  @Input() hierarchy: Nullable<HierarchyItem[]>;
 
   @Output()
   collapsed = new EventEmitter<void>();
@@ -17,10 +19,6 @@ export class SiderComponent implements OnInit {
     }
   }
 
-  constructor() {
-  }
-
-  ngOnInit(): void {
-  }
+  joinPath = (basePath: string[], subPath: string) => [...basePath, subPath];
 
 }

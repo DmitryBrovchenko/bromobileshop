@@ -1,0 +1,33 @@
+$step: 4px;
+
+@for $size from 0 through 10 {
+  .p-#{$size} {
+    padding: $step * $size;
+  }
+
+  .m-#{$size} {
+    margin: $step * $size;
+  }
+
+  @each $pos, $prop in ('t': 'top', 'r': 'right', 'b': 'bottom', 'l': 'left') {
+    .p#{$pos}-#{$size} {
+      padding-#{$prop}: $step * $size;
+    }
+  
+    .m#{$pos}-#{$size} {
+      margin-#{$prop}: $step * $size;
+    }
+  }
+
+  @each $dir, $side1, $side2 in ('x', 'left', 'right'), ('y', 'top', 'bottom') {
+    .p#{$dir}-#{$size} {
+      padding-#{$side1}: $step * $size;
+      padding-#{$side2}: $step * $size;
+    }
+
+    .m#{$dir}-#{$size} {
+      margin-#{$side1}: $step * $size;
+      margin-#{$side2}: $step * $size;
+    }
+  }
+}

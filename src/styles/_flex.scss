@@ -1,0 +1,22 @@
+.d-flex {
+  display: flex;
+}
+.flex-column {
+  flex-direction: column;
+}
+
+.flex-row {
+  flex-direction: row;
+}
+
+.flex-wrap {
+  flex-wrap: wrap;
+}
+
+$step: 4px;
+
+@for $size from 0 through 10 {
+  .gap-#{$size} {
+    gap: $step * $size;
+  }
+}

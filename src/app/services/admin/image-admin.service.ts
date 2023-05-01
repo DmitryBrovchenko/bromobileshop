@@ -43,6 +43,12 @@ export class ImageAdminService {
     )
   }
 
+  replaceImagesList(images: ImageItem[]): Observable<void> {
+    return from(this.imageObj.remove()).pipe(
+      switchMap(() => from(this.imageObj.set(images)))
+    );
+  }
+
   private updateImageList(imageItem: ImageItem): Observable<ImageItem> {
     const existingKey = this.images.find(item => item.id === imageItem.id)?.dbKey;
     // Update or create new dictionary reference, return image item

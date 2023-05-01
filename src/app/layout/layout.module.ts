@@ -13,6 +13,7 @@ import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { RouterModule } from '@angular/router';
+import { ExecuteWithPipeModule } from '../pipes/execute-with';
 
 const ANT_DESIGN_MODULES = [NzLayoutModule, NzMenuModule, NzDropDownModule, NzIconModule, NzInputModule, NzButtonModule, NzToolTipModule]
 @NgModule({
@@ -20,6 +21,7 @@ const ANT_DESIGN_MODULES = [NzLayoutModule, NzMenuModule, NzDropDownModule, NzIc
   exports: [LayoutComponent],
   imports: [
     CommonModule,
+    ExecuteWithPipeModule,
     ANT_DESIGN_MODULES,
     FormsModule,
     RouterModule.forChild([]),

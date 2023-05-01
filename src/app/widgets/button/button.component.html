@@ -11,7 +11,7 @@
   [disabled]="isDisabled"
   (click)="onClick()"
   >
-  <span *ngIf="icon" nz-icon nzType="icon"></span>
+  <span *ngIf="icon" nz-icon [nzType]="icon"></span>
   <span *ngIf="label">{{ label }}</span>
 </button>
 

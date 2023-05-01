@@ -124,7 +124,7 @@ const icons: IconDefinition[] = [
     {provide: NZ_I18N, useValue: ru_RU},
     { 
       provide: APP_INITIALIZER,
-      useFactory: () => authInitializer,
+      useFactory: authInitializer,
       deps: [UserService],
       multi: true 
     },
