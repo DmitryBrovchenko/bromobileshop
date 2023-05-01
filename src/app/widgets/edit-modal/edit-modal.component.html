@@ -1,3 +1,4 @@
+<ng-container *ngIf="setFormValue | executeWith: product"></ng-container>
 <form nz-form [formGroup]="productForm" nzLayout="vertical">
     <nz-tabset>
         <nz-tab nzTitle="Общая информация">
@@ -40,7 +41,7 @@
                 </div>
             </div>
         </nz-tab>
-        <nz-tab nzTitle="Структура">
+        <nz-tab *ngLet="getStructureName | executeWith: productForm.value.category1: categoryList as category1" nzTitle="Структура">
             <nz-form-item>
                 <nz-form-label>Категория товара 1</nz-form-label>
                 <nz-form-control>
@@ -54,7 +55,7 @@
                     </nz-select>
                 </nz-form-control>
             </nz-form-item>
-            <nz-form-item>
+            <nz-form-item *ngLet="getCategoryTwoList$ | executeWith: category1 as categoryTwoList$">
                 <nz-form-label>Категория товара 2</nz-form-label>
                 <nz-form-control>
                     <nz-select formControlName="category2">
@@ -67,7 +68,7 @@
                     </nz-select>
                 </nz-form-control>
             </nz-form-item>
-            <nz-form-item>
+            <nz-form-item *ngLet="getCategoryThreeList$ | executeWith: category1: productForm.value.category2 as categoryThreeList$">
                 <nz-form-label>Категория товара 3</nz-form-label>
                 <nz-form-control>
                     <nz-select formControlName="category3">
@@ -80,7 +81,7 @@
                     </nz-select>
                 </nz-form-control>
             </nz-form-item>
-            <nz-form-item>
+            <nz-form-item *ngLet="getCategoryFourList$ | executeWith: category1: productForm.value.category2: productForm.value.category3 as categoryFourList$">
                 <nz-form-label>Категория товара 4</nz-form-label>
                 <nz-form-control>
                     <nz-select formControlName="category4">
@@ -96,3 +97,7 @@
         </nz-tab>
     </nz-tabset>
 </form>
+<div *nzModalFooter>
+  <app-button class="mr-2" label="Отмена" [actionCallback$]="cancelEdit"></app-button>
+  <app-button appearance="primary" label="Сохранить" [actionCallback$]="saveItem$"></app-button>
+</div>

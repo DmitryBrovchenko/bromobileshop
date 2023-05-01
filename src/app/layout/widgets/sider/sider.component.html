@@ -1,37 +1,26 @@
 <ul nz-menu nzTheme="light" nzMode="inline">
-  <ng-container *ngFor="let level1 of hierarchy" [ngSwitch]="level1.children[0].name">
-    <li *ngSwitchCase="''" nz-menu-item>
-      <a [routerLink]="['/catalogue', level1.name] | transliterateArray: 1">{{level1.name}}</a>
-    </li>
-    <li *ngSwitchDefault nz-submenu [nzTitle]="level1.name">
-      <ul>
-        <li nz-menu-item class="sider-show-all"><a [routerLink]="['/catalogue', level1.name] | transliterateArray: 1">Показать все</a></li>
-        <ng-container *ngFor="let level2 of level1.children" [ngSwitch]="level2.children[0].name">
-          <li *ngSwitchCase="''" nz-menu-item>
-            <a [routerLink]="['/catalogue', level1.name, level2.name] | transliterateArray: 1">{{level2.name}}</a>
-          </li>
-          <li *ngSwitchDefault nz-submenu [nzTitle]="level2.name">
-            <ul>
-              <li nz-menu-item class="sider-show-all">
-                <a [routerLink]="['/catalogue', level1.name,  level2.name] | transliterateArray: 1"
-                  >Показать все</a></li>
-              <ng-container *ngFor="let level3 of level2.children" [ngSwitch]="level3.children[0].name">
-                <li *ngSwitchCase="''" nz-menu-item>
-                  <a [routerLink]="['/catalogue', level1.name, level2.name, level3.name] | transliterateArray: 1">{{level3.name}}</a>
-                </li>
-                <li *ngSwitchDefault nz-submenu [nzTitle]="level3.name">
-                  <ul>
-                    <li nz-menu-item class="sider-show-all"><a [routerLink]="['/catalogue', level1.name, level2.name, level3.name] | transliterateArray: 1">Показать все</a> </li>
-                    <li *ngFor="let level4 of level3.children" nz-menu-item>
-                      <a [routerLink]="['/catalogue', level1.name, level2.name, level3.name, level4.name] | transliterateArray: 1">{{level4.name}}</a>
-                    </li>
-                  </ul>
-                </li>
-              </ng-container>
-            </ul>
-          </li>
-        </ng-container>
-      </ul>
-    </li>
+  <ng-container *ngFor="let level1 of hierarchy" [ngTemplateOutlet]="hierarchyTree" [ngTemplateOutletContext]="{
+    basePath: ['/catalogue', level1.name],
+    item: level1,
+    level: 1
+  }">
   </ng-container>
+
+  <ng-template #hierarchyTree let-basePath="basePath" let-item="item" let-level="level">
+    <li *ngIf="!item.children?.length; else submenuTmp" nz-menu-item [nzPaddingLeft]="level * 24">
+      <a [routerLink]="basePath | transliterateArray: 1">{{item.name}}</a>
+    </li>
+  
+    <ng-template #submenuTmp>
+      <li nz-submenu [nzPaddingLeft]="level * 24" [nzTitle]="item.name">
+        <ul>
+          <li nz-menu-item class="sider-show-all" [nzPaddingLeft]="(level + 1) * 24"><a [routerLink]="basePath | transliterateArray: 1">Показать все</a></li>
+          <ng-container *ngFor="let subItem of item.children" [ngTemplateOutlet]="hierarchyTree" [ngTemplateOutletContext]="{
+            basePath: (joinPath | executeWith: basePath: subItem.name),
+            item: subItem,
+            level: level + 1
+          }"></ng-container>
+        </ul>
+    </ng-template>
+  </ng-template>
 </ul>

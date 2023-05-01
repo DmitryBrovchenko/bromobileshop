@@ -1,16 +1,18 @@
+import { NzModalService } from 'ng-zorro-antd/modal';
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import {  NzTableFilterFn, NzTableFilterList, NzTableSortFn } from 'ng-zorro-antd/table';
-import { combineLatest } from 'rxjs';
-import { take } from 'rxjs/operators';
+import { NzTableFilterFn, NzTableFilterList, NzTableSortFn } from 'ng-zorro-antd/table';
+import { combineLatest, forkJoin } from 'rxjs';
+import { filter, switchMap, take, tap } from 'rxjs/operators';
 import { selectCatalogue } from 'src/app/@ngrx/catalogue/catalogue.reducer';
 import { selectImages } from 'src/app/@ngrx/images/images.reducer';
 import { CatalogueItem } from 'src/app/interfaces/catalogue-item.interface';
 import { ImageItem } from 'src/app/interfaces/image-item.interface';
+import { CatalogueAdminService } from 'src/app/services/admin/catalogue-admin.service';
+import { ImageAdminService } from 'src/app/services/admin/image-admin.service';
 import { getBase64 } from 'src/app/utils';
 import { parseNumber } from 'src/app/utils/parse-number';
 import { environment } from 'src/environments/environment';
-import { FirebaseAdminService } from '../../../services/firebase-admin.service';
 
 @Component({
   selector: 'app-admin-content-table',
@@ -64,14 +66,17 @@ export class AdminContentTableComponent implements OnInit {
     'Category 4': (list: string[], item: CatalogueItem) => this.filterList(list, item, 4),
   }
 
-  saving = false;
-
   allCheckedOnPage = false;
   indeterminate = false;
   checkedRows = new Set<string>();
   pageData: CatalogueItem[] = [];
 
-  constructor(private adminService: FirebaseAdminService, private store: Store) { }
+  constructor(
+    private imageService: ImageAdminService,
+    private catalogueService: CatalogueAdminService,
+    private modalService: NzModalService,
+    private store: Store
+  ) { }
 
   ngOnInit(): void {
     combineLatest([this.store.select(selectCatalogue), this.store.select(selectImages)])
@@ -110,7 +115,7 @@ export class AdminContentTableComponent implements OnInit {
     }
   }
 
-  resetFilters() {
+  resetFilters = () => {
     for (let i = 1; i <= 3; ++i) {
       this.filterValuesCache[i] = [];
     }
@@ -136,20 +141,27 @@ export class AdminContentTableComponent implements OnInit {
     }
   }
 
-  async save() {
-    this.saving = true;
-    // Save the list of images
-    await this.adminService.updateImagesList(Object.values(this.imageDisplayed));
-    // Save images from cache and refresh references
-    Object.entries(this.imageCache).forEach(async ([id, image]) => {
-      await this.adminService.uploadImage(image, id, 'Catalogue');
-    })
-    // Save the list of products
-    await this.adminService.updateProductList(this.dataDisplayed);
-    this.saving = false;
+  save$ = () => {
+    return this.modalService.confirm({
+      nzTitle: 'Вы уверены, что хотите обновить данные на сервере?',
+      nzOkText: 'Да',
+      nzOnOk: () => true,
+    }).afterClose.pipe(
+      filter(Boolean),
+      // Save images from cache and refresh references
+      switchMap(() => forkJoin(Object.entries(this.imageCache)
+        .map(([id, image]) => this.imageService.uploadImage(image, id, environment.storageConfig.cataloguePath)
+          .pipe(
+            tap(item => this.imageDisplayed[id] = item)
+          )))),
+      // Save the list of images
+      switchMap(() => this.imageService.replaceImagesList(Object.values(this.imageDisplayed))),
+      // Save the list of products
+      switchMap(() => this.catalogueService.updateProductList(this.dataDisplayed))
+    )
   }
 
-  cancel() {
+  cancel = () => {
     // Return catalogue and image arrays to their original state
     this.dataDisplayed = this.dataOrigin.map(item => ({...item}));
     this.imageDisplayed = {};
@@ -173,7 +185,7 @@ export class AdminContentTableComponent implements OnInit {
     this.editCache[id] = null;
   }
 
-  createProduct() {
+  createProduct = () => {
     const newProduct: CatalogueItem = {
       id: new Date().toISOString(),
       'Category 1': null,
@@ -206,32 +218,23 @@ export class AdminContentTableComponent implements OnInit {
     this.refreshCheckedAllStatus();
   }
 
+  uploadFile = (inputEl: HTMLInputElement) => () => inputEl.click();
+
   loadImage(id: string, event: Event) {
     const input = event.target as HTMLInputElement;
     const path = `${environment.storageConfig.cataloguePath}/${id}`;
     if (input.files.length) {
       const image: File = input.files[0];
-      if (this.imageOrigin.find((item) => item.id === id)) {
-        // Product has an image, caching file for later upload
-        this.imageCache[id] = image;
-        // Get the relevant local reference
-        getBase64(image, (img) => {
-          this.imageDisplayed[id] = {
+      //  caching file for later upload
+      this.imageCache[id] = image;
+      // Get the relevant local reference to display
+      getBase64(image, (img) => {
+        this.imageDisplayed[id] = {
             id,
             path,
             downloadUrl: img
           };
         });
-      } else {
-        // Original product has no image, upload it to the database
-        this.adminService.uploadImageFile(image, path).then(
-          (link) => this.imageDisplayed[id] = {
-            id,
-            path,
-            downloadUrl: link
-          } 
-        )
-      }
       input.value = '';
     }
   }

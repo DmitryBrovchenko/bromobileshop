@@ -4,7 +4,7 @@ import { Pipe, PipeTransform } from "@angular/core";
   name: 'executeWith'
 })
 export class ExecuteWithPipe implements PipeTransform {
-  transform<T>(callback: (...args: any[]) => T, ...args: any[]): T {
+  transform<F extends (...fArgs: any[]) => any>(callback: F, ...args: Parameters<F>): ReturnType<F> {
       return callback?.(...args);
   }
 }

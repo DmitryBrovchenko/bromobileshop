@@ -14,7 +14,7 @@
         </nz-breadcrumb-item>
     </nz-breadcrumb>
     <nz-page-header-extra>
-        <a *ngIf="!isBottomLevel" nz-dropdown [nzDropdownMenu]="menu">
+        <a *ngIf="!isBottomLevel" nz-dropdown class="mr-2" [nzDropdownMenu]="menu">
           Перейти в подкатегорию
           <i nz-icon nzType="down"></i>
         </a>
@@ -22,7 +22,7 @@
           [routerLink]="routes[hierarchyLevel - 1].routePath">Назад</a>
         <nz-dropdown-menu #menu="nzDropdownMenu">
           <ul nz-menu>
-            <li *ngFor="let child of pageData.hierarchy.children"
+            <li *ngFor="let child of pageData.hierarchy?.children"
                 nz-menu-item
                 (click)="navigateToSubcategory(child.name)">{{child.name}}</li>
           </ul>

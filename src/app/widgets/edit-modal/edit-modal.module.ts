@@ -1,3 +1,4 @@
+import { LetDirectiveModule } from './../../directives/let/let-directive.module';
 import { CommonModule } from '@angular/common';
 import {NgModule} from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -14,6 +15,8 @@ import { EditModalComponent } from "./edit-modal.component";
 import { EditModalService } from './edit-modal.service';
 import { GetImagePipeModule } from 'src/app/pipes/get-image/get-image.pipe.module';
 import { NzGridModule } from 'ng-zorro-antd/grid';
+import { ButtonModule } from '../button';
+import { ExecuteWithPipeModule } from 'src/app/pipes/execute-with';
 
 const ANT_DESIGN_MODULES = [
     NzModalModule, NzButtonModule, NzFormModule, NzInputModule, NzUploadModule, NzSelectModule, NzTabsModule, NzGridModule, NzImageModule
@@ -24,6 +27,9 @@ const ANT_DESIGN_MODULES = [
     exports: [EditModalComponent],
     imports: [
         CommonModule,
+        ButtonModule,
+        ExecuteWithPipeModule,
+        LetDirectiveModule,
         GetImagePipeModule,
         ReactiveFormsModule,
         ANT_DESIGN_MODULES
